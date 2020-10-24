@@ -38,9 +38,8 @@ Graphs:
 
 > Backend - TypeScript & TypeORM
 
-#TODO
+Backend is written in with TypeScript using TypeORM as ORM mapper. APIs are created needed for the communication with the Atlassian Jira, but also for the communication with the Frontend.
 
 > Frontend - React & TypeScript
 
-#TODO
-
+The frontend is created using React and TypeScript. And is showing the three different use cases, which have been mentioned before. 
