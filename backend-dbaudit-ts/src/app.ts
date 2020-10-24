@@ -1,11 +1,11 @@
-import "reflect-metadata";  
+import "reflect-metadata";
 
-import express, {Application, Request, Response, NextFunction} from "express";
+import * as bodyParser from  "body-parser";
 
-import * as bodyParser from  "body-parser"; 
 import {createConnection, getConnection} from "typeorm";
-import cors from "cors"; 
- 
+import express, {Application, NextFunction, Request, Response} from "express";
+
+import cors from "cors";
 
 (async () => {
     // await createConnection(); 

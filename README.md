@@ -1,4 +1,4 @@
-# databaseaudit
+# A Configuration Approach for Database Audit Systems
 Masterthesis - Database Audit Prototype
 
 - Author: Nedim Rifatbegovic
