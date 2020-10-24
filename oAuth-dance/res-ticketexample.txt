@@ -1,0 +1,144 @@
+{
+    issuetype: {
+      self: 'http://localhost:8080/rest/api/2/issuetype/10003',
+      id: '10003',
+      description: 'A task that needs to be done.',    
+      iconUrl: 'http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10318&avatarType=issuetype',   
+      name: 'Task',
+      subtask: false,
+      avatarId: 10318
+    },
+    components: [],
+    timespent: null,
+    timeoriginalestimate: null,
+    description: 'Second Half 2020',
+    project: {
+      self: 'http://localhost:8080/rest/api/2/project/10102',
+      id: '10102',
+      key: 'RES',
+      name: 'Restoration',
+      projectTypeKey: 'software',
+      avatarUrls: {
+        '48x48': 'http://localhost:8080/secure/projectavatar?avatarId=10324',
+        '24x24': 'http://localhost:8080/secure/projectavatar?size=small&avatarId=10324',
+        '16x16': 'http://localhost:8080/secure/projectavatar?size=xsmall&avatarId=10324',
+        '32x32': 'http://localhost:8080/secure/projectavatar?size=medium&avatarId=10324'
+      }
+    },
+    fixVersions: [],
+    aggregatetimespent: null,
+    resolution: {
+      self: 'http://localhost:8080/rest/api/2/resolution/10000',
+      id: '10000',
+      description: 'Work has been completed on this issue.',
+      name: 'Done'
+    },
+    timetracking: {},
+    customfield_10302: null,
+    customfield_10104: null,
+    customfield_10105: '0|i0002v:',
+    attachment: [],
+    aggregatetimeestimate: null,
+    resolutiondate: '2020-10-12T13:47:58.813-0700',    
+    workratio: -1,
+    summary: 'Half Year Restoration',
+    lastViewed: null,
+    watches: {
+      self: 'http://localhost:8080/rest/api/2/issue/RES-2/watchers',
+      watchCount: 1,
+      isWatching: false
+    },
+    creator: {
+      self: 'http://localhost:8080/rest/api/2/user?username=rifatbegovic',
+      name: 'rifatbegovic',
+      key: 'JIRAUSER10000',
+      emailAddress: 'nedim.rifatbegovic@outlook.com',  
+      avatarUrls: {
+        '48x48': 'http://localhost:8080/secure/useravatar?avatarId=10349',
+        '24x24': 'http://localhost:8080/secure/useravatar?size=small&avatarId=10349',
+        '16x16': 'http://localhost:8080/secure/useravatar?size=xsmall&avatarId=10349',
+        '32x32': 'http://localhost:8080/secure/useravatar?size=medium&avatarId=10349'
+      },
+      displayName: 'nedim.rifatbegovic@outlook.com',   
+      active: true,
+      timeZone: 'America/Los_Angeles'
+    },
+    subtasks: [],
+    created: '2020-10-12T11:03:11.618-0700',
+    reporter: {
+      self: 'http://localhost:8080/rest/api/2/user?username=rifatbegovic',
+      name: 'rifatbegovic',
+      key: 'JIRAUSER10000',
+      emailAddress: 'nedim.rifatbegovic@outlook.com',  
+      avatarUrls: {
+        '48x48': 'http://localhost:8080/secure/useravatar?avatarId=10349',
+        '24x24': 'http://localhost:8080/secure/useravatar?size=small&avatarId=10349',
+        '16x16': 'http://localhost:8080/secure/useravatar?size=xsmall&avatarId=10349',
+        '32x32': 'http://localhost:8080/secure/useravatar?size=medium&avatarId=10349'
+      },
+      displayName: 'nedim.rifatbegovic@outlook.com',   
+      active: true,
+      timeZone: 'America/Los_Angeles'
+    },
+    customfield_10000: `{summaryBean=com.atlassian.jira.plugin.devstatus.rest.SummaryBean@52d3c69e[summary={pullrequest=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@271ae93d[overall=PullRequestOverallBean{stateCount=0, state='OPEN', details=PullRequestOverallDetails{openCount=0, mergedCount=0, declinedCount=0}},byInstanceType={}], build=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@425e48c[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BuildOverallBean@7406b634[failedBuildCount=0,successfulBuildCount=0,unknownBuildCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], 
+  review=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@2b610384[overall=com.atlassian.jira.plugin.devstatus.summary.beans.ReviewsOverallBean@1237ed49[stateCount=0,state=<null>,dueDate=<null>,overDue=false,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], deployment-environment=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@391d7a07[overall=com.atlassian.jira.plugin.devstatus.summary.beans.DeploymentOverallBean@78ebcc06[topEnvironments=[],showProjects=false,successfulCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], repository=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@5b358dbc[overall=com.atlassian.jira.plugin.devstatus.summary.beans.CommitOverallBean@76457e36[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], branch=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@24daffbb[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BranchOverallBean@2f78cda[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}]},errors=[],configErrors=[]], devSummaryJson={"cachedValue":{"errors":[],"configErrors":[],"summary":{"pullrequest":{"overall":{"count":0,"lastUpdated":null,"stateCount":0,"state":"OPEN","details":{"openCount":0,"mergedCount":0,"declinedCount":0,"total":0},"open":true},"byInstanceType":{}},"build":{"overall":{"count":0,"lastUpdated":null,"failedBuildCount":0,"successfulBuildCount":0,"unknownBuildCount":0},"byInstanceType":{}},"review":{"overall":{"count":0,"lastUpdated":null,"stateCount":0,"state":null,"dueDate":null,"overDue":false,"completed":false},"byInstanceType":{}},"deployment-environment":{"overall":{"count":0,"lastUpdated":null,"topEnvironments":[],"showProjects":false,"successfulCount":0},"byInstanceType":{}},"repository":{"overall":{"count":0,"lastUpdated":null},"byInstanceType":{}},"branch":{"overall":{"count":0,"lastUpdated":null},"byInstanceType":{}}}},"isStale":false}}`,
+    aggregateprogress: { progress: 0, total: 0 },      
+    priority: {
+      self: 'http://localhost:8080/rest/api/2/priority/3',
+      iconUrl: 'http://localhost:8080/images/icons/priorities/medium.svg',
+      name: 'Medium',
+      id: '3'
+    },
+    customfield_10100: null,
+    customfield_10300: '2020-12-30T13:47:00.000-0800', 
+    labels: [],
+    customfield_10301: {
+      self: 'http://localhost:8080/rest/api/2/customFieldOption/10200',
+      value: 'Success',
+      id: '10200'
+    },
+    environment: null,
+    timeestimate: null,
+    aggregatetimeoriginalestimate: null,
+    versions: [],
+    duedate: null,
+    progress: { progress: 0, total: 0 },
+    comment: { comments: [], maxResults: 0, total: 0, startAt: 0 },
+    issuelinks: [],
+    votes: {
+      self: 'http://localhost:8080/rest/api/2/issue/RES-2/votes',
+      votes: 0,
+      hasVoted: false
+    },
+    worklog: { startAt: 0, maxResults: 20, total: 0, worklogs: [] },
+    assignee: {
+      self: 'http://localhost:8080/rest/api/2/user?username=SeniorDev',
+      name: 'SeniorDev',
+      key: 'JIRAUSER10101',
+      emailAddress: 'a1348870@univie.ac.at',
+      avatarUrls: {
+        '48x48': 'http://localhost:8080/secure/useravatar?avatarId=10337',
+        '24x24': 'http://localhost:8080/secure/useravatar?size=small&avatarId=10337',
+        '16x16': 'http://localhost:8080/secure/useravatar?size=xsmall&avatarId=10337',
+        '32x32': 'http://localhost:8080/secure/useravatar?size=medium&avatarId=10337'
+      },
+      displayName: 'Senior Developer',
+      active: true,
+      timeZone: 'America/Los_Angeles'
+    },
+    updated: '2020-10-12T13:47:58.814-0700',
+    status: {
+      self: 'http://localhost:8080/rest/api/2/status/10002',
+      description: '',
+      iconUrl: 'http://localhost:8080/',
+      name: 'Done',
+      id: '10002',
+      statusCategory: {
+        self: 'http://localhost:8080/rest/api/2/statuscategory/3',
+        id: 3,
+        key: 'done',
+        colorName: 'green',
+        name: 'Done'
+      }
+    }
+  }

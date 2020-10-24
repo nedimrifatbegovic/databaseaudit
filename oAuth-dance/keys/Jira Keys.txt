@@ -1,0 +1,6 @@
+App Url: http://localhost:8080/app
+Consumer Key: dbauditkey
+Secret: dbauditkey
+
+Your OAuth Access Token: eBxh3fiuLRWgQuFSt9NI4ymwCB9hISym
+Your OAuth Token Secret: d3j911c1DzUNzdMhc3B4Oa0wvO3rHYRQ
