@@ -28,7 +28,7 @@ export class ExternalAuditor extends BaseEntity {
   @Column({ length: 250 })
   password: string;
 
-  @Column({ type: "text", length: 250 })
+  @Column({ type: "text" })
   companyName: string;
 
   @ManyToMany((type) => Audit, (audit) => audit.externalAuditors)

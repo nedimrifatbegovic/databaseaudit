@@ -31,10 +31,10 @@ export class InternalAuditor extends BaseEntity {
   @Column({ length: 250 })
   password: string;
 
-  @Column({ type: "text", length: 250 })
+  @Column({ type: "text" })
   companyName: string;
 
-  @Column({ type: "text", length: 250, unique: true })
+  @Column({ type: "text", unique: true })
   folderId: string;
 
   @ManyToMany((type) => Audit, (audit) => audit.internalAuditors)

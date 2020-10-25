@@ -23,38 +23,53 @@ export class Config extends BaseEntity {
   @Column({ type: "timestamp" })
   updatedAt: Date;
 
-  @Column({ type: "text", length: 250 })
+  @Column({ type: "text" })
   consumerKey: string;
 
-  @Column({ type: "text", length: 250 })
+  @Column({ type: "text" })
   token: string;
 
-  @Column({ type: "text", length: 250 })
+  @Column({ type: "text" })
   tokenSecret: string;
 
-  @Column({ type: "text", length: 250 })
+  @Column({ type: "text" })
   signatureMethod: string;
 
-  @Column({ type: "text", length: 250 })
+  @Column({ type: "text" })
   jiraUrl: string;
 
-  @Column({ type: "text", length: 250 })
+  @Column({ type: "text" })
   jiraPort: string;
 
   @Column({ type: "mediumblob" })
   privateKey: Buffer;
 
-  @Column({ type: "text", length: 250 })
+  @Column({ type: "text" })
   backupProjectKey: string;
 
-  @Column({ type: "text", length: 250 })
+  @Column({ type: "text" })
   restorationProjectKey: string;
 
-  @Column({ type: "text", length: 250 })
+  @Column({ type: "text" })
   errorProjectKey: string;
 
-  @Column({ type: "text", length: 250 })
+  @Column({ type: "text" })
   changeProjectKey: string;
+
+  @Column({ type: "text" })
+  dbType: string;
+
+  @Column({ type: "text" })
+  dbHost: string;
+
+  @Column({ type: "text" })
+  dbPort: string;
+
+  @Column({ type: "text" })
+  dbUsername: string;
+
+  @Column({ type: "text" })
+  dbPassword: string;
 
   @OneToOne(() => InternalAuditor)
   internalAuditor: InternalAuditor;
