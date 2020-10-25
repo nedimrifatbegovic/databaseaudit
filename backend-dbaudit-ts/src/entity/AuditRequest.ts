@@ -11,7 +11,7 @@ import { Audit } from "./Audit";
 
 @ObjectType()
 @Entity()
-export class Request extends BaseEntity {
+export class AuditRequest extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   requestId: number;
@@ -25,6 +25,6 @@ export class Request extends BaseEntity {
   @Column({ type: "boolean" })
   resolved: boolean;
 
-  @ManyToOne((type) => Audit, (audit) => audit.requests)
+  @ManyToOne((type) => Audit, (audit) => audit.auditrequests)
   audit: Audit;
 }

@@ -9,10 +9,10 @@ import {
 } from "typeorm";
 import { Field, ID, ObjectType } from "type-graphql";
 
+import { AuditRequest } from "./AuditRequest";
 import { ExternalAuditor } from "./ExternalAuditor";
 import { InternalAuditor } from "./InternalAuditor";
 import { Report } from "./Report";
-import { Request } from "./Request";
 
 @ObjectType()
 @Entity()
@@ -42,11 +42,11 @@ export class Audit extends BaseEntity {
     (externalAuditor) => externalAuditor.audits
   )
   @JoinTable()
-  externalAuditors: InternalAuditor[];
+  externalAuditors: ExternalAuditor[];
 
   @OneToMany((type) => Report, (report) => report.audit)
   reports: Report[];
 
-  @OneToMany((type) => Request, (request) => request.audit)
-  requests: Report[];
+  @OneToMany((type) => AuditRequest, (auditrequest) => auditrequest.audit)
+  auditrequests: AuditRequest[];
 }
