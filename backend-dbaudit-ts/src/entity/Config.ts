@@ -1,5 +1,14 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { Field, ID, ObjectType } from "type-graphql";
+
+import { InternalAuditor } from "./InternalAuditor";
 
 @ObjectType()
 @Entity()
@@ -47,5 +56,6 @@ export class Config extends BaseEntity {
   @Column({ type: "text", length: 250 })
   changeProjectKey: string;
 
-  //  TODO: Connection to internal auditor
+  @OneToOne(() => InternalAuditor)
+  internalAuditor: InternalAuditor;
 }

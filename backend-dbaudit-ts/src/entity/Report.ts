@@ -1,5 +1,13 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { Field, ID, ObjectType } from "type-graphql";
+
+import { Audit } from "./Audit";
 
 @ObjectType()
 @Entity()
@@ -17,5 +25,6 @@ export class Report extends BaseEntity {
   @Column({ type: "json" })
   scorecard: JSON;
 
-  //   TODO: Connection to Audit
+  @ManyToOne((type) => Audit, (audit) => audit.reports)
+  audit: Audit;
 }

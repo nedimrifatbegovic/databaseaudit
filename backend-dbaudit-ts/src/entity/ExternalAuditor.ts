@@ -1,5 +1,13 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { Field, ID, ObjectType } from "type-graphql";
+
+import { Audit } from "./Audit";
 
 @ObjectType()
 @Entity()
@@ -23,5 +31,6 @@ export class ExternalAuditor extends BaseEntity {
   @Column({ type: "text", length: 250 })
   companyName: string;
 
-  //   TODO: Connection to Audit
+  @ManyToMany((type) => Audit, (audit) => audit.externalAuditors)
+  audits: Audit[];
 }
