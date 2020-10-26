@@ -1,6 +1,7 @@
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
 import ANavBar from "../components/Admin/components/ANavBar/ANavBar";
+import AdminLogin from "../pages/AdminLogin/AdminLogin";
 import { Container } from "react-bootstrap";
 import Error404 from "../pages/Error404/Error404";
 import Footer from "../components/Footer/Footer";
@@ -30,11 +31,15 @@ export default function AppRouter() {
           {/* Admin Pages */}
           <Route exact path={paths.admin.home}>
             <ANavBar />
-            <div>Admin Page</div>
+            <Jumbo />
+            <Container>
+              <div>Admin Page</div>
+            </Container>
           </Route>
           <Route path={paths.admin.login}>
             <ANavBar />
-            <div>Admin Login Page</div>
+            <Jumbo />
+            <AdminLogin />
           </Route>
           <Route path={paths.admin.user}>
             <ANavBar />
