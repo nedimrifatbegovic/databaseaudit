@@ -1,0 +1,5 @@
+{
+  "title": "A Configuration Approach for Database Audit Systems",
+  "subtitle": "Wellcome to the Database Audit System.",
+  "description": "This prototype is showing three different Use-Cases. The first one is representing the administrator of the application. He creates other users (internal / external auditors). The second user is for internal auditrs... third for external..."
+}

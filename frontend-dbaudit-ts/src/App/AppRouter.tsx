@@ -1,11 +1,13 @@
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
+import ANavBar from "../components/Admin/components/ANavBar/ANavBar";
 import { Container } from "react-bootstrap";
 import Error404 from "../pages/Error404/Error404";
 import Footer from "../components/Footer/Footer";
 import Home from "../pages/Home/Home";
 import NavigationBar from "../components/NavigationBar/NavigationBar";
 import React from "react";
+import { paths } from "./AppRouter.resources";
 import styled from "styled-components";
 
 const MainSection = styled.div`
@@ -23,9 +25,52 @@ export default function AppRouter() {
               <Home />
             </Container>
           </Route>
-          <Route exact path="/login">
-            <div>Login Page</div>
+          {/* Admin Pages */}
+          <Route exact path={paths.admin.home}>
+            <ANavBar />
+            <div>Admin Page</div>
           </Route>
+          <Route path={paths.admin.login}>
+            <ANavBar />
+            <div>Admin Login Page</div>
+          </Route>
+          <Route path={paths.admin.user}>
+            <ANavBar />
+            <div>Admin User Page</div>
+          </Route>
+          {/* Internal Audit Pages */}
+          <Route exact path={paths.internal.home}>
+            <div>Internal Audit Page</div>
+          </Route>
+          <Route path={paths.internal.login}>
+            <div>Internal Audit Login Page</div>
+          </Route>
+          <Route path={paths.internal.audit}>
+            <div>Internal Audit Audit Page</div>
+          </Route>
+          <Route path={paths.internal.password}>
+            <div>Internal Audit Password Page</div>
+          </Route>
+          <Route path={paths.internal.request}>
+            <div>Internal Audit Request Page</div>
+          </Route>
+          {/* External Audit Pages */}
+          <Route exact path={paths.external.home}>
+            <div>External Audit Page</div>
+          </Route>
+          <Route path={paths.external.login}>
+            <div>External Audit Login Page</div>
+          </Route>
+          <Route path={paths.external.request}>
+            <div>External Audit Request Page</div>
+          </Route>
+          <Route path={paths.external.client}>
+            <div>External Audit Client Page</div>
+          </Route>
+          <Route path={paths.external.audit}>
+            <div>External Audit Client Audit Page</div>
+          </Route>
+          {/* Error 404: Not found Page */}
           <Route>
             <NavigationBar />
             <Container>

@@ -1,7 +1,8 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
+import { descriptions, paths } from "../../../../App/AppRouter.resources";
 
 import React from "react";
-import logo from "../../assets/img/dbauditlogo.png";
+import logo from "../../../../assets/img/dbauditlogo.png";
 import styled from "styled-components";
 
 const Styles = styled.div`
@@ -25,7 +26,7 @@ const Logo = styled.img`
   margin: 1px;
 `;
 
-export default function NavigationBar() {
+export default function ANavBar() {
   return (
     <Styles>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -38,10 +39,12 @@ export default function NavigationBar() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/admin">Admin</Nav.Link>
-              <Nav.Link href="/internal">Internal Audit</Nav.Link>
-              <Nav.Link href="/external">External Audit</Nav.Link>
+              <Nav.Link href={paths.admin.home}>
+                {descriptions.admin.home}
+              </Nav.Link>
+              <Nav.Link href={paths.admin.user}>
+                {descriptions.admin.user}
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
