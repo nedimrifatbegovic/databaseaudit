@@ -12,13 +12,13 @@ export default function RemoveUser() {
   let history = useHistory();
   const { register, handleSubmit, errors } = useForm();
 
-  const getUser = (data: ExistingUser) => {
+  const removeUser = (data: ExistingUser) => {
     console.log("I got the data");
   };
 
   return (
     <React.Fragment>
-      <Form onSubmit={handleSubmit(getUser)}>
+      <Form onSubmit={handleSubmit(removeUser)}>
         <Label>
           <b>{description.title}</b>
         </Label>

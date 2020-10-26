@@ -5,7 +5,7 @@ export const description = {
   password: "Password: ",
   passwordmsg: "Please enter the users password",
   companyname: "Company name: ",
-  companynamemsg: "Please enter the companies name: ",
+  companynamemsg: "Please enter the companies name",
   type: "Type:",
   internalValue: "internal",
   internalText: "Internal Auditor",
