@@ -5,7 +5,6 @@ import { CustomLink } from "../../../../style/CustomLink";
 import { Label } from "../../../../style/Label";
 import { NewUser } from "../../../../assets/interfaces/Interfaces";
 import { description } from "./AddUser.resources";
-import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 

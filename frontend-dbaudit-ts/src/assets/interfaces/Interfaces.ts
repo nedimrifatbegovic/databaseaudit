@@ -9,3 +9,8 @@ export interface NewUser {
   companyname: string;
   type: string;
 }
+
+export interface ExistingUser {
+  email: string;
+  type: string;
+}
