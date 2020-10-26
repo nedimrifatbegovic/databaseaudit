@@ -5,6 +5,7 @@ import { Container } from "react-bootstrap";
 import Error404 from "../pages/Error404/Error404";
 import Footer from "../components/Footer/Footer";
 import Home from "../pages/Home/Home";
+import Jumbo from "../components/Jumbo/Jumbo";
 import NavigationBar from "../components/NavigationBar/NavigationBar";
 import React from "react";
 import { paths } from "./AppRouter.resources";
@@ -21,6 +22,7 @@ export default function AppRouter() {
         <Switch>
           <Route exact path="/">
             <NavigationBar />
+            <Jumbo />
             <Container>
               <Home />
             </Container>
