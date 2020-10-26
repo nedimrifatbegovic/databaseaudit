@@ -1,6 +1,8 @@
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
 import { Container } from "react-bootstrap";
+import Footer from "../components/Footer/Footer";
+import Home from "../pages/Home/Home";
 import React from "react";
 import styled from "styled-components";
 
@@ -14,7 +16,7 @@ export default function AppRouter() {
       <MainSection>
         <Switch>
           <Route exact path="/">
-            <div>Home Page</div>
+            <Home />
           </Route>
           <Route exact path="/login">
             <div>Login Page</div>
@@ -24,6 +26,7 @@ export default function AppRouter() {
           </Route>
         </Switch>
       </MainSection>
+      <Footer />
     </Router>
   );
 }
