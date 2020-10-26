@@ -29,7 +29,11 @@ export default function Footer() {
         <Logo src={unilogo} alt="Universität Wien" />
       </Paragraph>
       <Paragraph>
-        <a href="https://github.com/nedimrifatbegovic" target="_blank">
+        <a
+          href="https://github.com/nedimrifatbegovic"
+          target="_blank"
+          rel="noreferrer"
+        >
           Author: Nedim Rifatbegovic
         </a>
       </Paragraph>

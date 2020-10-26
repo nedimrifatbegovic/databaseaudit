@@ -3,6 +3,7 @@ import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import Footer from "../components/Footer/Footer";
 import Home from "../pages/Home/Home";
+import NavigationBar from "../components/NavigationBar/NavigationBar";
 import React from "react";
 import styled from "styled-components";
 
@@ -16,7 +17,10 @@ export default function AppRouter() {
       <MainSection>
         <Switch>
           <Route exact path="/">
-            <Home />
+            <NavigationBar />
+            <Container>
+              <Home />
+            </Container>
           </Route>
           <Route exact path="/login">
             <div>Login Page</div>
