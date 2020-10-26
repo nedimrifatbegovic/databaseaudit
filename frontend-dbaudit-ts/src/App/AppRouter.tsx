@@ -1,12 +1,14 @@
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
 import ANavBar from "../components/Admin/components/ANavBar/ANavBar";
-import AdminLogin from "../pages/AdminLogin/AdminLogin";
+import AdminHome from "../pages/AdminHome/AdminHome";
+import AdminUsermanagement from "../pages/AdminUsermanagement/AdminUsermanagement";
 import { Container } from "react-bootstrap";
 import Error404 from "../pages/Error404/Error404";
 import Footer from "../components/Footer/Footer";
 import Home from "../pages/Home/Home";
 import Jumbo from "../components/Jumbo/Jumbo";
+import Login from "../components/Login/Login";
 import NavigationBar from "../components/NavigationBar/NavigationBar";
 import React from "react";
 import { paths } from "./AppRouter.resources";
@@ -33,17 +35,19 @@ export default function AppRouter() {
             <ANavBar />
             <Jumbo />
             <Container>
-              <div>Admin Page</div>
+              <AdminHome />
             </Container>
           </Route>
           <Route path={paths.admin.login}>
             <ANavBar />
             <Jumbo />
-            <AdminLogin />
+            <Container>
+              <Login />
+            </Container>
           </Route>
           <Route path={paths.admin.user}>
             <ANavBar />
-            <div>Admin User Page</div>
+            <AdminUsermanagement />
           </Route>
           {/* Internal Audit Pages */}
           <Route exact path={paths.internal.home}>

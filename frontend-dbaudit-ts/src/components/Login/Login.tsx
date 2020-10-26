@@ -1,29 +1,13 @@
 import { Col, Form, Row } from "react-bootstrap";
 import React, { useState } from "react";
 
+import { CustomLink } from "../../style/CustomLink";
+import { Label } from "../../style/Label";
 import { LoginData } from "../../assets/interfaces/Interfaces";
+import { description } from "./Login.resources";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
-
-const Label = styled.label`
-  margin-bottom: 2vh;
-`;
-
-const CustomLink = styled.input`
-  background-color: #222;
-  color: white;
-  font-size: 1em;
-  margin: 1em;
-  padding: 0.25em 1em;
-  border: 2px solid #222;
-  border-radius: 3px;
-
-  &:hover {
-    color: grey;
-    text-decoration: none;
-  }
-`;
 
 export default function Login() {
   let history = useHistory();
@@ -35,35 +19,39 @@ export default function Login() {
 
   return (
     <Form onSubmit={handleSubmit(loginUser)}>
-      <Label>Please enter your email and password!</Label>
+      <Label>{description.title}</Label>
       <Form.Group as={Row} controlId="fromEmail">
-        <Form.Label column>Email:</Form.Label>
+        <Form.Label column>{description.email}</Form.Label>
         <Col sm="10">
           <Form.Control
             style={{ marginBottom: "2vh" }}
-            placeholder="Please enter your email"
+            placeholder={description.emailmsg}
             name="email"
-            ref={register({ required: true, maxLength: 30 })}
+            type="text"
+            maxLength={40}
+            ref={register({ required: true, maxLength: 40 })}
           />
           {errors.email && (
             <p>
-              <b>Please enter your email.</b>
+              <b>{description.emailmsg}</b>
             </p>
           )}
         </Col>
       </Form.Group>
       <Form.Group as={Row} controlId="fromPassword">
-        <Form.Label column>Password:</Form.Label>
+        <Form.Label column>{description.psw}</Form.Label>
         <Col sm="10">
           <Form.Control
             style={{ marginBottom: "2vh" }}
-            placeholder="Please enter your password"
+            placeholder={description.pswmsg}
             name="password"
-            ref={register({ required: true, maxLength: 30 })}
+            type="text"
+            maxLength={40}
+            ref={register({ required: true, maxLength: 40 })}
           />
           {errors.password && (
             <p>
-              <b>Please enter your password.</b>
+              <b>{description.pswmsg}</b>
             </p>
           )}
         </Col>
