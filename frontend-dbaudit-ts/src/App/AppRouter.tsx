@@ -1,6 +1,7 @@
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
 import { Container } from "react-bootstrap";
+import Error404 from "../pages/Error404/Error404";
 import Footer from "../components/Footer/Footer";
 import Home from "../pages/Home/Home";
 import NavigationBar from "../components/NavigationBar/NavigationBar";
@@ -26,7 +27,10 @@ export default function AppRouter() {
             <div>Login Page</div>
           </Route>
           <Route>
-            <div>Error 404</div>
+            <NavigationBar />
+            <Container>
+              <Error404 />
+            </Container>
           </Route>
         </Switch>
       </MainSection>
