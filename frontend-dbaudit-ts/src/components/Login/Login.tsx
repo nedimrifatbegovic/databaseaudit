@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { CustomLink } from "../../style/CustomLink";
 import { Label } from "../../style/Label";
 import { LoginData } from "../../assets/interfaces/Interfaces";
+import { connectUser } from "./Api/loginApi";
 import { description } from "./Login.resources";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
@@ -15,6 +16,23 @@ export default function Login() {
 
   const loginUser = (data: LoginData) => {
     console.log("I got the data");
+
+    // TODO: Get type from redux (admin, internal or external)
+    const loginData = {
+      email: data.email,
+      password: data.password,
+      type: "admin",
+    };
+
+    connectUser(
+      loginData,
+      (res: any) => {
+        console.log(res);
+      },
+      (err: any) => {
+        alert(err);
+      }
+    );
   };
 
   return (

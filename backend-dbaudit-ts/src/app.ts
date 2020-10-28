@@ -47,12 +47,10 @@ import cors from "cors";
   });
 
   // TODO: Login
-  app.get(
-    "/login/:credentials",
-    (req: Request, res: Response, next: NextFunction) => {
-      res.send("Hello World");
-    }
-  );
+  app.post("/login", (req: Request, res: Response, next: NextFunction) => {
+    console.log("I got in login: ", req.body);
+    res.send("Hello World");
+  });
 
   // TODO: Change status of audit
   app.put("/externalauditors/:id", async function (
