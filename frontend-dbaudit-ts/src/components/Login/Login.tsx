@@ -2,6 +2,7 @@ import { Col, Form, Row } from "react-bootstrap";
 import React, { useState } from "react";
 
 import { CustomLink } from "../../style/CustomLink";
+import { ILogin } from "./Api/loginApi.resources";
 import { Label } from "../../style/Label";
 import { LoginData } from "../../assets/interfaces/Interfaces";
 import { connectUser } from "./Api/loginApi";
@@ -10,7 +11,7 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 
-export default function Login() {
+export default function Login(props: ILogin) {
   let history = useHistory();
   const { register, handleSubmit, errors } = useForm();
 
@@ -21,13 +22,15 @@ export default function Login() {
     const loginData = {
       email: data.email,
       password: data.password,
-      type: "admin",
+      type: props.type,
     };
 
     connectUser(
       loginData,
       (res: any) => {
         console.log(res);
+        // TODO - add to redux credentials
+        // TODO - forward to admin home page
       },
       (err: any) => {
         alert(err);

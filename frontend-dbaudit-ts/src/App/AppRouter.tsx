@@ -2,6 +2,7 @@ import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
 import ANavBar from "../components/Admin/components/ANavBar/ANavBar";
 import AdminHome from "../pages/AdminHome/AdminHome";
+import AdminLogin from "../pages/AdminLogin/AdminLogin";
 import AdminUsermanagement from "../pages/AdminUsermanagement/AdminUsermanagement";
 import { Container } from "react-bootstrap";
 import Error404 from "../pages/Error404/Error404";
@@ -42,7 +43,7 @@ export default function AppRouter() {
             <ANavBar />
             <Jumbo />
             <Container>
-              <Login />
+              <AdminLogin />
             </Container>
           </Route>
           <Route path={paths.admin.user}>

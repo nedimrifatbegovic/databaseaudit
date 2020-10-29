@@ -3,7 +3,7 @@ import axios from "axios";
 
 export function connectUser(data: IData, callback: any, errorcallback: any) {
   axios
-    .post("/login", {
+    .post("http://localhost:5000/login", {
       data,
     })
     .then((response) => {

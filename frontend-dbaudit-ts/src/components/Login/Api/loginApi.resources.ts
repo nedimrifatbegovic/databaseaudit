@@ -3,3 +3,7 @@ export interface IData {
   password: string;
   type: string;
 }
+
+export interface ILogin {
+  type: string;
+}
