@@ -6,6 +6,7 @@ import { createConnection, getConnection } from "typeorm";
 import express, { Application, NextFunction, Request, Response } from "express";
 
 import { Admin } from "./entity/Admin";
+import AdminQueries from "./queries/AdminQueries";
 import { Audit } from "./entity/Audit";
 import { AuditRequest } from "./entity/AuditRequest";
 import { Config } from "./entity/Config";
@@ -15,7 +16,6 @@ import { Report } from "./entity/Report";
 import cors from "cors";
 
 // Queries
-// TODO: Create and import queries for the database
 
 // Controllers
 // TODO: Create and import controllers needed for the api calls
@@ -47,9 +47,20 @@ import cors from "cors";
   });
 
   // TODO: Login
-  app.post("/login", (req: Request, res: Response, next: NextFunction) => {
+  app.post("/login", async function (req: Request, res: Response) {
     console.log("I got in login: ", req.body);
-    res.send("Hello World");
+    let result: boolean = false;
+    if (req.body.data.type === "admin") {
+      result = await AdminQueries.getCredentials(
+        req.body.data.email,
+        req.body.data.password
+      );
+    } else if (req.body.data.type === "internal") {
+      // TODO
+    } else if (req.body.data.type === "external") {
+      // TODO
+    }
+    return res.send(result);
   });
 
   // TODO: Change status of audit

@@ -30,6 +30,7 @@ export default function Login(props: ILogin) {
       (res: any) => {
         console.log(res);
         // TODO - add to redux credentials
+
         // TODO - forward to admin home page
       },
       (err: any) => {
