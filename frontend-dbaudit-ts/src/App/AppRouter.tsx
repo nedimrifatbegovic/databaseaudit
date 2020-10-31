@@ -6,10 +6,11 @@ import AdminLogin from "../pages/AdminLogin/AdminLogin";
 import AdminUsermanagement from "../pages/AdminUsermanagement/AdminUsermanagement";
 import { Container } from "react-bootstrap";
 import Error404 from "../pages/Error404/Error404";
+import ExternalLogin from "../pages/ExternalLogin/ExternalLogin";
 import Footer from "../components/Footer/Footer";
 import Home from "../pages/Home/Home";
+import InternalLogin from "../pages/InternalLogin/InternalLogin";
 import Jumbo from "../components/Jumbo/Jumbo";
-import Login from "../components/Login/Login";
 import NavigationBar from "../components/NavigationBar/NavigationBar";
 import React from "react";
 import { paths } from "./AppRouter.resources";
@@ -55,7 +56,11 @@ export default function AppRouter() {
             <div>Internal Audit Page</div>
           </Route>
           <Route path={paths.internal.login}>
-            <div>Internal Audit Login Page</div>
+            <ANavBar />
+            <Jumbo />
+            <Container>
+              <InternalLogin />
+            </Container>
           </Route>
           <Route path={paths.internal.audit}>
             <div>Internal Audit Audit Page</div>
@@ -71,7 +76,11 @@ export default function AppRouter() {
             <div>External Audit Page</div>
           </Route>
           <Route path={paths.external.login}>
-            <div>External Audit Login Page</div>
+            <ANavBar />
+            <Jumbo />
+            <Container>
+              <ExternalLogin />
+            </Container>
           </Route>
           <Route path={paths.external.request}>
             <div>External Audit Request Page</div>
