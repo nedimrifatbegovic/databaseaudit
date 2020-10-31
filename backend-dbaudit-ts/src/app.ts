@@ -50,14 +50,14 @@ import cors from "cors";
   app.post("/login", async function (req: Request, res: Response) {
     console.log("I got in login: ", req.body);
     let result: boolean = false;
-    if (req.body.data.type === "admin") {
+    if (req.body.type === "admin") {
       result = await AdminQueries.getCredentials(
-        req.body.data.email,
-        req.body.data.password
+        req.body.email,
+        req.body.password
       );
-    } else if (req.body.data.type === "internal") {
+    } else if (req.body.type === "internal") {
       // TODO
-    } else if (req.body.data.type === "external") {
+    } else if (req.body.type === "external") {
       // TODO
     }
     return res.send(result);
