@@ -11,6 +11,7 @@ import Footer from "../components/Footer/Footer";
 import Home from "../pages/Home/Home";
 import InternalLogin from "../pages/InternalLogin/InternalLogin";
 import Jumbo from "../components/Jumbo/Jumbo";
+import LoginStatus from "../pages/LoginStatus/LoginStatus";
 import NavigationBar from "../components/NavigationBar/NavigationBar";
 import React from "react";
 import { paths } from "./AppRouter.resources";
@@ -47,6 +48,13 @@ export default function AppRouter() {
               <AdminLogin />
             </Container>
           </Route>
+          <Route path={paths.admin.loginstatus}>
+            <ANavBar />
+            <Jumbo />
+            <Container>
+              <LoginStatus type="admin" />
+            </Container>
+          </Route>
           <Route path={paths.admin.user}>
             <ANavBar />
             <AdminUsermanagement />
@@ -60,6 +68,13 @@ export default function AppRouter() {
             <Jumbo />
             <Container>
               <InternalLogin />
+            </Container>
+          </Route>
+          <Route path={paths.internal.loginstatus}>
+            <ANavBar />
+            <Jumbo />
+            <Container>
+              <LoginStatus type="internal" />
             </Container>
           </Route>
           <Route path={paths.internal.audit}>
@@ -80,6 +95,13 @@ export default function AppRouter() {
             <Jumbo />
             <Container>
               <ExternalLogin />
+            </Container>
+          </Route>
+          <Route path={paths.external.loginstatus}>
+            <ANavBar />
+            <Jumbo />
+            <Container>
+              <LoginStatus type="external" />
             </Container>
           </Route>
           <Route path={paths.external.request}>

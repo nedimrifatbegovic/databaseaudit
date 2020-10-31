@@ -2,11 +2,13 @@ export const paths = {
   admin: {
     home: "/admin",
     login: "/admin/login",
+    loginstatus: "/admin/loginstatus",
     user: "/admin/user",
   },
   internal: {
     home: "/internal",
     login: "/internal/login",
+    loginstatus: "/internal/loginstatus",
     audit: "/internal/audit",
     password: "/internal/password",
     request: "/internal/request",
@@ -14,6 +16,7 @@ export const paths = {
   external: {
     home: "/external",
     login: "/external/login",
+    loginstatus: "/external/loginstatus",
     client: "/external/client",
     audit: "/external/client/audit",
     password: "/external/password",

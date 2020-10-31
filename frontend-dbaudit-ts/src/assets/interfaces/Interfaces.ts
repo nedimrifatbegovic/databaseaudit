@@ -16,6 +16,10 @@ export interface ExistingUser {
 }
 
 // -- Redux ---
+
+export interface IREDUX {
+  user: IUserState;
+}
 export interface IUserState {
   email: string;
   password: string;

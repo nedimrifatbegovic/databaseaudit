@@ -4,11 +4,12 @@ import {
   IUserCall,
   LoginData,
 } from "../../assets/interfaces/Interfaces";
-import React, { useState } from "react";
 
 import { CustomLink } from "../../style/CustomLink";
 import { Label } from "../../style/Label";
+import React from "react";
 import { description } from "./Login.resources";
+import { paths } from "../../App/AppRouter.resources";
 import { setUser } from "../../redux/Redux-actions/UserActions";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -28,6 +29,20 @@ export default function Login(props: ILogin) {
       type: props.type,
     };
     dispatch(setUser(user));
+
+    switch (props.type) {
+      case "admin":
+        history.push(paths.admin.loginstatus);
+        break;
+      case "internal":
+        history.push(paths.internal.loginstatus);
+        break;
+      case "external":
+        history.push(paths.external.loginstatus);
+        break;
+      default:
+        break;
+    }
   };
 
   return (

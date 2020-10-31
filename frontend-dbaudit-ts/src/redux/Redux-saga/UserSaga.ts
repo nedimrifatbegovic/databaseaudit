@@ -1,6 +1,6 @@
 import { IUserAction, IUserState } from "../../assets/interfaces/Interfaces";
 import { SET_USER, SET_USER_FAIL, SET_USER_SUCCESS } from "../types";
-import { call, put, takeEvery } from "redux-saga/effects";
+import { put, takeEvery } from "redux-saga/effects";
 
 import { connectUser } from "../../components/Login/Api/loginApi";
 
