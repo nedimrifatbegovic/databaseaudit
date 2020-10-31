@@ -1,42 +1,33 @@
 import { Col, Form, Row } from "react-bootstrap";
+import {
+  ILogin,
+  IUserCall,
+  LoginData,
+} from "../../assets/interfaces/Interfaces";
 import React, { useState } from "react";
 
 import { CustomLink } from "../../style/CustomLink";
-import { ILogin } from "./Api/loginApi.resources";
 import { Label } from "../../style/Label";
-import { LoginData } from "../../assets/interfaces/Interfaces";
-import { connectUser } from "./Api/loginApi";
 import { description } from "./Login.resources";
-import styled from "styled-components";
+import { setUser } from "../../redux/Redux-actions/UserActions";
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 
 export default function Login(props: ILogin) {
   let history = useHistory();
   const { register, handleSubmit, errors } = useForm();
+  const dispatch = useDispatch();
 
   const loginUser = (data: LoginData) => {
     console.log("I got the data");
 
-    // TODO: Get type from redux (admin, internal or external)
-    const loginData = {
+    const user: IUserCall = {
       email: data.email,
       password: data.password,
       type: props.type,
     };
-
-    connectUser(
-      loginData,
-      (res: any) => {
-        console.log(res);
-        // TODO - add to redux credentials
-
-        // TODO - forward to admin home page
-      },
-      (err: any) => {
-        alert(err);
-      }
-    );
+    dispatch(setUser(user));
   };
 
   return (

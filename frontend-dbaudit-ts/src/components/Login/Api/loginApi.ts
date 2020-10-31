@@ -1,19 +1,21 @@
-import { IData } from "./loginApi.resources";
-import axios from "axios";
+import { IData } from "../../../assets/interfaces/Interfaces";
 
-export function connectUser(data: IData, callback: any, errorcallback: any) {
-  axios
-    .post("http://localhost:5000/login", {
-      data,
+export async function connectUser(data: IData) {
+  const body = JSON.stringify(data);
+  return new Promise((resolve, reject) => {
+    fetch("http://localhost:5000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body,
     })
-    .then((response) => {
-      if (callback != null) {
-        callback(response);
-      }
-    })
-    .catch((err) => {
-      if (errorcallback != null) {
-        errorcallback(err);
-      }
-    });
+      .then((res) => res.json())
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
 }
