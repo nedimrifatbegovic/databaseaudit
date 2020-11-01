@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import Admin from "../../components/Admin/Admin";
 import { Container } from "react-bootstrap";
 import LoginCheck from "../../assets/functions/LoginCheck";
+import Logout from "../../components/Logout/Logout";
 import { paths } from "../../App/AppRouter.resources";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -24,6 +25,7 @@ export default function AdminHome() {
   return (
     <Container>
       <Admin />
+      <Logout />
     </Container>
   );
 }

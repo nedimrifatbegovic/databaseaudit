@@ -13,7 +13,6 @@ export default function Admin() {
       <hr />
       <RemoveUser />
       <hr />
-      <Logout />
     </React.Fragment>
   );
 }
