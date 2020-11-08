@@ -15,8 +15,6 @@ import { InternalAuditor } from "./entity/InternalAuditor";
 import { Report } from "./entity/Report";
 import cors from "cors";
 
-// Queries
-
 // Controllers
 // TODO: Create and import controllers needed for the api calls
 
@@ -46,9 +44,9 @@ import cors from "cors";
     res.send("Hello World");
   });
 
-  // TODO: Login
+  // User Login
   app.post("/login", async function (req: Request, res: Response) {
-    console.log("I got in login: ", req.body);
+    console.log("Login data received: ", req.body);
     let result: boolean = false;
     if (req.body.type === "admin") {
       result = await AdminQueries.getCredentials(
@@ -101,35 +99,31 @@ import cors from "cors";
   );
 
   //  * Calls for the Admin
-  // TODO: Get all internal auditors
+  // TODO: Get internal auditors by id
   app.get("/internal", (req: Request, res: Response, next: NextFunction) => {
     res.send("Hello World");
   });
 
-  // TODO: Get all external auditors
+  // TODO: Get external auditors by id
   app.get("/external", (req: Request, res: Response, next: NextFunction) => {
     res.send("Hello World");
   });
 
-  // TODO: Get internal auditors by id
-  app.get(
-    "/internal/:id",
-    (req: Request, res: Response, next: NextFunction) => {
-      res.send("Hello World");
-    }
-  );
-
-  // TODO: Get external auditors by id
-  app.get(
-    "/internal/:id",
-    (req: Request, res: Response, next: NextFunction) => {
-      res.send("Hello World");
-    }
-  );
-
   // TODO: Add internal auditor
   app.post("/internal", async function (req: Request, res: Response) {
-    // return res.send(results);
+    // console.log("Internal auditor data received: ", req.body);
+    let result: any;
+    if (req.body !== undefined) {
+      result = await AdminQueries.setInternal(
+        req.body.email,
+        req.body.password,
+        req.body.companyname
+      );
+    }
+    const response = {
+      folderid: result,
+    };
+    return res.send(response);
   });
 
   // TODO: Add external auditor

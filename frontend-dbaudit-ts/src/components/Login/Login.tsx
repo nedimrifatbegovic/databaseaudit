@@ -21,8 +21,6 @@ export default function Login(props: ILogin) {
   const dispatch = useDispatch();
 
   const loginUser = (data: LoginData) => {
-    console.log("I got the data");
-
     const user: IUserCall = {
       email: data.email,
       password: data.password,

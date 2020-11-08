@@ -2,19 +2,34 @@ import { Col, Form, Row } from "react-bootstrap";
 import React, { useState } from "react";
 
 import { CustomLink } from "../../../../style/CustomLink";
+import { IAddUser } from "../../../../assets/interfaces/Interfaces";
 import { Label } from "../../../../style/Label";
-import { NewUser } from "../../../../assets/interfaces/Interfaces";
+import { addInternalUser } from "./Api/addUser";
 import { description } from "./AddUser.resources";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 
 export default function AddUser() {
   let history = useHistory();
+  const [userId, setUserId] = useState(undefined);
   const { register, handleSubmit, errors } = useForm();
 
-  const addUser = (data: NewUser) => {
-    console.log("I got the data");
-  };
+  async function addUser(data: IAddUser) {
+    console.log("I got the data", data);
+
+    const user: IAddUser = {
+      email: data.email,
+      password: data.password,
+      companyname: data.companyname,
+      type: data.type,
+    };
+
+    const userid: any = await addInternalUser(user);
+    if (typeof userid.folderid === "string" || userid.folderid !== undefined) {
+      console.log("USER ID: ", userid.folderid);
+      setUserId(userid.folderid);
+    }
+  }
 
   return (
     <React.Fragment>
@@ -79,11 +94,7 @@ export default function AddUser() {
         <Form.Group as={Row} controlId="fromType">
           <Form.Label column>{description.type}</Form.Label>
           <Col sm="10">
-            <Form.Control
-              style={{ marginBottom: "2vh" }}
-              as="select"
-              name="type"
-            >
+            <Form.Control as="select" name="type" ref={register}>
               <option value={description.internalValue}>
                 {description.internalText}
               </option>
@@ -97,6 +108,11 @@ export default function AddUser() {
           <CustomLink type="submit" value="Submit" />
         </Row>
       </Form>
+      {userId !== undefined && (
+        <p>
+          The user has been added, and his folder id is: <b>{userId}</b>
+        </p>
+      )}
     </React.Fragment>
   );
 }
