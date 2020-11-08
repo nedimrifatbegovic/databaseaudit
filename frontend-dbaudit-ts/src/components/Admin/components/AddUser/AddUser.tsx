@@ -7,10 +7,8 @@ import { Label } from "../../../../style/Label";
 import { addUserApi } from "./Api/addUser";
 import { description } from "./AddUser.resources";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
 
 export default function AddUser() {
-  let history = useHistory();
   const [userId, setUserId] = useState(undefined);
   const [externalStatus, setexternalStatus] = useState(false);
   const [apiStatus, setApiStatus] = useState(false);
@@ -124,13 +122,13 @@ export default function AddUser() {
       </Form>
       {userId !== undefined && (
         <p>
-          The user has been added, and his folder id is: <b>{userId}</b>
+          {description.useridmsg}: <b>{userId}</b>
         </p>
       )}
-      {externalStatus !== false && <p>The external user has been added!</p>}
+      {externalStatus !== false && <p>{description.externalstatusmsg}</p>}
       {apiStatus !== false && (
         <p>
-          <b>E-Mail already in use!</b>
+          <b>{description.apistatusmsg}</b>
         </p>
       )}
     </React.Fragment>

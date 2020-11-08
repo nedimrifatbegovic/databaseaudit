@@ -42,9 +42,6 @@ export default function ANavBar() {
               <Nav.Link href={paths.admin.home}>
                 {descriptions.admin.home}
               </Nav.Link>
-              {/* <Nav.Link href={paths.admin.user}>
-                {descriptions.admin.user}
-              </Nav.Link> */}
             </Nav>
           </Navbar.Collapse>
         </Container>

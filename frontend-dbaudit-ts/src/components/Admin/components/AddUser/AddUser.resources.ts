@@ -11,4 +11,7 @@ export const description = {
   internalText: "Internal Auditor",
   externalValue: "external",
   externalText: "External Auditor",
+  apistatusmsg: "E-Mail already in use!",
+  useridmsg: "The user has been added, and his folder id is",
+  externalstatusmsg: "The external user has been added!",
 };

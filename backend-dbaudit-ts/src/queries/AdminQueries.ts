@@ -61,8 +61,48 @@ const setExternal = async (
   return result;
 };
 
+const removeInternal = async (email: string) => {
+  const connection = getConnection();
+
+  console.log("__START__");
+  try {
+    await connection
+      .createQueryBuilder()
+      .delete()
+      .from(InternalAuditor)
+      .where("email = :email", { email: email })
+      .execute();
+    console.log("__END__");
+    return true;
+  } catch (error) {
+    console.log("__FAIL__");
+    return false;
+  }
+};
+
+const removeExternal = async (email: string) => {
+  const connection = getConnection();
+
+  console.log("__START__");
+  try {
+    await connection
+      .createQueryBuilder()
+      .delete()
+      .from(ExternalAuditor)
+      .where("email = :email", { email: email })
+      .execute();
+    console.log("__END__");
+    return true;
+  } catch (error) {
+    console.log("__FAIL__");
+    return false;
+  }
+};
+
 export = {
   getCredentials: getCredentials,
   setInternal: setInternal,
   setExternal: setExternal,
+  removeInternal: removeInternal,
+  removeExternal: removeExternal,
 };

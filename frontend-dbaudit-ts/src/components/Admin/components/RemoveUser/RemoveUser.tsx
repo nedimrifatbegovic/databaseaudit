@@ -4,17 +4,36 @@ import React, { useState } from "react";
 import { CustomLink } from "../../../../style/CustomLink";
 import { ExistingUser } from "../../../../assets/interfaces/Interfaces";
 import { Label } from "../../../../style/Label";
+import { deleteUserApi } from "./Api/deleteUser";
 import { description } from "./RemoveUser.resources";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
 
 export default function RemoveUser() {
-  let history = useHistory();
   const { register, handleSubmit, errors } = useForm();
+  const [apiStatus, setApiStatus] = useState(false);
+  const [errorMsg, seterrorMsg] = useState(false);
 
-  const removeUser = (data: ExistingUser) => {
-    console.log("I got the data");
-  };
+  async function removeUser(data: ExistingUser) {
+    setApiStatus(false);
+    seterrorMsg(false);
+
+    const user: ExistingUser = {
+      email: data.email,
+      type: data.type,
+    };
+
+    try {
+      const userstatus: any = await deleteUserApi(user);
+      if (userstatus.status === true) {
+        setApiStatus(true);
+      } else {
+        seterrorMsg(true);
+      }
+    } catch (error) {
+      seterrorMsg(true);
+      console.log(error);
+    }
+  }
 
   return (
     <React.Fragment>
@@ -47,6 +66,7 @@ export default function RemoveUser() {
               style={{ marginBottom: "2vh" }}
               as="select"
               name="type"
+              ref={register}
             >
               <option value={description.internalValue}>
                 {description.internalText}
@@ -61,6 +81,16 @@ export default function RemoveUser() {
           <CustomLink type="submit" value="Submit" />
         </Row>
       </Form>
+      {apiStatus !== false && (
+        <p>
+          <b>{description.apistatus}</b>
+        </p>
+      )}
+      {errorMsg !== false && (
+        <p>
+          <b>{description.errormsg}</b>
+        </p>
+      )}
     </React.Fragment>
   );
 }

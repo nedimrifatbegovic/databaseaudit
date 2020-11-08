@@ -7,4 +7,6 @@ export const description = {
   internalText: "Internal Auditor",
   externalValue: "external",
   externalText: "External Auditor",
+  apistatus: "User has been removed.",
+  errormsg: "Error during user removal has occured",
 };

@@ -126,7 +126,7 @@ import cors from "cors";
     return res.send(response);
   });
 
-  // TODO: Add external auditor
+  // Add external auditor
   app.post("/external", async function (req: Request, res: Response) {
     // console.log("Internal auditor data received: ", req.body);
     let result: any;
@@ -143,15 +143,20 @@ import cors from "cors";
     return res.send(response);
   });
 
-  // TODO: Remove internal auditor
-  app.delete("/internal/:id", async function (req: Request, res: Response) {
-    // ....
-    // return res.send(results);
-  });
-  // TODO: Remove external auditor
-  app.delete("/external/:id", async function (req: Request, res: Response) {
-    // ....
-    // return res.send(results);
+  // TODO: Delete auditor
+  app.post("/deleteuser", async function (req: Request, res: Response) {
+    let result: boolean = false;
+    if (req.body !== undefined) {
+      if (req.body.type === "internal") {
+        result = await AdminQueries.removeInternal(req.body.email);
+      } else if (req.body.type === "external") {
+        result = await AdminQueries.removeExternal(req.body.email);
+      }
+    }
+    const response = {
+      status: result,
+    };
+    return res.send(response);
   });
 
   //   * Calls for internal auditors
