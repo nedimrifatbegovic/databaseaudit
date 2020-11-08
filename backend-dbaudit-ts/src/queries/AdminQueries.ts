@@ -1,4 +1,5 @@
 import { Admin } from "../entity/Admin";
+import { ExternalAuditor } from "../entity/ExternalAuditor";
 import { InternalAuditor } from "../entity/InternalAuditor";
 import { create } from "domain";
 import { getConnection } from "typeorm";
@@ -43,4 +44,25 @@ const setInternal = async (
   return randomId;
 };
 
-export = { getCredentials: getCredentials, setInternal: setInternal };
+const setExternal = async (
+  email: string,
+  password: string,
+  companyname: string
+) => {
+  const connection = getConnection();
+
+  console.log("__START__");
+  const createdUser = new ExternalAuditor();
+  createdUser.companyName = companyname;
+  createdUser.email = email;
+  createdUser.password = password;
+  const result = await connection.manager.save(createdUser);
+  console.log("__END__");
+  return result;
+};
+
+export = {
+  getCredentials: getCredentials,
+  setInternal: setInternal,
+  setExternal: setExternal,
+};

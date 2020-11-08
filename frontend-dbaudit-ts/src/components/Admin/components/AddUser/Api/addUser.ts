@@ -1,6 +1,6 @@
 import { IAddUser } from "../../../../../assets/interfaces/Interfaces";
 
-export async function addInternalUser(data: IAddUser) {
+export async function addUserApi(data: IAddUser) {
   let url: string = "";
   if (data.type === "internal") {
     url = "http://localhost:5000/internal";

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { CustomLink } from "../../../../style/CustomLink";
 import { IAddUser } from "../../../../assets/interfaces/Interfaces";
 import { Label } from "../../../../style/Label";
-import { addInternalUser } from "./Api/addUser";
+import { addUserApi } from "./Api/addUser";
 import { description } from "./AddUser.resources";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
@@ -12,11 +12,14 @@ import { useHistory } from "react-router-dom";
 export default function AddUser() {
   let history = useHistory();
   const [userId, setUserId] = useState(undefined);
+  const [externalStatus, setexternalStatus] = useState(false);
+  const [apiStatus, setApiStatus] = useState(false);
   const { register, handleSubmit, errors } = useForm();
 
   async function addUser(data: IAddUser) {
-    console.log("I got the data", data);
-
+    setUserId(undefined);
+    setexternalStatus(false);
+    setApiStatus(false);
     const user: IAddUser = {
       email: data.email,
       password: data.password,
@@ -24,10 +27,21 @@ export default function AddUser() {
       type: data.type,
     };
 
-    const userid: any = await addInternalUser(user);
-    if (typeof userid.folderid === "string" || userid.folderid !== undefined) {
-      console.log("USER ID: ", userid.folderid);
-      setUserId(userid.folderid);
+    try {
+      const userid: any = await addUserApi(user);
+
+      if (data.type === "internal") {
+        if (
+          typeof userid.folderid === "string" ||
+          userid.folderid !== undefined
+        ) {
+          setUserId(userid.folderid);
+        }
+      } else {
+        setexternalStatus(true);
+      }
+    } catch (error) {
+      setApiStatus(true);
     }
   }
 
@@ -111,6 +125,12 @@ export default function AddUser() {
       {userId !== undefined && (
         <p>
           The user has been added, and his folder id is: <b>{userId}</b>
+        </p>
+      )}
+      {externalStatus !== false && <p>The external user has been added!</p>}
+      {apiStatus !== false && (
+        <p>
+          <b>E-Mail already in use!</b>
         </p>
       )}
     </React.Fragment>

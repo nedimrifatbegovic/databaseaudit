@@ -109,7 +109,7 @@ import cors from "cors";
     res.send("Hello World");
   });
 
-  // TODO: Add internal auditor
+  // Add internal auditor
   app.post("/internal", async function (req: Request, res: Response) {
     // console.log("Internal auditor data received: ", req.body);
     let result: any;
@@ -128,7 +128,19 @@ import cors from "cors";
 
   // TODO: Add external auditor
   app.post("/external", async function (req: Request, res: Response) {
-    // return res.send(results);
+    // console.log("Internal auditor data received: ", req.body);
+    let result: any;
+    if (req.body !== undefined) {
+      result = await AdminQueries.setExternal(
+        req.body.email,
+        req.body.password,
+        req.body.companyname
+      );
+    }
+    const response = {
+      folderid: result,
+    };
+    return res.send(response);
   });
 
   // TODO: Remove internal auditor
