@@ -13,7 +13,9 @@ export default function GetUser() {
   const { register, handleSubmit, errors } = useForm();
 
   const getUser = (data: ExistingUser) => {
-    console.log("I got the data");
+    console.log("I got the data", data);
+
+    // TODO: history push to user details
   };
 
   return (
@@ -47,6 +49,7 @@ export default function GetUser() {
               style={{ marginBottom: "2vh" }}
               as="select"
               name="type"
+              ref={register}
             >
               <option value={description.internalValue}>
                 {description.internalText}
