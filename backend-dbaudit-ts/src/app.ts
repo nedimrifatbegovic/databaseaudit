@@ -62,12 +62,12 @@ import cors from "cors";
   });
 
   // TODO: Change status of audit
-  app.put("/externalauditors/:id", async function (
-    req: Request,
-    res: Response
-  ) {
-    // return res.send(results);
-  });
+  app.put(
+    "/externalauditors/:id",
+    async function (req: Request, res: Response) {
+      // return res.send(results);
+    }
+  );
 
   // TODO: Generate report for specific audit id
   app.post(
@@ -143,7 +143,7 @@ import cors from "cors";
     return res.send(response);
   });
 
-  // TODO: Delete auditor
+  // Delete auditor
   app.post("/deleteuser", async function (req: Request, res: Response) {
     let result: boolean = false;
     if (req.body !== undefined) {
@@ -195,14 +195,6 @@ import cors from "cors";
   // TODO: Get all clients for specific external auditor
   app.get(
     "/allinternal/:id",
-    (req: Request, res: Response, next: NextFunction) => {
-      res.send("Hello World");
-    }
-  );
-
-  // TODO: Get details on internal auditor
-  app.get(
-    "/internaldetails/:id",
     (req: Request, res: Response, next: NextFunction) => {
       res.send("Hello World");
     }
