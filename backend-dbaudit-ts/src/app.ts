@@ -117,6 +117,29 @@ import cors from "cors";
     return res.send(response);
   });
 
+  //Update User Attribute
+  app.post("/updateinternal", async function (req: Request, res: Response) {
+    console.log("Update internal data received: ", req.body);
+    // const response = await AdminQueries.getInternal(
+    //   req.body.email,
+    //   req.body.type
+    // );
+
+    const response = {
+      message: "I made it out",
+    };
+    return res.send(response);
+  });
+
+  app.post("/updateexternal", async function (req: Request, res: Response) {
+    // console.log("Load internal data received: ", req.body);
+    // const response = await AdminQueries.getInternal(
+    //   req.body.email,
+    //   req.body.type
+    // );
+    // return res.send(response);
+  });
+
   // Add internal auditor
   app.post("/internal", async function (req: Request, res: Response) {
     // console.log("Internal auditor data received: ", req.body);

@@ -14,7 +14,24 @@ export interface ExistingUserDetails {
   password: string;
   companyName: string;
   /* Only for internal users */
-  folderid?: string;
+  folderId?: string;
+}
+
+export interface IExistingUser {
+  usertype: string;
+  userdetails: ExistingUserDetails;
+}
+
+// Update User - Admin
+export interface UpdateUserNewValue {
+  chosenAttribute: string;
+  newValue: string;
+}
+
+export interface UpdateUserApiInput {
+  email: string;
+  userType: string;
+  newValue: UpdateUserNewValue;
 }
 
 // -- Redux ---
@@ -25,7 +42,7 @@ export interface IExistingUser {
 
 export interface IREDUX {
   user: IUserState;
-  existinguser: ExistingUser;
+  existinguser: IExistingUser;
 }
 
 export interface IUserState {

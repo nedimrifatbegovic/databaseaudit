@@ -4,6 +4,7 @@ import { descriptions, paths } from "../../../../App/AppRouter.resources";
 import React from "react";
 import logo from "../../../../assets/img/dbauditlogo.png";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
 const Styles = styled.div`
   .navbar {
@@ -27,19 +28,24 @@ const Logo = styled.img`
 `;
 
 export default function ANavBar() {
+  let history = useHistory();
+  const handleClick = (link: string) => {
+    history.push(link);
+  };
+
   return (
     <Styles>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container>
           <Navbar.Brand>
-            <a href="/">
+            <a onClick={() => handleClick("/")}>
               <Logo src={logo} alt="Logo" />
             </a>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href={paths.admin.home}>
+              <Nav.Link onClick={() => handleClick(paths.admin.home)}>
                 {descriptions.admin.home}
               </Nav.Link>
             </Nav>

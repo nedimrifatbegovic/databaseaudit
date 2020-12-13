@@ -9,14 +9,13 @@ const initialState: ExistingUserDetails = {
   password: "",
   companyName: "",
   /* Only for internal users */
-  folderid: undefined,
+  folderId: undefined,
 };
 
 const ExistingUserReducer = (
   state: ExistingUserDetails = initialState,
   action: IExistingUser
 ) => {
-  console.log("FROM REDUX: ", action);
   switch (action.type) {
     case GET_USER_SUCCESS:
       return action.existinguser;

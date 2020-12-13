@@ -105,7 +105,7 @@ const getInternal = async (email: string, type: string) => {
   const internalRepository = connection.getRepository(InternalAuditor);
   console.log("__START__");
   const credentials = await internalRepository
-    .createQueryBuilder()
+    .createQueryBuilder("internal_auditor")
     .where("email = :email", { email: email })
     .getOne();
   console.log("__END__");
