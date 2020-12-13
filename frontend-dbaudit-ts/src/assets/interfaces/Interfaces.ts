@@ -3,16 +3,31 @@ export interface LoginData {
   password: string;
 }
 
+// -- Existing User Details
 export interface ExistingUser {
   email: string;
   type: string;
 }
 
+export interface ExistingUserDetails {
+  email: string;
+  password: string;
+  companyName: string;
+  /* Only for internal users */
+  folderid?: string;
+}
+
 // -- Redux ---
+export interface IExistingUser {
+  existinguser: ExistingUser;
+  type: string;
+}
 
 export interface IREDUX {
   user: IUserState;
+  existinguser: ExistingUser;
 }
+
 export interface IUserState {
   email: string;
   password: string;

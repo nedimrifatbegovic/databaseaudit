@@ -1,26 +1,31 @@
 import { Col, Form, Row } from "react-bootstrap";
-import React, { useState } from "react";
 
 import { CustomLink } from "../../../../style/CustomLink";
 import { ExistingUser } from "../../../../assets/interfaces/Interfaces";
 import { Label } from "../../../../style/Label";
+import React from "react";
 import { description } from "./GetUser.resources";
+import { getUser } from "../../../../redux/Redux-actions/ExistingUserActions";
+import { paths } from "../../../../App/AppRouter.resources";
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 
 export default function GetUser() {
   let history = useHistory();
+  const dispatch = useDispatch();
   const { register, handleSubmit, errors } = useForm();
 
-  const getUser = (data: ExistingUser) => {
+  const getUserFunc = (data: ExistingUser) => {
     console.log("I got the data", data);
-
-    // TODO: history push to user details
+    dispatch(getUser(data));
+    console.log("I got the user!");
+    history.push(paths.admin.user);
   };
 
   return (
     <React.Fragment>
-      <Form onSubmit={handleSubmit(getUser)}>
+      <Form onSubmit={handleSubmit(getUserFunc)}>
         <Label>
           <b>{description.title}</b>
         </Label>

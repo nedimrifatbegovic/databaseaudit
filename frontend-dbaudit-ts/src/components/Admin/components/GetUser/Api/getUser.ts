@@ -1,11 +1,11 @@
 import { ExistingUser } from "../../../../../assets/interfaces/Interfaces";
 
-export async function addUserApi(data: ExistingUser) {
+export async function getUserApi(data: ExistingUser) {
   let url: string = "";
   if (data.type === "internal") {
-    url = "http://localhost:5000/internal";
+    url = "http://localhost:5000/loadinternal";
   } else {
-    url = "http://localhost:5000/external";
+    url = "http://localhost:5000/loadexternal";
   }
   const body = JSON.stringify(data);
   return new Promise((resolve, reject) => {

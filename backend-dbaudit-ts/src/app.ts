@@ -99,14 +99,16 @@ import cors from "cors";
   );
 
   //  * Calls for the Admin
-  // TODO: Get internal auditors by id
-  app.get("/internal", (req: Request, res: Response, next: NextFunction) => {
-    res.send("Hello World");
+  app.post("/loadinternal", async function (req: Request, res: Response) {
+    console.log("Load internal data received: ", req.body);
+    const response = await AdminQueries.getInternal(req.body.email);
+    return res.send(response);
   });
 
-  // TODO: Get external auditors by id
-  app.get("/external", (req: Request, res: Response, next: NextFunction) => {
-    res.send("Hello World");
+  app.post("/loadexternal", async function (req: Request, res: Response) {
+    console.log("Load external data received: ", req.body);
+    const response = await AdminQueries.getExternal(req.body.email);
+    return res.send(response);
   });
 
   // Add internal auditor

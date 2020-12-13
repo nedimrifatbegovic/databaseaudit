@@ -11,8 +11,7 @@ import { put, takeEvery } from "redux-saga/effects";
 
 import { connectUser } from "../../components/Login/Api/loginApi";
 
-// api..
-
+// api...
 function* fetchUserAsync(action: IUserAction) {
   try {
     const status: boolean = yield connectUser(action.user);
