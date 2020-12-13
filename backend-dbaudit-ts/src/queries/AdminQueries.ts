@@ -100,24 +100,29 @@ const removeExternal = async (email: string) => {
 };
 
 /* Get users for edit */
-const getInternal = async (email: string) => {
+const getInternal = async (email: string, type: string) => {
   const connection = getConnection();
   const internalRepository = connection.getRepository(InternalAuditor);
   console.log("__START__");
-  const result = await internalRepository
+  const credentials = await internalRepository
     .createQueryBuilder()
     .where("email = :email", { email: email })
     .getOne();
   console.log("__END__");
 
-  if (result !== undefined) {
+  if (credentials !== undefined) {
+    const result = {
+      userdetails: credentials,
+      usertype: type,
+    };
+
     return result;
   } else {
     return false;
   }
 };
 
-const getExternal = async (email: string) => {
+const getExternal = async (email: string, type: string) => {
   const connection = getConnection();
   const externalRepository = connection.getRepository(ExternalAuditor);
   console.log("__START__");
@@ -128,7 +133,11 @@ const getExternal = async (email: string) => {
   console.log("__END__");
 
   if (credentials !== undefined) {
-    return true;
+    const result = {
+      userdetails: credentials,
+      usertype: type,
+    };
+    return result;
   } else {
     return false;
   }

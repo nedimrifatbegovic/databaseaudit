@@ -100,14 +100,20 @@ import cors from "cors";
 
   //  * Calls for the Admin
   app.post("/loadinternal", async function (req: Request, res: Response) {
-    console.log("Load internal data received: ", req.body);
-    const response = await AdminQueries.getInternal(req.body.email);
+    // console.log("Load internal data received: ", req.body);
+    const response = await AdminQueries.getInternal(
+      req.body.email,
+      req.body.type
+    );
     return res.send(response);
   });
 
   app.post("/loadexternal", async function (req: Request, res: Response) {
-    console.log("Load external data received: ", req.body);
-    const response = await AdminQueries.getExternal(req.body.email);
+    // console.log("Load external data received: ", req.body);
+    const response = await AdminQueries.getExternal(
+      req.body.email,
+      req.body.type
+    );
     return res.send(response);
   });
 
