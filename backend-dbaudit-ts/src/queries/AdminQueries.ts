@@ -143,6 +143,85 @@ const getExternal = async (email: string, type: string) => {
   }
 };
 
+/* Update external / internal user */
+const updateInternal = async (
+  email: string,
+  attributeType: string,
+  attributeValue: string
+) => {
+  const connection = getConnection();
+  const internalRepository = connection.getRepository(InternalAuditor);
+
+  if (attributeType === "CompanyName") {
+    console.log("__START__");
+    const credentials = await internalRepository
+      .createQueryBuilder("internal_auditor")
+      .update(internalRepository)
+      .set({
+        companyName: attributeValue,
+      })
+      .where("email = :email", { email: email })
+      .execute();
+    console.log("__END__");
+
+    return credentials;
+  } else if (attributeType === "password") {
+    console.log("__START__");
+    const credentials = await internalRepository
+      .createQueryBuilder("internal_auditor")
+      .update(internalRepository)
+      .set({
+        password: attributeValue,
+      })
+      .where("email = :email", { email: email })
+      .execute();
+    console.log("__END__");
+
+    return credentials;
+  } else {
+    console.log("Wrong Attribute Type");
+  }
+};
+
+const updateExternal = async (
+  email: string,
+  attributeType: string,
+  attributeValue: string
+) => {
+  const connection = getConnection();
+  const externalRepository = connection.getRepository(ExternalAuditor);
+
+  if (attributeType === "CompanyName") {
+    console.log("__START__");
+    const credentials = await externalRepository
+      .createQueryBuilder("external_auditor")
+      .update(externalRepository)
+      .set({
+        companyName: attributeValue,
+      })
+      .where("email = :email", { email: email })
+      .execute();
+    console.log("__END__");
+
+    return credentials;
+  } else if (attributeType === "password") {
+    console.log("__START__");
+    const credentials = await externalRepository
+      .createQueryBuilder("external_auditor")
+      .update(externalRepository)
+      .set({
+        password: attributeValue,
+      })
+      .where("email = :email", { email: email })
+      .execute();
+    console.log("__END__");
+
+    return credentials;
+  } else {
+    console.log("Wrong Attribute Type");
+  }
+};
+
 /* Export queries */
 export = {
   getCredentials: getCredentials,
@@ -152,4 +231,6 @@ export = {
   removeExternal: removeExternal,
   getInternal: getInternal,
   getExternal: getExternal,
+  updateInternal: updateInternal,
+  updateExternal: updateExternal,
 };

@@ -120,24 +120,21 @@ import cors from "cors";
   //Update User Attribute
   app.post("/updateinternal", async function (req: Request, res: Response) {
     console.log("Update internal data received: ", req.body);
-    // const response = await AdminQueries.getInternal(
-    //   req.body.email,
-    //   req.body.type
-    // );
-
-    const response = {
-      message: "I made it out",
-    };
+    const response = await AdminQueries.updateInternal(
+      req.body.email,
+      req.body.newValue.type,
+      req.body.newValue.newValue
+    );
     return res.send(response);
   });
 
   app.post("/updateexternal", async function (req: Request, res: Response) {
-    // console.log("Load internal data received: ", req.body);
-    // const response = await AdminQueries.getInternal(
-    //   req.body.email,
-    //   req.body.type
-    // );
-    // return res.send(response);
+    const response = await AdminQueries.updateExternal(
+      req.body.email,
+      req.body.newValue.type,
+      req.body.newValue.newValue
+    );
+    return res.send(response);
   });
 
   // Add internal auditor
