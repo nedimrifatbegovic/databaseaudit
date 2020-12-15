@@ -12,6 +12,7 @@ import { AuditRequest } from "./entity/AuditRequest";
 import { Config } from "./entity/Config";
 import { ExternalAuditor } from "./entity/ExternalAuditor";
 import { InternalAuditor } from "./entity/InternalAuditor";
+import InternalQUeries from "./queries/InternalQUeries";
 import { Report } from "./entity/Report";
 import cors from "cors";
 
@@ -54,7 +55,10 @@ import cors from "cors";
         req.body.password
       );
     } else if (req.body.type === "internal") {
-      // TODO
+      result = await InternalQUeries.getCredentials(
+        req.body.email,
+        req.body.password
+      );
     } else if (req.body.type === "external") {
       // TODO
     }
