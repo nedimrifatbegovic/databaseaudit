@@ -9,6 +9,8 @@ import Error404 from "../pages/Error404/Error404";
 import ExternalLogin from "../pages/ExternalLogin/ExternalLogin";
 import Footer from "../components/Footer/Footer";
 import Home from "../pages/Home/Home";
+import INavBar from "../components/Internal/components/INavBar/INavBar";
+import InternalHome from "../pages/InternalHome/InternalHome";
 import InternalLogin from "../pages/InternalLogin/InternalLogin";
 import Jumbo from "../components/Jumbo/Jumbo";
 import LoginStatus from "../pages/LoginStatus/LoginStatus";
@@ -61,10 +63,14 @@ export default function AppRouter() {
           </Route>
           {/* Internal Audit Pages */}
           <Route exact path={paths.internal.home}>
-            <div>Internal Audit Page</div>
+            <INavBar />
+            <Jumbo />
+            <Container>
+              <InternalHome />
+            </Container>
           </Route>
           <Route path={paths.internal.login}>
-            <ANavBar />
+            <INavBar />
             <Jumbo />
             <Container>
               <InternalLogin />
