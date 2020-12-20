@@ -45,8 +45,11 @@ export default function INavBar() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link onClick={() => handleClick(paths.admin.home)}>
-                {descriptions.admin.home}
+              <Nav.Link onClick={() => handleClick(paths.internal.home)}>
+                {descriptions.internal.home}
+              </Nav.Link>
+              <Nav.Link onClick={() => handleClick(paths.internal.password)}>
+                {descriptions.internal.password}
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

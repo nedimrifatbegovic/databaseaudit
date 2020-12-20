@@ -29,4 +29,8 @@ export const descriptions = {
     home: "Home",
     user: "User Management",
   },
+  internal: {
+    home: "Home",
+    password: "Change Password",
+  },
 };

@@ -12,6 +12,7 @@ import Home from "../pages/Home/Home";
 import INavBar from "../components/Internal/components/INavBar/INavBar";
 import InternalHome from "../pages/InternalHome/InternalHome";
 import InternalLogin from "../pages/InternalLogin/InternalLogin";
+import InternalPasswordChange from "../pages/InternalPasswordChange/InternalPasswordChange";
 import Jumbo from "../components/Jumbo/Jumbo";
 import LoginStatus from "../pages/LoginStatus/LoginStatus";
 import NavigationBar from "../components/NavigationBar/NavigationBar";
@@ -77,17 +78,25 @@ export default function AppRouter() {
             </Container>
           </Route>
           <Route path={paths.internal.loginstatus}>
-            <ANavBar />
+            <INavBar />
             <Jumbo />
             <Container>
               <LoginStatus type="internal" />
             </Container>
           </Route>
           <Route path={paths.internal.audit}>
-            <div>Internal Audit Audit Page</div>
+            <INavBar />
+            <Jumbo />
+            <Container>
+              <div>Internal Audit Audit Page</div>
+            </Container>
           </Route>
           <Route path={paths.internal.password}>
-            <div>Internal Audit Password Page</div>
+            <INavBar />
+            <Jumbo />
+            <Container>
+              <InternalPasswordChange />
+            </Container>
           </Route>
           <Route path={paths.internal.request}>
             <div>Internal Audit Request Page</div>
