@@ -192,9 +192,18 @@ import cors from "cors";
   });
 
   //   * Calls for internal auditors
-  // TODO: Update password
-  app.put("/internalpassword", async function (req: Request, res: Response) {
-    // return res.send(results);
+  app.post("/internalpassword", async function (req: Request, res: Response) {
+    let result: boolean = false;
+    if (req.body !== undefined) {
+      result = await InternalQUeries.updateInternalPassword(
+        req.body.email,
+        req.body.newpassword
+      );
+    }
+    const response = {
+      status: result,
+    };
+    return res.send(response);
   });
 
   // TODO: Get external auditors for specific internal auditor

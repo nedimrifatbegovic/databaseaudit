@@ -3,6 +3,16 @@ export interface LoginData {
   password: string;
 }
 
+// -- Internal Audit User --
+export interface IPasswordChange {
+  email: string;
+  newpassword: string;
+}
+
+export interface IPassword {
+  newValue: string;
+}
+
 // -- Existing User Details
 export interface ExistingUser {
   email: string;

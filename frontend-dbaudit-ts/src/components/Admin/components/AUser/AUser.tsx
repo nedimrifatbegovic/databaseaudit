@@ -13,7 +13,6 @@ import { description } from "./AUser.resources";
 import { editUserApi } from "./Api/editUser";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 /* Styled Components */
@@ -23,7 +22,6 @@ const StyledParagraph = styled.p`
 
 /* Component Rendering */
 export default function AUser() {
-  let history = useHistory();
   const [sentState, setsentState] = useState(false);
   const { register, handleSubmit, errors } = useForm();
   const existingUserState: IExistingUser = useSelector(

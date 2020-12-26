@@ -6,7 +6,6 @@ import { getConnection } from "typeorm";
 
 // import { create } from "domain";
 
-
 const getCredentials = async (email: string, password: string) => {
   const connection = getConnection();
   const internalRepository = connection.getRepository(InternalAuditor);
@@ -25,7 +24,29 @@ const getCredentials = async (email: string, password: string) => {
   }
 };
 
+const updateInternalPassword = async (email: string, password: string) => {
+  const connection = getConnection();
+  const internalRepository = connection.getRepository(InternalAuditor);
+  console.log("__START__");
+  const credentials = await internalRepository
+    .createQueryBuilder("internal_auditor")
+    .update(internalRepository)
+    .set({
+      password: password,
+    })
+    .where("email = :email", { email: email })
+    .execute();
+  console.log("__END__");
+
+  if (credentials !== undefined) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 /* Export queries */
 export = {
   getCredentials: getCredentials,
+  updateInternalPassword: updateInternalPassword,
 };
