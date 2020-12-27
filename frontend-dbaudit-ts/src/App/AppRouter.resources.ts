@@ -32,5 +32,6 @@ export const descriptions = {
   internal: {
     home: "Home",
     password: "Change Password",
+    request: "Configuration Page",
   },
 };

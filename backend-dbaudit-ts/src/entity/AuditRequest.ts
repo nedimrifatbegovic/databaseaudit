@@ -22,8 +22,8 @@ export class AuditRequest extends BaseEntity {
   @Column({ type: "timestamp" })
   updatedAt: Date;
 
-  @Column({ type: "boolean" })
-  resolved: boolean;
+  @Column({ type: "text" })
+  resolved: string;
 
   @ManyToOne((type) => Audit, (audit) => audit.auditrequests)
   audit: Audit;

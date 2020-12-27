@@ -51,6 +51,9 @@ export default function INavBar() {
               <Nav.Link onClick={() => handleClick(paths.internal.password)}>
                 {descriptions.internal.password}
               </Nav.Link>
+              <Nav.Link onClick={() => handleClick(paths.internal.request)}>
+                {descriptions.internal.request}
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

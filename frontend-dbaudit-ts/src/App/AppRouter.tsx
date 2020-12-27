@@ -10,6 +10,7 @@ import ExternalLogin from "../pages/ExternalLogin/ExternalLogin";
 import Footer from "../components/Footer/Footer";
 import Home from "../pages/Home/Home";
 import INavBar from "../components/Internal/components/INavBar/INavBar";
+import InternalAddConfig from "../pages/InternalAddConfig/InternalAddConfig";
 import InternalHome from "../pages/InternalHome/InternalHome";
 import InternalLogin from "../pages/InternalLogin/InternalLogin";
 import InternalPasswordChange from "../pages/InternalPasswordChange/InternalPasswordChange";
@@ -99,7 +100,12 @@ export default function AppRouter() {
             </Container>
           </Route>
           <Route path={paths.internal.request}>
-            <div>Internal Audit Request Page</div>
+            {/* Config page */}
+            <INavBar />
+            <Jumbo />
+            <Container>
+              <InternalAddConfig />
+            </Container>
           </Route>
           {/* External Audit Pages */}
           <Route exact path={paths.external.home}>

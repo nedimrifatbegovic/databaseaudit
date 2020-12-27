@@ -13,6 +13,10 @@ export interface IPassword {
   newValue: string;
 }
 
+export interface IInternalConfig {
+  email: string;
+}
+
 // -- Existing User Details
 export interface ExistingUser {
   email: string;
