@@ -41,8 +41,10 @@ export class Config extends BaseEntity {
   @Column({ type: "text" })
   jiraPort: string;
 
-  @Column({ type: "mediumblob" })
-  privateKey: Buffer;
+  // @Column({ type: "mediumblob" })
+  // privateKey: Buffer;
+  @Column({ length: 2048 })
+  privateKey: string;
 
   @Column({ type: "text" })
   backupProjectKey: string;

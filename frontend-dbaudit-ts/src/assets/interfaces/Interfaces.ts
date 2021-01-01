@@ -17,6 +17,45 @@ export interface IInternalConfig {
   email: string;
 }
 
+export interface INewConfig {
+  privatekey: string;
+  consumerkey: string;
+  token: string;
+  tokensecret: string;
+  signaturemethod: string;
+  jiraurl: string;
+  jiraport: string;
+  backup: string;
+  restoration: string;
+  error: string;
+  change: string;
+  dbtype: string;
+  dbhost: string;
+  dbport: string;
+  dbusername: string;
+  dbpassword: string;
+  logs: string;
+  logsid: string;
+  projectkey: string;
+  ticketkey: string;
+  logstype: string;
+  user: string;
+  userid: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+  usergroupid: string;
+  title: string;
+  usergroups: string;
+  usergroupsgroupid: string;
+  readrights: string;
+  deleterights: string;
+  createrights: string;
+  updaterights: string;
+  groupname: string;
+}
+
 // -- Existing User Details
 export interface ExistingUser {
   email: string;
