@@ -17,6 +17,11 @@ export interface IInternalConfig {
   email: string;
 }
 
+export interface INewConfigAPI {
+  configdata: INewConfig;
+  internalMail: string;
+}
+
 export interface INewConfig {
   privatekey: string;
   consumerkey: string;

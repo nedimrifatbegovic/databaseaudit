@@ -1,10 +1,14 @@
 import { Col, Form, Row } from "react-bootstrap";
+import {
+  IInternalConfig,
+  INewConfig,
+  INewConfigAPI,
+} from "../../assets/interfaces/Interfaces";
 
 import { CustomLink } from "../../style/CustomLink";
-import { ExistingUser } from "../../assets/interfaces/Interfaces";
-import { IInternalConfig } from "../../assets/interfaces/Interfaces";
 import { Label } from "../../style/Label";
 import React from "react";
+import { SetNewConfig } from "./api/SetNewConfig";
 import { description } from "./InternalConfig.resources";
 import { paths } from "../../App/AppRouter.resources";
 import { useForm } from "react-hook-form";
@@ -12,8 +16,14 @@ import { useForm } from "react-hook-form";
 export default function InternalConfig(props: IInternalConfig) {
   const { register, handleSubmit, errors } = useForm();
 
-  const getConfigNewData = (data: ExistingUser) => {
+  const getConfigNewData = (data: INewConfig) => {
     console.log("I got the data", data);
+
+    const input: INewConfigAPI = {
+      configdata: data,
+      internalMail: props.email,
+    };
+    SetNewConfig(input);
   };
 
   return (
@@ -54,7 +64,6 @@ export default function InternalConfig(props: IInternalConfig) {
                   placeholder={description.privateKeyLabel}
                   name={description.namePrivatekey}
                   type="text"
-                  maxLength={40}
                   ref={register({ required: true })}
                 />
                 {errors.privatekey && (

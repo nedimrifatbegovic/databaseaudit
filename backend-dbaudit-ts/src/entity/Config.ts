@@ -3,7 +3,8 @@ import {
   Column,
   Entity,
   JoinColumn,
-  OneToOne,
+  JoinTable,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Field, ID, ObjectType } from "type-graphql";
@@ -23,6 +24,7 @@ export class Config extends BaseEntity {
   @Column({ type: "timestamp" })
   updatedAt: Date;
 
+  // * Jira
   @Column({ type: "text" })
   consumerKey: string;
 
@@ -58,6 +60,7 @@ export class Config extends BaseEntity {
   @Column({ type: "text" })
   changeProjectKey: string;
 
+  // * Database
   @Column({ type: "text" })
   dbType: string;
 
@@ -73,6 +76,70 @@ export class Config extends BaseEntity {
   @Column({ type: "text" })
   dbPassword: string;
 
-  @OneToOne(() => InternalAuditor)
+  // * Class & Attributes Names
+  @Column({ type: "text" })
+  logs: string;
+
+  @Column({ type: "text" })
+  logsid: string;
+
+  @Column({ type: "text" })
+  projectkey: string;
+
+  @Column({ type: "text" })
+  ticketkey: string;
+
+  @Column({ type: "text" })
+  logstype: string;
+
+  @Column({ type: "text" })
+  user: string;
+
+  @Column({ type: "text" })
+  userid: string;
+
+  @Column({ type: "text" })
+  firstname: string;
+
+  @Column({ type: "text" })
+  lastname: string;
+
+  @Column({ type: "text" })
+  email: string;
+
+  @Column({ type: "text" })
+  password: string;
+
+  @Column({ type: "text" })
+  usergroupid: string;
+
+  @Column({ type: "text" })
+  title: string;
+
+  @Column({ type: "text" })
+  usergroups: string;
+
+  @Column({ type: "text" })
+  usergroupsgroupid: string;
+
+  @Column({ type: "text" })
+  readrights: string;
+
+  @Column({ type: "text" })
+  deleterights: string;
+
+  @Column({ type: "text" })
+  createrights: string;
+
+  @Column({ type: "text" })
+  updaterights: string;
+
+  @Column({ type: "text" })
+  groupname: string;
+
+  @ManyToOne(
+    () => InternalAuditor,
+    (internalAuditor) => internalAuditor.configs
+  )
   internalAuditor: InternalAuditor;
 }

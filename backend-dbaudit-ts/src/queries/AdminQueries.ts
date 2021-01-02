@@ -4,10 +4,6 @@ import { InternalAuditor } from "../entity/InternalAuditor";
 import { getConnection } from "typeorm";
 import { v4 } from "uuid";
 
-// import { create } from "domain";
-
-
-
 const getCredentials = async (email: string, password: string) => {
   const connection = getConnection();
   const adminRepository = connection.getRepository(Admin);

@@ -7,7 +7,7 @@
   "database": "dbaudit",
   "entities": ["src/entity/*.ts"],
   "logging": true,
-  "synchronize": false,
+  "synchronize": true,
   "migrations": ["src/migration/**/*.ts"],
   "subscribers": ["src/subscriber/**/*.ts"],
   "cli": {

@@ -206,6 +206,21 @@ import cors from "cors";
     return res.send(response);
   });
 
+  // Add New Configuration
+  app.post("/newconfig", async function (req: Request, res: Response) {
+    let result: boolean = false;
+    if (req.body !== undefined) {
+      result = await InternalQUeries.setNewConfiguration(
+        req.body.configdata,
+        req.body.internalMail
+      );
+    }
+    const response = {
+      status: result,
+    };
+    return res.send(response);
+  });
+
   // TODO: Get external auditors for specific internal auditor
   app.get(
     "/externalauditors/:id",

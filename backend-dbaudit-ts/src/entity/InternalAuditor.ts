@@ -2,9 +2,9 @@ import {
   BaseEntity,
   Column,
   Entity,
-  JoinColumn,
+  JoinTable,
   ManyToMany,
-  OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Field, ID, ObjectType } from "type-graphql";
@@ -37,10 +37,9 @@ export class InternalAuditor extends BaseEntity {
   @Column({ type: "text", unique: true })
   folderId: string;
 
+  @OneToMany(() => Config, (config) => config.internalAuditor)
+  configs: Config[];
+
   @ManyToMany((type) => Audit, (audit) => audit.internalAuditors)
   audits: Audit[];
-
-  @OneToOne(() => Config)
-  @JoinColumn()
-  config: Config;
 }

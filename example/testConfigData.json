@@ -1,0 +1,54 @@
+{
+    "privatekey": "-----BEGIN RSA PRIVATE KEY-----
+    MIICXwIBAAKBgQDDziCZLv0AjnQPkwA+8JLFRIzrf1dgPnRecPwDTijC7YbpYS2R
+    CW2v1l+p2CYd8Vul7N+Qj/NoI6hbSj59XJRTqYtxLIrQZAOaShA4/Gdfwmj68Wqj
+    Ie7JS8/mhowo4RDLxpvjdvc+xokHeXCavcdyoQ3uR1ugdILUJ1kl+hThVQIDAQAB
+    AoGBAIj68yM3FBgHkHo0xL9DXepTgqJde6sBBjfrouJNE4cK1I8ARPhqOCoDNvmD
+    FWdtKkhx5hUkH4yDJYx37C+XTMvguEpIkJsnc7Jrj7IRkEi8PeoG7xztipeIbR1X
+    /5Og7ky5emirNxMAO54+sm6eDzqbRr8p/UoZGEb4YkWRi/whAkEA7mVnh/KUvNhf
+    LkM1+RJbWY1HzGJkmoM3xkDN2AY9r0BXVxQM7T/ZT36LwC8PkpPaPH3gZkON//v7
+    9xO0Ym0pawJBANJDl418BqFS15bl0QVfriwo/Mb/MxFRL2k2cLJK4+kgYaGQq6ss
+    143rW3WfdB3bgO1sCX9gl5+ekERpAw8jED8CQQCDnWx5O84uLG7wBZ9IsX/Jgxx+
+    lFviiktCowiCGX/4v1b49lLksPlyz/Sr18+LJyG3f+9hxi4hg6bqE/Dk3kudAkEA
+    vBt6TzqBF/xsIXSSzfLueFVm54TSJBD0kHUC148GXL76eTdbTXV9llrT5OP1VuzU
+    aBO6X3mDzGpn+LvV38nnswJBAKqjR28X8nkwv/Z5dXg44naVtGcfrbL6hME6rsKi
+    icfa7CfgRKhl6BuInRYweAAW+LPIsZr+1ci6S7GN7W/5rqM=
+    -----END RSA PRIVATE KEY-----",
+    "consumerkey": "dbauditkey",
+    "token": "eBxh3fiuLRWgQuFSt9NI4ymwCB9hISym", 
+    "tokensecret": "d3j911c1DzUNzdMhc3B4Oa0wvO3rHYRQ",
+    "signaturemethod": "RSA-SHA1",
+    "jiraurl": "http://localhost",
+    "jiraport": "8080",
+    "backup": "BAC",
+    "restoration": "RES",
+    "error": "ER",
+    "change": "CHAN",
+    "dbtype": "MariaDB",
+    "dbhost": "127.0.0.1",
+    "dbport": "3306",
+    "dbusername": "root",
+    "dbpassword": "dbaudit",
+    "logs": "logs",
+    "logsid": "LogID",
+    "projectkey": "ProjectKey",
+    "ticketkey": "TicketKey",
+    "logstype": "Type",
+    "user": "user",
+    "userid": "UserID",
+    "firstname": "FirstName",
+    "lastname": "LastName",
+    "email": "Email",
+    "password": "Password",
+    "usergroupid": "UserGroupID",
+    "title": "Title",
+    "usergroups": "usergroups",
+    "usergroupsgroupid": "GroupID",
+    "readrights": "ReadRights",
+    "deleterights": "DeleteRights",
+    "createrights": "CreateRights",
+    "updaterights": "UpdateRights",
+    "groupname": "GroupName"
+}
+
+  
