@@ -4,21 +4,36 @@ import {
   INewConfig,
   INewConfigAPI,
 } from "../../assets/interfaces/Interfaces";
+import React, { useState } from "react";
+import { SetNewConfig, checkConfig } from "./api/SetNewConfig";
 
 import { CustomLink } from "../../style/CustomLink";
 import { Label } from "../../style/Label";
-import React from "react";
-import { SetNewConfig } from "./api/SetNewConfig";
 import { description } from "./InternalConfig.resources";
 import { paths } from "../../App/AppRouter.resources";
 import { useForm } from "react-hook-form";
 
 export default function InternalConfig(props: IInternalConfig) {
+  const [loading, setLoading] = useState(false);
+
+  async function checkIfConfigExists(emailprop: string) {
+    const data = {
+      email: emailprop,
+    };
+    const configstatus = await checkConfig(data);
+
+    if (configstatus !== undefined && configstatus === true) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }
+
+  checkIfConfigExists(props.email);
+
   const { register, handleSubmit, errors } = useForm();
 
   const getConfigNewData = (data: INewConfig) => {
-    console.log("I got the data", data);
-
     const input: INewConfigAPI = {
       configdata: data,
       internalMail: props.email,
@@ -28,7 +43,7 @@ export default function InternalConfig(props: IInternalConfig) {
 
   return (
     <React.Fragment>
-      {props.email !== undefined ? (
+      {loading === true ? (
         // TODO: Check if there is a config for email "x..."
         // TODO: If YES enable edit of configuration
         // * Select attribute
