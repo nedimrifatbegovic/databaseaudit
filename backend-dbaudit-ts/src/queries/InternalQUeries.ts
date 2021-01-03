@@ -150,9 +150,40 @@ const setNewConfiguration = async (
   }
 };
 
+// Check if configuration for email exists (Internal Admin)
+
+const checkConfiguration = async (internalMail: string) => {
+  console.log("Internal Mail", internalMail);
+  console.log("__START__");
+  const internalAuditorPreload = await InternalAuditor.findOne({
+    where: {
+      email: internalMail,
+      // relations: ["config"],
+    },
+  });
+
+  if (internalAuditorPreload === undefined) {
+    return false;
+  }
+
+  const preloadConfig = await Config.findOne({
+    where: {
+      internalAuditor: internalAuditorPreload,
+    },
+  });
+
+  console.log("__END__");
+  if (preloadConfig !== undefined) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 /* Export queries */
 export = {
   getCredentials: getCredentials,
   updateInternalPassword: updateInternalPassword,
   setNewConfiguration: setNewConfiguration,
+  checkConfiguration: checkConfiguration,
 };

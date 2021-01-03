@@ -221,6 +221,16 @@ import cors from "cors";
     return res.send(response);
   });
 
+  // Check if Configuration Exists
+  app.post("/checkconfig", async function (req: Request, res: Response) {
+    let result: boolean = false;
+
+    if (req.body !== undefined) {
+      result = await InternalQUeries.checkConfiguration(req.body.email);
+    }
+    return res.send(result);
+  });
+
   // TODO: Get external auditors for specific internal auditor
   app.get(
     "/externalauditors/:id",
