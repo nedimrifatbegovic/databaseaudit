@@ -1,6 +1,7 @@
 import {
   IInternalConfig,
   INewConfigAPI,
+  IUpdateConfig,
 } from "../../../assets/interfaces/Interfaces";
 
 // Add new configuration
@@ -48,3 +49,23 @@ export async function checkConfig(data: IInternalConfig) {
 }
 
 // Update existing configuration
+export async function updateConfig(data: IUpdateConfig) {
+  let url: string = "http://localhost:5000/updateconfig";
+  const body = JSON.stringify(data);
+  return new Promise((resolve, reject) => {
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body,
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}

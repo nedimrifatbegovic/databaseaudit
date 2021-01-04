@@ -4,7 +4,7 @@ import {
   INewConfig,
   INewConfigAPI,
 } from "../../assets/interfaces/Interfaces";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SetNewConfig, checkConfig } from "./api/SetNewConfig";
 
 import { CustomLink } from "../../style/CustomLink";
@@ -20,8 +20,8 @@ export default function InternalConfig(props: IInternalConfig) {
     const data = {
       email: emailprop,
     };
-    const configstatus = await checkConfig(data);
 
+    const configstatus = await checkConfig(data);
     if (configstatus !== undefined && configstatus === true) {
       setLoading(true);
     } else {
@@ -29,7 +29,9 @@ export default function InternalConfig(props: IInternalConfig) {
     }
   }
 
-  checkIfConfigExists(props.email);
+  useEffect(() => {
+    checkIfConfigExists(props.email);
+  }, [props.email]);
 
   const { register, handleSubmit, errors } = useForm();
 
@@ -38,14 +40,19 @@ export default function InternalConfig(props: IInternalConfig) {
       configdata: data,
       internalMail: props.email,
     };
+
     SetNewConfig(input);
   };
 
   return (
     <React.Fragment>
+      <h1>{description.title}</h1>
+      <hr />
       {loading === true ? (
-        // TODO: Check if there is a config for email "x..."
-        // TODO: If YES enable edit of configuration
+        <React.Fragment>Found!</React.Fragment>
+      ) : (
+        //  Check if there is a config for email "x..."
+        //  If YES enable edit of configuration
         // * Select attribute
         // * Add / Upload new value
         // * Save new value in DB
@@ -59,8 +66,6 @@ export default function InternalConfig(props: IInternalConfig) {
         // *** user (UserID, FirstName, LastName, Email, Password, UserGroupID, Title)
         // *** usergroups (GroupID, ReadRights, DeleteRights, CreateRights, UpdateRights, GroupName)
         <React.Fragment>
-          <h1>{description.title}</h1>
-          <hr />
           <Form onSubmit={handleSubmit(getConfigNewData)}>
             <Label>
               <b>{description.subtitleNone}</b>
@@ -794,8 +799,6 @@ export default function InternalConfig(props: IInternalConfig) {
             </Row>
           </Form>
         </React.Fragment>
-      ) : (
-        <p>{description.loading}</p>
       )}
     </React.Fragment>
   );

@@ -61,6 +61,12 @@ export interface INewConfig {
   groupname: string;
 }
 
+export interface IUpdateConfig {
+  email: string;
+  attributeName: string;
+  attributeValue: string;
+}
+
 // -- Existing User Details
 export interface ExistingUser {
   email: string;
