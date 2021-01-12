@@ -2,7 +2,10 @@ export const description = {
   title: "Welcome to the configuration page",
   // For internal audits when no config saved
   subtitleNone: "Please fill out the configuration fields below.",
-  subtitleExisting: "Please select the field you want to update.",
+  // <<<<---- Update Config
+  subtitleExisting: "Select the field you want to update:",
+  updateTypeId: "updatetype",
+  updateValueId: "updatevalue",
   jiraSubtitle: "-- Jira Fields --",
   databaseSubtitle: "--Database Fields--",
   databaseClassesSubtitle: "--Database Classes & Attributes Fields--",

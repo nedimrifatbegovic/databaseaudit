@@ -3,19 +3,21 @@ import {
   IInternalConfig,
   INewConfig,
   INewConfigAPI,
+  IUpdateConfig,
 } from "../../assets/interfaces/Interfaces";
 import React, { useEffect, useState } from "react";
 import { SetNewConfig, checkConfig } from "./api/SetNewConfig";
+import { description, inputFields } from "./InternalConfig.resources";
 
 import { CustomLink } from "../../style/CustomLink";
 import { Label } from "../../style/Label";
-import { description } from "./InternalConfig.resources";
-import { paths } from "../../App/AppRouter.resources";
 import { useForm } from "react-hook-form";
+
+// import { paths } from "../../App/AppRouter.resources";
 
 export default function InternalConfig(props: IInternalConfig) {
   const [loading, setLoading] = useState(false);
-
+  const [typeState, settypeState] = useState<boolean>(false);
   async function checkIfConfigExists(emailprop: string) {
     const data = {
       email: emailprop,
@@ -44,12 +46,58 @@ export default function InternalConfig(props: IInternalConfig) {
     SetNewConfig(input);
   };
 
+  const updateConfigData = (data: IUpdateConfig) => {
+    console.log(data);
+  };
+
+  const handleChange = (type: string) => {
+    if (type === inputFields[0].attributeName) {
+      // For file upload
+      settypeState(false);
+    } else {
+      // For text fields
+      settypeState(true);
+    }
+  };
+
   return (
     <React.Fragment>
       <h1>{description.title}</h1>
       <hr />
       {loading === true ? (
-        <React.Fragment>Found!</React.Fragment>
+        <React.Fragment>
+          <Form onSubmit={handleSubmit(updateConfigData)}>
+            {/* Attribute Type */}
+            <Form.Group as={Row} controlId={description.updateTypeId}>
+              <Form.Label column>{description.subtitleExisting}</Form.Label>
+              <Col sm="10">
+                <Form.Control
+                  style={{ marginBottom: "2vh" }}
+                  as="select"
+                  name={description.updateTypeId}
+                  ref={register}
+                  onChange={(e) => handleChange(e.target.value)}
+                >
+                  {inputFields.map((option, index) => (
+                    <option key={index} value={option.attributeName}>
+                      {option.attributeLabel}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Col>
+            </Form.Group>
+            {/* Attribute Value */}
+            {typeState === true ? (
+              <React.Fragment>String</React.Fragment>
+            ) : (
+              <React.Fragment>File Upload</React.Fragment>
+            )}
+            {/* -- Submit the Issue -- */}
+            <Row className="justify-content-md-center">
+              <CustomLink type="submit" value="Submit" />
+            </Row>
+          </Form>
+        </React.Fragment>
       ) : (
         //  Check if there is a config for email "x..."
         //  If YES enable edit of configuration
