@@ -88,9 +88,45 @@ export default function InternalConfig(props: IInternalConfig) {
             </Form.Group>
             {/* Attribute Value */}
             {typeState === true ? (
-              <React.Fragment>String</React.Fragment>
+              <Form.Group as={Row} controlId={description.updateValueId}>
+                <Form.Label column>
+                  {description.updateValueDescription}
+                </Form.Label>
+                <Col sm="10">
+                  <Form.Control
+                    style={{ marginBottom: "2vh" }}
+                    placeholder={description.updateValuePlaceholder}
+                    name={description.updateValueId}
+                    type="text"
+                    ref={register({ required: true })}
+                  />
+                  {errors.updatevalue && (
+                    <p>
+                      <b>{description.updateValueError}</b>
+                    </p>
+                  )}
+                </Col>
+              </Form.Group>
             ) : (
-              <React.Fragment>File Upload</React.Fragment>
+              <Form.Group as={Row} controlId={description.updateValueId}>
+                <Form.Label column>
+                  {description.updateValueDescription}
+                </Form.Label>
+                <Col sm="10">
+                  <Form.Control
+                    style={{ marginBottom: "2vh" }}
+                    placeholder={description.updateValuePlaceholder}
+                    name={description.updateValueId}
+                    type="text"
+                    ref={register({ required: true })}
+                  />
+                  {errors.updatevalue && (
+                    <p>
+                      <b>{description.updateValueError}</b>
+                    </p>
+                  )}
+                </Col>
+              </Form.Group>
             )}
             {/* -- Submit the Issue -- */}
             <Row className="justify-content-md-center">
