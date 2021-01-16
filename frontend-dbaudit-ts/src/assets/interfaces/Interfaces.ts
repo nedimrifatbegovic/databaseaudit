@@ -19,6 +19,7 @@ export interface IInternalConfig {
 
 export interface INewConfigAPI {
   configdata: INewConfig;
+  privatekeybase64: string | unknown;
   internalMail: string;
 }
 
@@ -29,7 +30,7 @@ export interface IUpdateForm {
 }
 
 export interface INewConfig {
-  privatekey: string;
+  privatekey: FileList;
   consumerkey: string;
   token: string;
   tokensecret: string;

@@ -83,6 +83,7 @@ interface ConfigurationData {
 
 const setNewConfiguration = async (
   data: ConfigurationData,
+  privatekeybase64: string,
   internalMail: string
 ) => {
   const connection = getConnection();
@@ -100,7 +101,7 @@ const setNewConfiguration = async (
   );
 
   const newConfig = new Config();
-  newConfig.privateKey = data.privatekey;
+  newConfig.privateKey = privatekeybase64;
   newConfig.consumerKey = data.consumerkey;
   newConfig.token = data.token;
   newConfig.tokenSecret = data.tokensecret;

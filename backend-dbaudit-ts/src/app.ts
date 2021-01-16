@@ -212,6 +212,7 @@ import cors from "cors";
     if (req.body !== undefined) {
       result = await InternalQUeries.setNewConfiguration(
         req.body.configdata,
+        req.body.privatekeybase64,
         req.body.internalMail
       );
     }

@@ -50,17 +50,27 @@ export default function InternalConfig(props: IInternalConfig) {
 
   const { register, handleSubmit, errors } = useForm();
 
-  const getConfigNewData = (data: INewConfig) => {
+  async function getConfigNewData(data: INewConfig) {
+    setformatState(false);
+    setfilenameState("");
     setRequestState(false);
+
+    // pem file to base64
+
+    var file: File = data.privatekey[0];
+    var base64pem = await toBase64(file);
+
     const input: INewConfigAPI = {
       configdata: data,
+      privatekeybase64: base64pem,
       internalMail: props.email,
     };
 
     SetNewConfig(input);
     setRequestState(true);
-  };
+  }
 
+  // Convert File to Base64
   const toBase64 = (file: File) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -265,23 +275,37 @@ export default function InternalConfig(props: IInternalConfig) {
               <b>{description.jiraSubtitle}</b>
             </Label>
             {/* Private Key (Jira) */}
-            {/* <Form.Group as={Row} controlId={description.namePrivatekey}>
-              <Form.Label column>{description.privateKeyLabel}</Form.Label>
+            <Form.Group as={Row} controlId={description.namePrivatekey}>
+              <Form.Label column>
+                {description.updateValueDescription}
+              </Form.Label>
               <Col sm="10">
-                <input
-                  type="file"
-                  onChange={(e) => console.log(e.target.files)}
-                  ref={register({ required: true })}
-                  name={description.namePrivatekey}
-                />
-                <label htmlFor="file">Choose a file</label>
+                <FileUpload>
+                  <input
+                    type="file"
+                    onChange={(e) => handleFileuploadChange(e.target.files)}
+                    ref={register({ required: true })}
+                    name={description.namePrivatekey}
+                    accept=".pem"
+                  />
+                  <BsFileEarmarkArrowUp size={32} /> Upload file (*.pem)
+                </FileUpload>
+                {formatState === true ? (
+                  <Row>
+                    <b>Uploaded file: {filenameState}</b>
+                  </Row>
+                ) : (
+                  <Row>
+                    <b>Please upload a file with the .pem ending</b>
+                  </Row>
+                )}
                 {errors.privatekey && (
                   <p>
                     <b>{description.errorPrivatekey}</b>
                   </p>
                 )}
               </Col>
-            </Form.Group> */}
+            </Form.Group>
             {/* Consumer Key (Jira) */}
             <Form.Group as={Row} controlId={description.nameConsumerKey}>
               <Form.Label column>{description.consumerKeyLabel}</Form.Label>
