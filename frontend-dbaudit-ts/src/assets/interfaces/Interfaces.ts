@@ -25,7 +25,7 @@ export interface INewConfigAPI {
 export interface IUpdateForm {
   updatetype: string;
   updatevalue?: string;
-  updateprivatekey?: string;
+  updateprivatekey?: FileList;
 }
 
 export interface INewConfig {
@@ -70,7 +70,7 @@ export interface INewConfig {
 export interface IAPIUpdateConfig {
   email: string;
   attributeName: string;
-  attributeValue: string;
+  attributeValue: string | unknown;
 }
 
 // -- Existing User Details

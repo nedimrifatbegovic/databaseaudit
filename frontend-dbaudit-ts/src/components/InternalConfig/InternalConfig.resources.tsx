@@ -6,6 +6,7 @@ export const description = {
   subtitleExisting: "Select the field you want to update:",
   updateTypeId: "updatetype",
   updateValueId: "updatevalue",
+  updatePrivatekey: "updateprivatekey",
   updateValuePlaceholder: "Please enter the new value",
   updateValueError: "New value is missing",
   updateValueDescription: "New value:",

@@ -182,6 +182,8 @@ const checkConfiguration = async (internalMail: string) => {
 // Get correct attribute type, what should be updated
 function getUpdateJSON(updatetype: string, updatevalue: string) {
   switch (updatetype) {
+    case "privatekey":
+      return { privateKey: updatevalue };
     case "consumerkey":
       return { consumerKey: updatevalue };
     case "token":

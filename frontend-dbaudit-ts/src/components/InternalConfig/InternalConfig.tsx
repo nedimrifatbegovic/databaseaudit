@@ -5,6 +5,7 @@ import {
 } from "./api/SetNewConfig";
 import { Col, Form, Row } from "react-bootstrap";
 import {
+  IAPIUpdateConfig,
   IInternalConfig,
   INewConfig,
   INewConfigAPI,
@@ -13,8 +14,11 @@ import {
 import React, { useEffect, useState } from "react";
 import { description, inputFields } from "./InternalConfig.resources";
 
+import { BsFileEarmarkArrowUp } from "react-icons/bs";
 import { CustomLink } from "../../style/CustomLink";
+import { FileUpload } from "../FileUpload/FileUpload.styled";
 import { Label } from "../../style/Label";
+import fs from "fs";
 import { paths } from "../../App/AppRouter.resources";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
@@ -23,6 +27,9 @@ export default function InternalConfig(props: IInternalConfig) {
   const [loading, setLoading] = useState(false);
   const [typeState, settypeState] = useState<boolean>(false);
   const [requestState, setRequestState] = useState<boolean>(false);
+  const [formatState, setformatState] = useState<boolean>(false);
+  const [filenameState, setfilenameState] = useState<string>("");
+
   let history = useHistory();
   async function checkIfConfigExists(emailprop: string) {
     const data = {
@@ -54,10 +61,32 @@ export default function InternalConfig(props: IInternalConfig) {
     setRequestState(true);
   };
 
-  const updateConfigData = (data: IUpdateForm) => {
+  const toBase64 = (file: File) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+
+  async function updateConfigData(data: IUpdateForm) {
     setRequestState(false);
+
     if (data.updatevalue === undefined || data.updatevalue === null) {
-      // Todo: Handle private key
+      if (
+        data.updateprivatekey !== undefined &&
+        data.updateprivatekey[0] !== undefined
+      ) {
+        var file: File = data.updateprivatekey[0];
+        var base64pem = await toBase64(file);
+        const updateConfig: IAPIUpdateConfig = {
+          email: props.email,
+          attributeName: data.updatetype,
+          attributeValue: base64pem,
+        };
+        APIUpdateConfig(updateConfig);
+        setRequestState(true);
+      }
     } else {
       const updateConfig = {
         email: props.email,
@@ -67,9 +96,11 @@ export default function InternalConfig(props: IInternalConfig) {
       APIUpdateConfig(updateConfig);
       setRequestState(true);
     }
-  };
+  }
 
   const handleChange = (type: string) => {
+    setformatState(false);
+    setfilenameState("");
     setRequestState(false);
     if (type === inputFields[0].attributeName) {
       // For file upload
@@ -82,6 +113,24 @@ export default function InternalConfig(props: IInternalConfig) {
 
   function handleHomepage() {
     history.push(paths.internal.home);
+  }
+
+  function handleFileuploadChange(uploadedFile: FileList | null) {
+    if (
+      uploadedFile !== null &&
+      uploadedFile[0] !== null &&
+      uploadedFile[0] !== undefined
+    ) {
+      var filename: string = uploadedFile[0].name;
+      var ext = filename.substr(filename.lastIndexOf(".") + 1);
+      if (ext === "pem") {
+        setformatState(true);
+        setfilenameState(filename);
+      } else {
+        setformatState(false);
+        setfilenameState("");
+      }
+    }
   }
 
   return (
@@ -132,19 +181,31 @@ export default function InternalConfig(props: IInternalConfig) {
                 </Col>
               </Form.Group>
             ) : (
-              <Form.Group as={Row} controlId={description.updateValueId}>
+              <Form.Group as={Row} controlId={description.updatePrivatekey}>
                 <Form.Label column>
                   {description.updateValueDescription}
                 </Form.Label>
                 <Col sm="10">
-                  <Form.Control
-                    style={{ marginBottom: "2vh" }}
-                    placeholder={description.updateValuePlaceholder}
-                    name={description.updateValueId}
-                    type="text"
-                    ref={register({ required: true })}
-                  />
-                  {errors.updatevalue && (
+                  <FileUpload>
+                    <input
+                      type="file"
+                      onChange={(e) => handleFileuploadChange(e.target.files)}
+                      ref={register({ required: true })}
+                      name={description.updatePrivatekey}
+                      accept=".pem"
+                    />
+                    <BsFileEarmarkArrowUp size={32} /> Upload file (*.pem)
+                  </FileUpload>
+                  {formatState === true ? (
+                    <Row>
+                      <b>Uploaded file: {filenameState}</b>
+                    </Row>
+                  ) : (
+                    <Row>
+                      <b>Please upload a file with the .pem ending</b>
+                    </Row>
+                  )}
+                  {errors.privatekey && (
                     <p>
                       <b>{description.updateValueError}</b>
                     </p>
@@ -204,23 +265,23 @@ export default function InternalConfig(props: IInternalConfig) {
               <b>{description.jiraSubtitle}</b>
             </Label>
             {/* Private Key (Jira) */}
-            <Form.Group as={Row} controlId={description.namePrivatekey}>
+            {/* <Form.Group as={Row} controlId={description.namePrivatekey}>
               <Form.Label column>{description.privateKeyLabel}</Form.Label>
               <Col sm="10">
-                <Form.Control
-                  style={{ marginBottom: "2vh" }}
-                  placeholder={description.privateKeyLabel}
-                  name={description.namePrivatekey}
-                  type="text"
+                <input
+                  type="file"
+                  onChange={(e) => console.log(e.target.files)}
                   ref={register({ required: true })}
+                  name={description.namePrivatekey}
                 />
+                <label htmlFor="file">Choose a file</label>
                 {errors.privatekey && (
                   <p>
                     <b>{description.errorPrivatekey}</b>
                   </p>
                 )}
               </Col>
-            </Form.Group>
+            </Form.Group> */}
             {/* Consumer Key (Jira) */}
             <Form.Group as={Row} controlId={description.nameConsumerKey}>
               <Form.Label column>{description.consumerKeyLabel}</Form.Label>
