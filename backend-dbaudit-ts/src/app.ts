@@ -233,9 +233,12 @@ import cors from "cors";
 
   app.post("/updateconfig", async function (req: Request, res: Response) {
     let result: boolean = false;
-
     if (req.body !== undefined) {
-      result = await InternalQUeries.checkConfiguration(req.body.email);
+      result = await InternalQUeries.updateConfigValue(
+        req.body.email,
+        req.body.attributeValue,
+        req.body.attributeName
+      );
     }
     return res.send(result);
   });

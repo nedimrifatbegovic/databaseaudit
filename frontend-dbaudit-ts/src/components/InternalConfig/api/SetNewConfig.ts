@@ -1,7 +1,7 @@
 import {
+  IAPIUpdateConfig,
   IInternalConfig,
   INewConfigAPI,
-  IUpdateConfig,
 } from "../../../assets/interfaces/Interfaces";
 
 // Add new configuration
@@ -49,7 +49,7 @@ export async function checkConfig(data: IInternalConfig) {
 }
 
 // Update existing configuration
-export async function updateConfig(data: IUpdateConfig) {
+export async function updateConfig(data: IAPIUpdateConfig) {
   let url: string = "http://localhost:5000/updateconfig";
   const body = JSON.stringify(data);
   return new Promise((resolve, reject) => {

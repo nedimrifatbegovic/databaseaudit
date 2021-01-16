@@ -1,23 +1,29 @@
+import {
+  updateConfig as APIUpdateConfig,
+  SetNewConfig,
+  checkConfig,
+} from "./api/SetNewConfig";
 import { Col, Form, Row } from "react-bootstrap";
 import {
   IInternalConfig,
   INewConfig,
   INewConfigAPI,
-  IUpdateConfig,
+  IUpdateForm,
 } from "../../assets/interfaces/Interfaces";
 import React, { useEffect, useState } from "react";
-import { SetNewConfig, checkConfig } from "./api/SetNewConfig";
 import { description, inputFields } from "./InternalConfig.resources";
 
 import { CustomLink } from "../../style/CustomLink";
 import { Label } from "../../style/Label";
+import { paths } from "../../App/AppRouter.resources";
 import { useForm } from "react-hook-form";
-
-// import { paths } from "../../App/AppRouter.resources";
+import { useHistory } from "react-router-dom";
 
 export default function InternalConfig(props: IInternalConfig) {
   const [loading, setLoading] = useState(false);
   const [typeState, settypeState] = useState<boolean>(false);
+  const [requestState, setRequestState] = useState<boolean>(false);
+  let history = useHistory();
   async function checkIfConfigExists(emailprop: string) {
     const data = {
       email: emailprop,
@@ -38,19 +44,33 @@ export default function InternalConfig(props: IInternalConfig) {
   const { register, handleSubmit, errors } = useForm();
 
   const getConfigNewData = (data: INewConfig) => {
+    setRequestState(false);
     const input: INewConfigAPI = {
       configdata: data,
       internalMail: props.email,
     };
 
     SetNewConfig(input);
+    setRequestState(true);
   };
 
-  const updateConfigData = (data: IUpdateConfig) => {
-    console.log(data);
+  const updateConfigData = (data: IUpdateForm) => {
+    setRequestState(false);
+    if (data.updatevalue === undefined || data.updatevalue === null) {
+      // Todo: Handle private key
+    } else {
+      const updateConfig = {
+        email: props.email,
+        attributeName: data.updatetype,
+        attributeValue: data.updatevalue,
+      };
+      APIUpdateConfig(updateConfig);
+      setRequestState(true);
+    }
   };
 
   const handleChange = (type: string) => {
+    setRequestState(false);
     if (type === inputFields[0].attributeName) {
       // For file upload
       settypeState(false);
@@ -59,6 +79,10 @@ export default function InternalConfig(props: IInternalConfig) {
       settypeState(true);
     }
   };
+
+  function handleHomepage() {
+    history.push(paths.internal.home);
+  }
 
   return (
     <React.Fragment>
@@ -129,9 +153,29 @@ export default function InternalConfig(props: IInternalConfig) {
               </Form.Group>
             )}
             {/* -- Submit the Issue -- */}
-            <Row className="justify-content-md-center">
+            <Row className="justify-content-center">
               <CustomLink type="submit" value="Submit" />
             </Row>
+
+            {requestState === true ? (
+              <React.Fragment>
+                <hr />
+                <Row className="justify-content-left">
+                  <p>
+                    <b>Your request has been sent!</b>
+                  </p>
+                </Row>
+                <Row className="justify-content-left">
+                  <CustomLink
+                    type="submit"
+                    value="Back to Home Page"
+                    onClick={handleHomepage}
+                  />
+                </Row>
+              </React.Fragment>
+            ) : (
+              ""
+            )}
           </Form>
         </React.Fragment>
       ) : (
@@ -878,9 +922,28 @@ export default function InternalConfig(props: IInternalConfig) {
               </Col>
             </Form.Group>
             {/* -- Submit the Issue -- */}
-            <Row className="justify-content-md-center">
+            <Row className="justify-content-center">
               <CustomLink type="submit" value="Submit" />
             </Row>
+            {requestState === true ? (
+              <React.Fragment>
+                <hr />
+                <Row className="justify-content-left">
+                  <p>
+                    <b>Your request has been sent!</b>
+                  </p>
+                </Row>
+                <Row className="justify-content-left">
+                  <CustomLink
+                    type="submit"
+                    value="Back to Home Page"
+                    onClick={handleHomepage}
+                  />
+                </Row>
+              </React.Fragment>
+            ) : (
+              ""
+            )}
           </Form>
         </React.Fragment>
       )}

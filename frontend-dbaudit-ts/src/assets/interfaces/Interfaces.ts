@@ -22,9 +22,10 @@ export interface INewConfigAPI {
   internalMail: string;
 }
 
-export interface IUpdateConfig {
-  updateType: string;
-  updateValue: string;
+export interface IUpdateForm {
+  updatetype: string;
+  updatevalue?: string;
+  updateprivatekey?: string;
 }
 
 export interface INewConfig {
@@ -66,7 +67,7 @@ export interface INewConfig {
   groupname: string;
 }
 
-export interface IUpdateConfig {
+export interface IAPIUpdateConfig {
   email: string;
   attributeName: string;
   attributeValue: string;
