@@ -39,21 +39,18 @@ export async function getDBVersion() {
       const dbfullversion: string = rows[0]["VERSION()"];
       const dbVersionStr: string = dbfullversion[3];
       var dbVersionNumber: number = +dbVersionStr;
-      console.log("DB Version number: ", dbVersionNumber);
 
       // ! 1 => Version is up to date
       if (dbVersionNumber > mdbconfiguration.latestSupportedVersion) {
-        // console.log("TRUE");
+        conn.end();
         return true;
       } else {
         // ! 0 => Version is not up to date
-        // console.log("FALSE");
+        conn.end();
         return false;
       }
     }
   } catch (err) {
     throw err;
-  } finally {
-    if (conn) return conn.end();
   }
 }

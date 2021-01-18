@@ -8,6 +8,7 @@ import express, { Application, NextFunction, Request, Response } from "express";
 import AdminQueries from "./queries/AdminQueries";
 import InternalQUeries from "./queries/InternalQUeries";
 import cors from "cors";
+import { generateReport } from "./queries/ReportQueries";
 
 // import { asyncFunction } from "./client/testRemotedatabase";
 
@@ -23,7 +24,7 @@ import cors from "cors";
   app.use(cors());
 
   //Test DB
-  // await asyncFunction();
+  await generateReport();
   // ----------------------------------------------------------------------------------------------------------------------------
   // Test Call
   app.get("/", (req: Request, res: Response, next: NextFunction) => {
