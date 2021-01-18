@@ -14,24 +14,13 @@ import { ExternalAuditor } from "./entity/ExternalAuditor";
 import { InternalAuditor } from "./entity/InternalAuditor";
 import InternalQUeries from "./queries/InternalQUeries";
 import { Report } from "./entity/Report";
+import { asyncFunction } from "./client/testRemotedatabase";
 import cors from "cors";
-
-// Controllers
-// TODO: Create and import controllers needed for the api calls
 
 (async () => {
   //   !  Important: in the file ormconfig, enable synchronize only for the first run, or database changes
   await createConnection();
   const connection = getConnection();
-
-  //   Repositories
-  const adminRepository = connection.getRepository(Admin);
-  const auditRepository = connection.getRepository(Audit);
-  const configRepository = connection.getRepository(Config);
-  const externalRepository = connection.getRepository(ExternalAuditor);
-  const internalRepository = connection.getRepository(InternalAuditor);
-  const reportRepository = connection.getRepository(Report);
-  const requestRepository = connection.getRepository(AuditRequest);
 
   // create and setup express app
   const port: number = 5000;
@@ -39,7 +28,9 @@ import cors from "cors";
   app.use(bodyParser.json());
   app.use(cors());
 
-  // -----------------------------------------------------------------------------------------------------------------------------------
+  //Test DB
+  // await asyncFunction();
+  // ----------------------------------------------name:""-------------------------------------------------------------------------------------
   // Test Call
   app.get("/", (req: Request, res: Response, next: NextFunction) => {
     res.send("Hello World");
