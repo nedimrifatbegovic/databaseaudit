@@ -5,17 +5,11 @@ import * as bodyParser from "body-parser";
 import { createConnection, getConnection } from "typeorm";
 import express, { Application, NextFunction, Request, Response } from "express";
 
-import { Admin } from "./entity/Admin";
 import AdminQueries from "./queries/AdminQueries";
-import { Audit } from "./entity/Audit";
-import { AuditRequest } from "./entity/AuditRequest";
-import { Config } from "./entity/Config";
-import { ExternalAuditor } from "./entity/ExternalAuditor";
-import { InternalAuditor } from "./entity/InternalAuditor";
 import InternalQUeries from "./queries/InternalQUeries";
-import { Report } from "./entity/Report";
-import { asyncFunction } from "./client/testRemotedatabase";
 import cors from "cors";
+
+// import { asyncFunction } from "./client/testRemotedatabase";
 
 (async () => {
   //   !  Important: in the file ormconfig, enable synchronize only for the first run, or database changes
@@ -30,7 +24,7 @@ import cors from "cors";
 
   //Test DB
   // await asyncFunction();
-  // ----------------------------------------------name:""-------------------------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------------------------------------------------
   // Test Call
   app.get("/", (req: Request, res: Response, next: NextFunction) => {
     res.send("Hello World");
