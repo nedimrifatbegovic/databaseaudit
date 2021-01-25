@@ -37,17 +37,19 @@ export async function generateReport(email: string) {
       password: dbpassword,
       database: dbdatabase,
     };
-    const dbVersion: IDBVersion = await getDBVersion(data);
+    const dbVersion: IDBVersion | undefined = await getDBVersion(data);
     console.log("Version: ", dbVersion);
-    // TODO: Check User Groups
+    // TODO: Handle undefined version
+    // Check User Groups
     // * Are any user groups defined?
     const userGroups: IUserGroups[] | undefined = await getUserGroups(
       data,
       configData.usergroups
     );
     console.log("User Groups: ", userGroups);
-    // * If yes, are all users classified?
+    // TODO: * If yes, are all users classified?
 
+    // TODO: * If no, handle undefined
     // TODO: Check Password
     // TODO: Check Interuptions
     // TODO: Check Backups

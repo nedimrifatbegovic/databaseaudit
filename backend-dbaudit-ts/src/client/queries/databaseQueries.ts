@@ -63,6 +63,8 @@ export async function getDBVersion(data: IDBConnection) {
         };
         return replay;
       }
+    } else {
+      return undefined;
     }
   } catch (err) {
     throw err;
