@@ -59,6 +59,7 @@ interface ConfigurationData {
   dbport: string;
   dbusername: string;
   dbpassword: string;
+  dbname: string;
   logs: string;
   logsid: string;
   projectkey: string;
@@ -137,6 +138,7 @@ const setNewConfiguration = async (
   newConfig.createrights = data.createrights;
   newConfig.updaterights = data.updaterights;
   newConfig.groupname = data.groupname;
+  newConfig.dbName = data.dbname;
 
   const result = await connection.manager.save(newConfig);
 
@@ -211,6 +213,8 @@ function getUpdateJSON(updatetype: string, updatevalue: string) {
       return { dbUsername: updatevalue };
     case "dbpassword":
       return { dbPassword: updatevalue };
+    case "dbname":
+      return { dbName: updatevalue };
     case "logs":
       return { logs: updatevalue };
     case "logsid":
@@ -252,6 +256,7 @@ function getUpdateJSON(updatetype: string, updatevalue: string) {
     case "groupname":
       return { groupname: updatevalue };
     default:
+      console.log("--updatetype--> ", updatetype);
       return undefined;
   }
 }

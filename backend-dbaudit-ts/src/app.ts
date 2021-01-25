@@ -24,7 +24,8 @@ import { generateReport } from "./queries/ReportQueries";
   app.use(cors());
 
   //Test DB
-  await generateReport();
+  //TODO: Add email as input from frontend
+  await generateReport("beclija@outlook.de");
   // ----------------------------------------------------------------------------------------------------------------------------
   // Test Call
   app.get("/", (req: Request, res: Response, next: NextFunction) => {

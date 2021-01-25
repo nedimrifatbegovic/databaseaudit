@@ -18,7 +18,6 @@ import { BsFileEarmarkArrowUp } from "react-icons/bs";
 import { CustomLink } from "../../style/CustomLink";
 import { FileUpload } from "../FileUpload/FileUpload.styled";
 import { Label } from "../../style/Label";
-import fs from "fs";
 import { paths } from "../../App/AppRouter.resources";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
@@ -588,6 +587,25 @@ export default function InternalConfig(props: IInternalConfig) {
                 {errors.dbpassword && (
                   <p>
                     <b>{description.errorDbPassword}</b>
+                  </p>
+                )}
+              </Col>
+            </Form.Group>
+            {/* DB Name */}
+            <Form.Group as={Row} controlId={description.nameDbName}>
+              <Form.Label column>{description.dbnameLabel}</Form.Label>
+              <Col sm="10">
+                <Form.Control
+                  style={{ marginBottom: "2vh" }}
+                  placeholder={description.dbnamePlaceholder}
+                  name={description.nameDbName}
+                  type="text"
+                  maxLength={40}
+                  ref={register({ required: true, maxLength: 40 })}
+                />
+                {errors.dbname && (
+                  <p>
+                    <b>{description.errorDbName}</b>
                   </p>
                 )}
               </Col>

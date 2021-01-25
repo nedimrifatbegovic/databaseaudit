@@ -8,10 +8,10 @@ import { Config } from "../entity/Config";
 import { InternalAuditor } from "../entity/InternalAuditor";
 import { getConnection } from "typeorm";
 
-export async function generateReport() {
+export async function generateReport(email: string) {
   // Get Client ID & Data from the Database
   const configData: Config | undefined = await getCredentialsInternalAuditor(
-    "beclija@outlook.de"
+    email
   );
   if (configData === undefined) {
     // Handle wrong email | no config found
@@ -23,7 +23,7 @@ export async function generateReport() {
     const dbport: number = +dbportString;
     const dbuser: string = configData.dbUsername;
     const dbpassword: string = configData.dbPassword;
-    const dbdatabase: string = "dbauditcompanyexample";
+    const dbdatabase: string = configData.dbName;
 
     // Check Database Version
     const data: IDBConnection = {

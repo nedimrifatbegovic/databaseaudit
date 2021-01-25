@@ -46,6 +46,8 @@ export const description = {
   dbuserPlaceholder: "Enter the Database Audit User",
   dbuserpasswordLabel: "Database Audit Password",
   dbuserpasswordPlaceholder: "Enter the Database Audit Password",
+  dbnameLabel: "Database Name",
+  dbnamePlaceholder: "Enter the Database Name",
   // --> Database Classes & Attributes
   // * Logs
   logsClassNameLabel: "Logs Name (Database):",
@@ -111,6 +113,7 @@ export const description = {
   nameDbType: "dbtype",
   nameDbHost: "dbhost",
   nameDbPort: "dbport",
+  nameDbName: "dbname",
   nameDbUsername: "dbusername",
   nameDbPassword: "dbpassword",
   nameLogs: "logs",
@@ -150,6 +153,7 @@ export const description = {
   errorDbPort: "Please enter the database port",
   errorDbUserName: "Please enter the database username",
   errorDbPassword: "Please enter the database password",
+  errorDbName: "Please enter the database name",
   errorLogs: "Please enter the Logs Class Name",
   errorLogsLogsId: "Please enter the Logs ID Attribute Name",
   errorLogsProjectKey: "Please enter the Project Key Attribute Name",
@@ -259,6 +263,13 @@ export const inputFields = [
     attributePlaceholder: "Enter the Database Port",
     attributeName: "dbport",
     attributeError: "Please enter the database port",
+    attributeId: "",
+  },
+  {
+    attributeLabel: "Database Name",
+    attributePlaceholder: "Enter the Database Name",
+    attributeName: "dbname",
+    attributeError: "Please enter the database name",
     attributeId: "",
   },
   {

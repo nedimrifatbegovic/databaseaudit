@@ -74,6 +74,9 @@ export class Config extends BaseEntity {
   @Column({ type: "text" })
   dbPassword: string;
 
+  @Column({ type: "text" })
+  dbName: string;
+
   // * Class & Attributes Names
   @Column({ type: "text" })
   logs: string;
