@@ -3,6 +3,10 @@ import {
   IDBVersion,
   getDBVersion,
 } from "../client/queries/databaseQueries";
+import {
+  IUserGroups,
+  getUserGroups,
+} from "../client/queries/usergroupsQueries";
 
 import { Config } from "../entity/Config";
 import { InternalAuditor } from "../entity/InternalAuditor";
@@ -37,7 +41,13 @@ export async function generateReport(email: string) {
     console.log("Version: ", dbVersion);
     // TODO: Check User Groups
     // * Are any user groups defined?
+    const userGroups: IUserGroups[] | undefined = await getUserGroups(
+      data,
+      configData.usergroups
+    );
+    console.log("User Groups: ", userGroups);
     // * If yes, are all users classified?
+
     // TODO: Check Password
     // TODO: Check Interuptions
     // TODO: Check Backups
