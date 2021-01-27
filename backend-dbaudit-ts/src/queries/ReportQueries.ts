@@ -3,6 +3,7 @@ import {
   IDBVersion,
   getDBVersion,
 } from "../client/queries/databaseQueries";
+import { IUser, getUsers } from "../client/queries/userQueries";
 import {
   IUserGroups,
   getUserGroups,
@@ -13,15 +14,15 @@ import { InternalAuditor } from "../entity/InternalAuditor";
 import { getConnection } from "typeorm";
 
 export async function generateReport(email: string) {
-  // Get Client ID & Data from the Database
+  // * Get Client ID & Data from the Database
   const configData: Config | undefined = await getCredentialsInternalAuditor(
     email
   );
   if (configData === undefined) {
-    // Handle wrong email | no config found
+    // * Handle wrong email | no config found
     return undefined;
   } else {
-    console.log(configData);
+    // console.log(configData);
     const dbhost: string = configData.dbHost;
     const dbportString: string = configData.dbPort;
     const dbport: number = +dbportString;
@@ -29,7 +30,7 @@ export async function generateReport(email: string) {
     const dbpassword: string = configData.dbPassword;
     const dbdatabase: string = configData.dbName;
 
-    // Check Database Version
+    // * Check Database Version
     const data: IDBConnection = {
       host: dbhost,
       port: dbport,
@@ -38,30 +39,48 @@ export async function generateReport(email: string) {
       database: dbdatabase,
     };
     const dbVersion: IDBVersion | undefined = await getDBVersion(data);
-    console.log("Version: ", dbVersion);
-    // TODO: Handle undefined version
-    // Check User Groups
+    // console.log("Version: ", dbVersion);
+    // TODO: * Handle undefined version
+    // * Check User Groups
     // * Are any user groups defined?
     const userGroups: IUserGroups[] | undefined = await getUserGroups(
       data,
       configData.usergroups
     );
-    console.log("User Groups: ", userGroups);
-    // TODO: * If yes, are all users classified?
+    // console.log("User Groups: ", userGroups);
+    // * Get all Users
+    const users: IUser[] | undefined = await getUsers(data, configData.user);
+    // console.log("Users: ", users);
+    if (users !== undefined) {
+      // TODO: * If yes, are all users classified?
+      if (userGroups !== undefined) {
+        console.log("Check users with user group");
+      }
+      // TODO: * If no, handle undefined
+      else {
+        console.log("Check users without user group");
+      }
 
-    // TODO: * If no, handle undefined
-    // TODO: Check Password
+      // TODO: Check Password
+    } else {
+      // TODO: * Handle undefined users
+      console.log("Handle undefined users");
+    }
+
+    // * ---- Jira Part ----
     // TODO: Check Interuptions
     // TODO: Check Backups
     // TODO: Check Restoration
     // TODO: Check Changes
+
+    // * ---- Generating Balanced Scorecards & Report Structure ----
     // TODO: Collect Proof & Format
     // TODO: Generate Balanced Scorecard
     // TODO: Return Report
   }
 }
 
-// Get report configuration
+// * Get report configuration
 // * Check internal auditor id (for email)
 // * Search for config where internal auditor X is added
 // * Return config data

@@ -1,31 +1,34 @@
 import { IDBConnection, getDBConnection } from "./databaseQueries";
 
-import { mdbconfiguration } from "../config/mariadbConfig";
+// Interface for Users
+export interface IUser {
+  UserID: number;
+  FirstName: string;
+  LastName: string;
+  Email: string;
+  Password: string;
+  UserGroupID: number;
+  Title: string;
+  CreatedAt: Date;
+  UpdatedAt: Date;
+}
 
 // Get User Group Details
-export async function getUsers(data: IDBConnection) {
+export async function getUsers(data: IDBConnection, user: string) {
   let conn: any;
   try {
     conn = await getDBConnection(data);
-    const rows = await conn.query("SELECT VERSION()");
+    const rows: IUser[] | undefined = await conn.query("SELECT * FROM " + user);
 
-    // * List of supported versions: https://mariadb.com/kb/en/mariadb-server/ (10.2 until 2022)
-    if (rows[0]["VERSION()"] !== undefined || rows[0]["VERSION()"] !== null) {
-      const dbfullversion: string = rows[0]["VERSION()"];
-      const dbVersionStr: string = dbfullversion[3];
-      var dbVersionNumber: number = +dbVersionStr;
-
-      // ! 1 => Version is up to date
-      if (dbVersionNumber > mdbconfiguration.latestSupportedVersion) {
-        conn.end();
-        return true;
-      } else {
-        // ! 0 => Version is not up to date
-        conn.end();
-        return false;
-      }
+    if (rows !== undefined || rows !== null) {
+      conn.end();
+      return rows;
+    } else {
+      conn.end();
+      return undefined;
     }
   } catch (err) {
+    conn.end();
     throw err;
   }
 }
