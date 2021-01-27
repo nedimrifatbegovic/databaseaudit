@@ -72,7 +72,7 @@ export async function generateReport(email: string) {
         console.log("Handle if wrong field in the database");
       }
 
-      // TODO: Check Password
+      // * Check Password
       const passwordCheckResult:
         | IPasswordCheck[]
         | undefined = await checkPassword(
