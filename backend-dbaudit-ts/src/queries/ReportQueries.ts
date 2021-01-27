@@ -1,17 +1,19 @@
 import {
+  ICheckUserGroupsStatus,
+  IError,
+  checkUserGroupsStatus,
+  getUserGroups,
+} from "../client/queries/usergroupsQueries";
+import {
   IDBConnection,
   IDBVersion,
   getDBVersion,
 } from "../client/queries/databaseQueries";
-import { IUser, getUsers } from "../client/queries/userQueries";
-import {
-  IUserGroups,
-  getUserGroups,
-} from "../client/queries/usergroupsQueries";
 
 import { Config } from "../entity/Config";
 import { InternalAuditor } from "../entity/InternalAuditor";
 import { getConnection } from "typeorm";
+import { getUsers } from "../client/queries/userQueries";
 
 export async function generateReport(email: string) {
   // * Get Client ID & Data from the Database
@@ -39,28 +41,32 @@ export async function generateReport(email: string) {
       database: dbdatabase,
     };
     const dbVersion: IDBVersion | undefined = await getDBVersion(data);
-    // console.log("Version: ", dbVersion);
     // TODO: * Handle undefined version
     // * Check User Groups
     // * Are any user groups defined?
-    const userGroups: IUserGroups[] | undefined = await getUserGroups(
+    const userGroups: any[] | undefined = await getUserGroups(
       data,
       configData.usergroups
     );
-    // console.log("User Groups: ", userGroups);
-    // * Get all Users
-    const users: IUser[] | undefined = await getUsers(data, configData.user);
-    // console.log("Users: ", users);
-    if (users !== undefined) {
-      // TODO: * If yes, are all users classified?
-      if (userGroups !== undefined) {
-        console.log("Check users with user group");
-      }
-      // TODO: * If no, handle undefined
-      else {
-        console.log("Check users without user group");
-      }
 
+    // * Get all Users
+    const users: any[] | undefined = await getUsers(data, configData.user);
+
+    if (users !== undefined) {
+      // * If yes, are all users classified?
+      const userGroupsReply:
+        | ICheckUserGroupsStatus
+        | undefined = await checkUserGroupsStatus(
+        userGroups,
+        users,
+        configData.title,
+        configData.usergroupsgroupid,
+        configData.userid
+      );
+      if (userGroupsReply === undefined) {
+        // TODO: ERROR - WRONG FIELD VALUE
+        console.log("Handle if wrong field in the database");
+      }
       // TODO: Check Password
     } else {
       // TODO: * Handle undefined users
