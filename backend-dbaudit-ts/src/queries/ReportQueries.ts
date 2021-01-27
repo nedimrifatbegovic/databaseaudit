@@ -9,11 +9,11 @@ import {
   IDBVersion,
   getDBVersion,
 } from "../client/queries/databaseQueries";
+import { checkPassword, getUsers } from "../client/queries/userQueries";
 
 import { Config } from "../entity/Config";
 import { InternalAuditor } from "../entity/InternalAuditor";
 import { getConnection } from "typeorm";
-import { getUsers } from "../client/queries/userQueries";
 
 export async function generateReport(email: string) {
   // * Get Client ID & Data from the Database
@@ -67,7 +67,9 @@ export async function generateReport(email: string) {
         // TODO: ERROR - WRONG FIELD VALUE
         console.log("Handle if wrong field in the database");
       }
+
       // TODO: Check Password
+      checkPassword(users);
     } else {
       // TODO: * Handle undefined users
       console.log("Handle undefined users");
