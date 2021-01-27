@@ -4,3 +4,9 @@ export const mdbconfiguration = {
   latestSupportedVersion: 2,
   poolConnectionsLimit: 5,
 };
+
+export const errorLevel = {
+  HIGH: "HIGH",
+  MID: "MID",
+  LOW: "LOW",
+};
