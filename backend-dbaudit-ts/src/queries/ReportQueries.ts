@@ -9,7 +9,11 @@ import {
   IDBVersion,
   getDBVersion,
 } from "../client/queries/databaseQueries";
-import { checkPassword, getUsers } from "../client/queries/userQueries";
+import {
+  IPasswordCheck,
+  checkPassword,
+  getUsers,
+} from "../client/queries/userQueries";
 
 import { Config } from "../entity/Config";
 import { InternalAuditor } from "../entity/InternalAuditor";
@@ -69,7 +73,16 @@ export async function generateReport(email: string) {
       }
 
       // TODO: Check Password
-      checkPassword(users);
+      const passwordCheckResult:
+        | IPasswordCheck[]
+        | undefined = await checkPassword(
+        users,
+        configData.password,
+        configData.userid
+      );
+      if (passwordCheckResult === undefined) {
+        // TODO: Handle
+      }
     } else {
       // TODO: * Handle undefined users
       console.log("Handle undefined users");
