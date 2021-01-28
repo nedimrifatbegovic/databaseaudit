@@ -78,7 +78,9 @@ export async function generateReport(email: string) {
         | undefined = await checkPassword(
         users,
         configData.password,
-        configData.userid
+        configData.userid,
+        configData.firstname,
+        configData.lastname
       );
       if (passwordCheckResult === undefined) {
         // TODO: Handle

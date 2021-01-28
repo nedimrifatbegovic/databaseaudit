@@ -26,7 +26,9 @@ export async function getUsers(data: IDBConnection, user: string) {
 export async function checkPassword(
   users: any[],
   usersPassword: string,
-  usersUserId: string
+  usersUserId: string,
+  usersFirstname: string,
+  usersLastname: string
 ) {
   if (
     users[0][usersPassword] === undefined ||
@@ -65,8 +67,8 @@ export async function checkPassword(
         var password: IPasswordCheck = passwordPolicyCheck(
           users[i][usersPassword],
           users[i][usersUserId],
-          "nedim",
-          "nedim"
+          users[i][usersFirstname],
+          users[i][usersLastname]
         );
 
         if (password.result === false) {
