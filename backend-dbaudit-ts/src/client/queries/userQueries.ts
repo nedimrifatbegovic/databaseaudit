@@ -43,7 +43,7 @@ export async function checkPassword(
     standard lowercase characters (a - z)
     numbers (0 - 9)
     symbols: only from among ! % - _ + = [ ] { } : , . ? < > ( ) ;
-    The password does not contain your account name or any part of your full name (**** This one has not been implemented)
+    The password does not contain your account name or any part of your full name 
     The password does not contain characters only found on a particular national keyboard (e.g. ö, ë, å, ñ, é)
   */
   let result: IPasswordCheck[] = [];
@@ -64,7 +64,9 @@ export async function checkPassword(
       } else {
         var password: IPasswordCheck = passwordPolicyCheck(
           users[i][usersPassword],
-          users[i][usersUserId]
+          users[i][usersUserId],
+          "nedim",
+          "nedim"
         );
 
         if (password.result === false) {
@@ -88,7 +90,12 @@ export interface IPasswordCheck {
 }
 
 // ! Source for similar solution: https://stackoverflow.com/questions/17152677/javascript-validation-for-a-complex-password, last visited 27.01.2021
-function passwordPolicyCheck(password: string, userid: number) {
+function passwordPolicyCheck(
+  password: string,
+  userid: number,
+  firstname: string,
+  lastname: string
+) {
   // * Definition of the rules
   var anUpperCase = /[A-Z]/;
   var aLowerCase = /[a-z]/;
@@ -111,7 +118,31 @@ function passwordPolicyCheck(password: string, userid: number) {
     obj.error = "The password is too long!";
     obj.level = errorLevel.LOW;
     obj.userid = userid;
+    return obj;
   }
+
+  // * Check if the password contains the firstname
+  if (firstname !== undefined && firstname !== null) {
+    if (password.includes(firstname)) {
+      obj.result = false;
+      obj.error = "The password contains firstname!";
+      obj.level = errorLevel.LOW;
+      obj.userid = userid;
+      return obj;
+    }
+  }
+
+  // * Check if the password contains the lastname
+  if (lastname !== undefined && lastname !== null) {
+    if (password.includes(lastname)) {
+      obj.result = false;
+      obj.error = "The password contains lastname!";
+      obj.level = errorLevel.LOW;
+      obj.userid = userid;
+      return obj;
+    }
+  }
+
   // * Defining the counters
   var numUpper: number = 0;
   var numLower: number = 0;
