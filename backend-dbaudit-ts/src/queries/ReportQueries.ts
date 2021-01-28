@@ -18,6 +18,7 @@ import {
 import { Config } from "../entity/Config";
 import { InternalAuditor } from "../entity/InternalAuditor";
 import { getConnection } from "typeorm";
+import { getLogs } from "../client/queries/logsQueries";
 
 export async function generateReport(email: string) {
   // * Get Client ID & Data from the Database
@@ -91,10 +92,17 @@ export async function generateReport(email: string) {
     }
 
     // * ---- Jira Part ----
-    // TODO: Check Interuptions
-    // TODO: Check Backups
-    // TODO: Check Restoration
-    // TODO: Check Changes
+    // * Get Logs
+    const logs = await getLogs(data, configData.logs);
+
+    // TODO: * Format private key
+
+    // TODO: * Check Errors
+
+    // TODO: * Check Changes
+
+    // TODO: * Check Backups
+    // TODO: * Check Restoration
 
     // * ---- Generating Balanced Scorecards & Report Structure ----
     // TODO: Collect Proof & Format
