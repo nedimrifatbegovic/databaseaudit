@@ -17,8 +17,10 @@ import {
 
 import { Config } from "../entity/Config";
 import { InternalAuditor } from "../entity/InternalAuditor";
+import atob from "atob";
 import { getConnection } from "typeorm";
 import { getLogs } from "../client/queries/logsQueries";
+import request from "request";
 
 export async function generateReport(email: string) {
   // * Get Client ID & Data from the Database
@@ -95,13 +97,35 @@ export async function generateReport(email: string) {
     // * Get Logs
     const logs = await getLogs(data, configData.logs);
 
-    // TODO: * Format private key
+    // * Format private key
+    const pkey = configData.privateKey;
+    var file = dataURLtoFile(pkey);
+    let privateKeyData = file;
+    const oauth = {
+      consumer_key: "dbauditkey", //Your consumer key
+      consumer_secret: privateKeyData, //This will contain the private key.
+      token: "eBxh3fiuLRWgQuFSt9NI4ymwCB9hISym", //Enter your OAuth access token here
+      token_secret: "d3j911c1DzUNzdMhc3B4Oa0wvO3rHYRQ", //Enter your OAuth token secret here
+      signature_method: "RSA-SHA1",
+    };
 
+    request.get(
+      {
+        url: "http://localhost:8080/rest/api/latest/issue/RES-2",
+        oauth: oauth,
+        qs: null,
+        json: true,
+      },
+      function (e, r, user) {
+        console.log(user.fields);
+      }
+    );
     // TODO: * Check Errors
 
     // TODO: * Check Changes
 
     // TODO: * Check Backups
+
     // TODO: * Check Restoration
 
     // * ---- Generating Balanced Scorecards & Report Structure ----
@@ -109,6 +133,21 @@ export async function generateReport(email: string) {
     // TODO: Generate Balanced Scorecard
     // TODO: Return Report
   }
+}
+
+// * Convert Base64 to File
+// ! Source on how to convert base64 to file: https://stackoverflow.com/questions/35940290/how-to-convert-base64-string-to-javascript-file-object-like-as-from-file-input-f
+function dataURLtoFile(dataurl) {
+  var arr = dataurl.split(","),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return u8arr;
 }
 
 // * Get report configuration
