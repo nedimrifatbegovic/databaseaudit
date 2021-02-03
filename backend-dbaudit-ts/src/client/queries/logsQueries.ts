@@ -1,6 +1,8 @@
 import { IDBConnection, getDBConnection } from "./databaseQueries";
 
+import { IoAuth } from "../../queries/ReportQueries";
 import { errorLevel } from "../config/mariadbConfig";
+import { getTicket } from "../apis/jira";
 
 // * Get Logs
 export async function getLogs(data: IDBConnection, logs: string) {
@@ -24,57 +26,122 @@ export async function getLogs(data: IDBConnection, logs: string) {
 
 // * Ticket System - Comment
 export interface ITSComments {
-  text: string;
-  author: string;
+  text?: string;
+  author?: string;
 }
 
 // * Ticket System - Issue - Reply
 export interface ITicketSystemReply {
   ticketStatus?: string;
   ticketDescription?: string;
-  ticketComments?: ITSComments[] | undefined;
+  ticketComments?: ITSComments[];
   level?: string;
   errordescription?: string;
   logid: number;
+  assignee?: string;
 }
 
-// * Check Interuptions
-export async function checkTSErrors(
+// * Check Errors, Changes, Backups, Restoration
+export async function checkTSTickets(
   logs: any[],
   logsId: string,
   logsProjectkey: string,
   logsTicketkey: string,
   logsType: string,
   errorProjectKey: string,
-  jiraurl: string,
-  jiraport: number,
-  consumerkey: string,
-  token: string,
-  tokensecret: string,
-  signatureMethod: string,
-  privatekey: string
+  backupProjectKey: string,
+  restorationProjectKey: string,
+  oauth: IoAuth,
+  jiraLink: string
 ) {
   let response: ITicketSystemReply[] = [];
+  let commentsArray: ITSComments[] = [];
 
   for (let i: number = 0; i < logs.length; i++) {
+    if (oauth === undefined) {
+      //* Handle oAuth undefined
+      const errormsg: ITicketSystemReply = {
+        logid: logs[i][logsId],
+        level: errorLevel.HIGH,
+        errordescription: "OAUTH UNDEFINED",
+      };
+      response.push(errormsg);
+    }
     // * Check if fields undefined
-    if (
+    else if (
       logs[i][logsId] === undefined ||
       logs[i][logsProjectkey] === undefined ||
       logs[i][logsTicketkey] === undefined ||
-      logs[i][logsType] === undefined ||
-      logs[i][errorProjectKey] === undefined
+      logs[i][logsType] === undefined
     ) {
-      // * Format response for Error Types
+      // * Format response for specific Types
       const errormsg: ITicketSystemReply = {
-        logid: logs[0][logsId],
+        logid: logs[i][logsId],
         level: errorLevel.MID,
         errordescription: "FIELDS UNDEFINED",
       };
       response.push(errormsg);
-    }
+    } else {
+      // * Get Issues from Ticket System for specific Type
+      const link: string =
+        jiraLink + "rest/api/latest/issue/" + logs[i][logsTicketkey];
+      const tsTicket = await getTicket(link, oauth);
 
-    // TODO: * Get Issues from Ticket System for -ERROR- Type
-    // TODO: * Check if all logs have been documented
+      // * Check if ticket has been found | if log has been documented in the TS
+      if (tsTicket["fields"] === undefined) {
+        let errorlevelmsg: string = errorLevel.LOW;
+        if (logs[0][logsProjectkey] === errorProjectKey) {
+          errorlevelmsg = errorLevel.HIGH;
+        } else if (
+          logs[0][logsProjectkey] === restorationProjectKey ||
+          logs[0][logsProjectkey] === backupProjectKey
+        ) {
+          errorlevelmsg = errorLevel.MID;
+        }
+
+        const errormsg: ITicketSystemReply = {
+          logid: logs[i][logsId],
+          level: errorlevelmsg,
+          errordescription: "TICKET NOT DOCUMENTED",
+        };
+        response.push(errormsg);
+      } else {
+        const fields = tsTicket["fields"];
+        // * Check if ticket has comments
+        if (fields["comment"].total === 0) {
+          // * No Comments have been found
+        } else {
+          for (let i = 0; i < fields["comment"]["comments"].length; i++) {
+            let commentInput: ITSComments = {
+              text: fields["comment"]["comments"][i]["body"],
+              author: fields["comment"]["comments"][i]["author"]["name"],
+            };
+            commentsArray.push(commentInput);
+          }
+        }
+        // * Check status of the ticket
+        const ticketStatus = fields.status.name;
+        // * Check the assignee of the ticket
+        let assignee: undefined | string = undefined;
+        if (
+          fields.assignee === null ||
+          fields.assignee === undefined ||
+          fields.assignee.name === null
+        ) {
+          assignee = undefined;
+        } else {
+          assignee = fields.assignee.name;
+        }
+
+        const errormsg: ITicketSystemReply = {
+          logid: logs[i][logsId],
+          ticketComments: commentsArray,
+          ticketStatus: ticketStatus,
+        };
+        response.push(errormsg);
+      }
+    }
   }
+
+  return response;
 }

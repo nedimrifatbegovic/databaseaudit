@@ -14,13 +14,12 @@ import {
   checkPassword,
   getUsers,
 } from "../client/queries/userQueries";
+import { checkTSTickets, getLogs } from "../client/queries/logsQueries";
 
 import { Config } from "../entity/Config";
 import { InternalAuditor } from "../entity/InternalAuditor";
 import atob from "atob";
 import { getConnection } from "typeorm";
-import { getLogs } from "../client/queries/logsQueries";
-import request from "request";
 
 export async function generateReport(email: string) {
   // * Get Client ID & Data from the Database
@@ -101,33 +100,31 @@ export async function generateReport(email: string) {
     const pkey = configData.privateKey;
     var file = dataURLtoFile(pkey);
     let privateKeyData = file;
-    const oauth = {
-      consumer_key: "dbauditkey", //Your consumer key
+
+    const oauth: IoAuth = {
+      consumer_key: configData.consumerKey, //Your consumer key
       consumer_secret: privateKeyData, //This will contain the private key.
-      token: "eBxh3fiuLRWgQuFSt9NI4ymwCB9hISym", //Enter your OAuth access token here
-      token_secret: "d3j911c1DzUNzdMhc3B4Oa0wvO3rHYRQ", //Enter your OAuth token secret here
-      signature_method: "RSA-SHA1",
+      token: configData.token, //Enter your OAuth access token here
+      token_secret: configData.tokenSecret, //Enter your OAuth token secret here
+      signature_method: configData.signatureMethod,
     };
 
-    request.get(
-      {
-        url: "http://localhost:8080/rest/api/latest/issue/RES-2",
-        oauth: oauth,
-        qs: null,
-        json: true,
-      },
-      function (e, r, user) {
-        console.log(user.fields);
-      }
+    // TODO: * Check Errors, Changes, Backups, Restoration
+    const jiraLink = configData.jiraUrl + ":" + configData.jiraPort + "/";
+    const TSTickets = await checkTSTickets(
+      logs,
+      configData.logsid,
+      configData.projectkey,
+      configData.ticketkey,
+      configData.logstype,
+      configData.errorProjectKey,
+      configData.backupProjectKey,
+      configData.restorationProjectKey,
+      oauth,
+      jiraLink
     );
-    // TODO: * Check Errors
 
-    // TODO: * Check Changes
-
-    // TODO: * Check Backups
-
-    // TODO: * Check Restoration
-
+    console.log(TSTickets);
     // * ---- Generating Balanced Scorecards & Report Structure ----
     // TODO: Collect Proof & Format
     // TODO: Generate Balanced Scorecard
@@ -135,11 +132,19 @@ export async function generateReport(email: string) {
   }
 }
 
+// * Define oAuth interface
+export interface IoAuth {
+  consumer_key: string;
+  consumer_secret: Uint8Array;
+  token: string;
+  token_secret: string;
+  signature_method: string;
+}
+
 // * Convert Base64 to File
 // ! Source on how to convert base64 to file: https://stackoverflow.com/questions/35940290/how-to-convert-base64-string-to-javascript-file-object-like-as-from-file-input-f
 function dataURLtoFile(dataurl) {
   var arr = dataurl.split(","),
-    mime = arr[0].match(/:(.*?);/)[1],
     bstr = atob(arr[1]),
     n = bstr.length,
     u8arr = new Uint8Array(n);
