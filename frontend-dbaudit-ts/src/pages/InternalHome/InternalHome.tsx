@@ -25,7 +25,14 @@ export default function InternalHome() {
 
   return (
     <Container>
-      <Internal />
+      {userState.email !== undefined ? (
+        <Internal email={userState.email} />
+      ) : (
+        <React.Fragment>
+          <p>Mail could not be found!</p>
+        </React.Fragment>
+      )}
+
       <Logout />
     </Container>
   );
