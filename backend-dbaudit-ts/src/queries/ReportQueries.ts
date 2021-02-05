@@ -1,6 +1,5 @@
 import {
   ICheckUserGroupsStatus,
-  IError,
   checkUserGroupsStatus,
   getUserGroups,
 } from "../client/queries/usergroupsQueries";
@@ -14,12 +13,30 @@ import {
   checkPassword,
   getUsers,
 } from "../client/queries/userQueries";
-import { checkTSTickets, getLogs } from "../client/queries/logsQueries";
+import {
+  ITicketSystemReply,
+  checkTSTickets,
+  getLogs,
+} from "../client/queries/logsQueries";
 
 import { Config } from "../entity/Config";
 import { InternalAuditor } from "../entity/InternalAuditor";
 import atob from "atob";
+import { errorLevel } from "../client/config/mariadbConfig";
 import { getConnection } from "typeorm";
+
+export interface IERROR {
+  level?: string;
+  errordescription?: string;
+}
+
+export interface IBalancedScorecard {
+  dbversion: IERROR | IDBVersion;
+  usergroups: IERROR | any[];
+  users: IERROR | any[];
+  passwords: IERROR | IPasswordCheck[];
+  ticketsystem: ITicketSystemReply[];
+}
 
 export async function generateReport(email: string) {
   // * Get Client ID & Data from the Database
@@ -30,7 +47,6 @@ export async function generateReport(email: string) {
     // * Handle wrong email | no config found
     return undefined;
   } else {
-    // console.log(configData);
     const dbhost: string = configData.dbHost;
     const dbportString: string = configData.dbPort;
     const dbport: number = +dbportString;
@@ -47,7 +63,20 @@ export async function generateReport(email: string) {
       database: dbdatabase,
     };
     const dbVersion: IDBVersion | undefined = await getDBVersion(data);
-    // TODO: * Handle undefined version
+
+    // * Balanced Scorecards Input: Database Version formated in JSON
+    let dbVersionJSON: IERROR | IDBVersion = {};
+
+    if (dbVersion === undefined) {
+      // * Handle undefined version
+      dbVersionJSON = {
+        errordescription: "Database version not found",
+        level: errorLevel.HIGH,
+      };
+    } else {
+      dbVersionJSON = dbVersion;
+    }
+
     // * Check User Groups
     // * Are any user groups defined?
     const userGroups: any[] | undefined = await getUserGroups(
@@ -55,8 +84,23 @@ export async function generateReport(email: string) {
       configData.usergroups
     );
 
+    // * Balanced Scorecards Input: Database Version formated in JSON
+    let userGroupsJSON: IERROR | any[] = {};
+    if (userGroups === undefined) {
+      userGroupsJSON = {
+        errordescription: "User groups not found",
+        level: errorLevel.HIGH,
+      };
+    } else {
+      userGroupsJSON = userGroups;
+    }
+
     // * Get all Users
     const users: any[] | undefined = await getUsers(data, configData.user);
+    // * Balanced Scorecards Input: Users formated in JSON
+    let usersJSON: IERROR = {};
+    // * Balanced Scorecards Input: Users formated in JSON
+    let userspasswordsJSON: IERROR | IPasswordCheck[] = {};
 
     if (users !== undefined) {
       // * If yes, are all users classified?
@@ -70,8 +114,12 @@ export async function generateReport(email: string) {
         configData.userid
       );
       if (userGroupsReply === undefined) {
-        // TODO: ERROR - WRONG FIELD VALUE
-        console.log("Handle if wrong field in the database");
+        // * ERROR - WRONG FIELD VALUE
+        usersJSON = {
+          errordescription:
+            "Users: Wrong field value in the database. Could not check if users are added to user groups.",
+          level: errorLevel.HIGH,
+        };
       }
 
       // * Check Password
@@ -85,11 +133,18 @@ export async function generateReport(email: string) {
         configData.lastname
       );
       if (passwordCheckResult === undefined) {
-        // TODO: Handle
+        userspasswordsJSON = {
+          errordescription: "Passwords not found",
+          level: errorLevel.HIGH,
+        };
+      } else {
+        userspasswordsJSON = passwordCheckResult;
       }
     } else {
-      // TODO: * Handle undefined users
-      console.log("Handle undefined users");
+      usersJSON = {
+        errordescription: "Users not found",
+        level: errorLevel.HIGH,
+      };
     }
 
     // * ---- Jira Part ----
@@ -109,9 +164,9 @@ export async function generateReport(email: string) {
       signature_method: configData.signatureMethod,
     };
 
-    // TODO: * Check Errors, Changes, Backups, Restoration
+    // * Check Errors, Changes, Backups, Restoration
     const jiraLink = configData.jiraUrl + ":" + configData.jiraPort + "/";
-    const TSTickets = await checkTSTickets(
+    const TSTickets: ITicketSystemReply[] = await checkTSTickets(
       logs,
       configData.logsid,
       configData.projectkey,
@@ -124,11 +179,18 @@ export async function generateReport(email: string) {
       jiraLink
     );
 
-    console.log(TSTickets);
     // * ---- Generating Balanced Scorecards & Report Structure ----
-    // TODO: Collect Proof & Format
-    // TODO: Generate Balanced Scorecard
-    // TODO: Return Report
+    // * Collect Proof & Format & Generate Balanced Scorecard
+    let balancedScorecards: IBalancedScorecard = {
+      dbversion: dbVersionJSON,
+      usergroups: userGroupsJSON,
+      passwords: userspasswordsJSON,
+      users: usersJSON,
+      ticketsystem: TSTickets,
+    };
+
+    // * Return balancedScoredars JSON (raw data)
+    return balancedScorecards;
   }
 }
 

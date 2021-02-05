@@ -78,7 +78,7 @@ export async function checkTSTickets(
       const errormsg: ITicketSystemReply = {
         logid: logs[i][logsId],
         level: errorLevel.MID,
-        errordescription: "FIELDS UNDEFINED",
+        errordescription: "FIELDS UNDEFINED (LOGS)",
       };
       response.push(errormsg);
     } else {

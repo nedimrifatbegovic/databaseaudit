@@ -13,12 +13,3 @@ export async function getTicket(link: string, oAuth: IoAuth) {
     });
   });
 }
-
-// try {
-//     ticket = await getTicket(issuekey);
-//   } catch (error) {
-//     console.error('ERROR:');
-//     console.error(error);
-//     ticket = "ERROR";
-//     return ticket;
-//   }
