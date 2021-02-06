@@ -81,14 +81,6 @@ import { generateReport } from "./queries/ReportQueries";
     res.send("Hello World");
   });
 
-  // TODO: Get report proof for specific ID
-  app.get(
-    "/reportproof/:id",
-    (req: Request, res: Response, next: NextFunction) => {
-      res.send("Hello World");
-    }
-  );
-
   //  * Calls for the Admin
   app.post("/loadinternal", async function (req: Request, res: Response) {
     // console.log("Load internal data received: ", req.body);
@@ -219,6 +211,7 @@ import { generateReport } from "./queries/ReportQueries";
     return res.send(result);
   });
 
+  // Update Config Field
   app.post("/updateconfig", async function (req: Request, res: Response) {
     let result: boolean = false;
     if (req.body !== undefined) {

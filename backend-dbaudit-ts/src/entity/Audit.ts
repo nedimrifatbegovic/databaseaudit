@@ -9,7 +9,6 @@ import {
 } from "typeorm";
 import { Field, ID, ObjectType } from "type-graphql";
 
-import { AuditRequest } from "./AuditRequest";
 import { ExternalAuditor } from "./ExternalAuditor";
 import { InternalAuditor } from "./InternalAuditor";
 import { Report } from "./Report";
@@ -28,7 +27,11 @@ export class Audit extends BaseEntity {
   updatedAt: Date;
 
   @Column({ type: "boolean" })
-  status: boolean;
+  resolved: boolean;
+
+  // pending, accepted, declined
+  @Column({ type: "text" })
+  status: string;
 
   @ManyToMany(
     (type) => InternalAuditor,
@@ -46,7 +49,4 @@ export class Audit extends BaseEntity {
 
   @OneToMany((type) => Report, (report) => report.audit)
   reports: Report[];
-
-  @OneToMany((type) => AuditRequest, (auditrequest) => auditrequest.audit)
-  auditrequests: AuditRequest[];
 }

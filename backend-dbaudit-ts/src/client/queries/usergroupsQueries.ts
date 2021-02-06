@@ -8,7 +8,7 @@ export async function getUserGroups(data: IDBConnection, usergroups: string) {
   try {
     conn = await getDBConnection(data);
     const rows: any = await conn.query("SELECT * FROM " + usergroups);
-
+    console.log(rows);
     if (rows === undefined) {
       conn.end();
       return undefined;
@@ -18,7 +18,8 @@ export async function getUserGroups(data: IDBConnection, usergroups: string) {
     }
   } catch (err) {
     conn.end();
-    throw err;
+    // throw err;
+    return undefined;
   }
 }
 

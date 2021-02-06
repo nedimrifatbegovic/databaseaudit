@@ -62,6 +62,7 @@ export async function generateReport(email: string) {
       password: dbpassword,
       database: dbdatabase,
     };
+
     const dbVersion: IDBVersion | undefined = await getDBVersion(data);
 
     // * Balanced Scorecards Input: Database Version formated in JSON
@@ -97,6 +98,7 @@ export async function generateReport(email: string) {
 
     // * Get all Users
     const users: any[] | undefined = await getUsers(data, configData.user);
+
     // * Balanced Scorecards Input: Users formated in JSON
     let usersJSON: IERROR = {};
     // * Balanced Scorecards Input: Users formated in JSON
@@ -190,6 +192,7 @@ export async function generateReport(email: string) {
     };
 
     // * Return balancedScoredars JSON (raw data)
+    // console.log(balancedScorecards);
     return balancedScorecards;
   }
 }

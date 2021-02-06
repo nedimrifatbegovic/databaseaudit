@@ -1,3 +1,4 @@
+import IAudit from "./components/IAudit/IAudit";
 import React from "react";
 import { description } from "./Internal.resources";
 
@@ -11,7 +12,8 @@ export default function Internal(props: IInternalProps) {
       <h1>{description.title}</h1>
       <hr />
       <h3>{description.auditTitle}</h3>
-      <p>TODO: 1 add Button {props.email}</p>
+      <IAudit email={props.email} />
+
       <hr />
       <h3>{description.configRequestTitle}</h3>
       <p>TODO: 2 List of pending requests</p>

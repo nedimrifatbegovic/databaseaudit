@@ -32,7 +32,6 @@ export default function InternalHome() {
           <p>Mail could not be found!</p>
         </React.Fragment>
       )}
-
       <Logout />
     </Container>
   );
