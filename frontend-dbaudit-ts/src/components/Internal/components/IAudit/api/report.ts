@@ -1,9 +1,11 @@
-import { IData } from "../../../../../assets/interfaces/Interfaces";
+interface InternalReportProps {
+  email: string;
+}
 
-export async function connectUser(data: IData) {
+export async function generateReport(data: InternalReportProps) {
   const body = JSON.stringify(data);
   return new Promise((resolve, reject) => {
-    fetch("http://localhost:5000/login", {
+    fetch("http://localhost:5000/internalauditrequest", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -2,6 +2,7 @@ import { CustomButton } from "../../../../style/CustomButton";
 import { CustomHr } from "../../../../style/CustomHr";
 import React from "react";
 import { description } from "./IAudit.resources";
+import { generateReport } from "./api/report";
 
 // * Audit Props
 interface IAuditProps {
@@ -9,8 +10,12 @@ interface IAuditProps {
 }
 
 // * Handle generate new audit
-const handleGenerateAudit = (email: string) => {
-  console.log(email);
+const handleGenerateAudit = async (email: string) => {
+  const data = {
+    email: email,
+  };
+  const report = await generateReport(data);
+  console.log(report);
 };
 
 export default function IAudit(props: IAuditProps) {
