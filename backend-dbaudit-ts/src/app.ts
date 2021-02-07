@@ -8,7 +8,8 @@ import express, { Application, NextFunction, Request, Response } from "express";
 import AdminQueries from "./queries/AdminQueries";
 import InternalQUeries from "./queries/InternalQUeries";
 import cors from "cors";
-import { generateReport } from "./queries/ReportQueries";
+
+// import { generateReport } from "./queries/ReportQueries";
 
 // import { asyncFunction } from "./client/testRemotedatabase";
 
@@ -24,8 +25,7 @@ import { generateReport } from "./queries/ReportQueries";
   app.use(cors());
 
   //Test DB
-  //TODO: Add email as input from frontend
-  await generateReport("beclija@outlook.de");
+  // await generateReport("beclija@outlook.de");
   // ----------------------------------------------------------------------------------------------------------------------------
   // Test Call
   app.get("/", (req: Request, res: Response, next: NextFunction) => {

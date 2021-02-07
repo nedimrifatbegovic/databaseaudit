@@ -1,3 +1,5 @@
+import { IBalancedScorecard, generateReport } from "./ReportQueries";
+
 import { Config } from "../entity/Config";
 import { InternalAuditor } from "../entity/InternalAuditor";
 import { getConnection } from "typeorm";
@@ -306,8 +308,13 @@ const updateConfigValue = async (
 
 // TODO: * Generate internal audit & report
 const internalReport = async (email: string) => {
-  console.log("EMAIL: ", email);
-  return "HEY WORLD WAS UP";
+  // * Check if audit exists
+
+  // * If no , create new audit
+
+  // * If yes , generate report
+  const report: IBalancedScorecard = await generateReport(email);
+  return report;
 };
 
 /* Export queries */

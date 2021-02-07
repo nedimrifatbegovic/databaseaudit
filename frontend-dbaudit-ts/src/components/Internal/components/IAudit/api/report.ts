@@ -1,5 +1,11 @@
+import { IBalancedScorecard } from "../../../../../assets/interfaces/Interfaces";
+
 interface InternalReportProps {
   email: string;
+}
+
+interface ResponseProps {
+  report: IBalancedScorecard;
 }
 
 export async function generateReport(data: InternalReportProps) {
@@ -13,7 +19,7 @@ export async function generateReport(data: InternalReportProps) {
       body,
     })
       .then((res) => res.json())
-      .then((result) => {
+      .then((result: ResponseProps) => {
         resolve(result);
       })
       .catch((error) => {

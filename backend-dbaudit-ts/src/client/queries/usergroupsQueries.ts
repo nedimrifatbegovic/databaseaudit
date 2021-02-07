@@ -2,8 +2,16 @@ import { IDBConnection, getDBConnection } from "./databaseQueries";
 
 import { errorLevel } from "../config/mariadbConfig";
 
+export interface IUserGroupsNames {
+  GroupName: string;
+}
+
 // * Get User Group Details
-export async function getUserGroups(data: IDBConnection, usergroups: string) {
+export async function getUserGroups(
+  data: IDBConnection,
+  usergroups: string,
+  groupname: string
+) {
   let conn: any;
   try {
     conn = await getDBConnection(data);
@@ -14,7 +22,14 @@ export async function getUserGroups(data: IDBConnection, usergroups: string) {
       return undefined;
     } else {
       conn.end();
-      return rows;
+      let groupnames: IUserGroupsNames[] = [];
+      for (let i: number = 0; i < rows.length; i++) {
+        let grname = {
+          GroupName: rows[i][groupname],
+        };
+        groupnames.push(grname);
+      }
+      return groupnames;
     }
   } catch (err) {
     conn.end();

@@ -152,3 +152,55 @@ export interface IAddUser {
   type: string;
   companyname: string;
 }
+
+// * Report interfaces
+// -- Balanced Scorecards --
+export interface IBalancedScorecard {
+  dbversion: IERROR | IDBVersion;
+  usergroups: IERROR | any[];
+  users: IERROR | any[];
+  passwords: IERROR | IPasswordCheck[];
+  ticketsystem: ITicketSystemReply[];
+}
+
+// -- Error Interface --
+export interface IERROR {
+  level?: string;
+  errordescription?: string;
+}
+
+// -- Password Check Interface --
+export interface IPasswordCheck {
+  result?: boolean;
+  error?: string;
+  userid?: number;
+  level?: string;
+}
+
+// -- Database Version Interface --
+export interface IDBVersion {
+  version: string;
+  status: boolean;
+}
+
+// -- Ticket System Reply Interface --
+export interface ITicketSystemReply {
+  ticketStatus?: string;
+  ticketDescription?: string;
+  ticketComments?: ITSComments[];
+  level?: string;
+  errordescription?: string;
+  logid: number;
+  assignee?: string;
+}
+
+// -- Ticket System - Comments Interface --
+export interface ITSComments {
+  text?: string;
+  author?: string;
+}
+
+// -- User Groups Interface --
+export interface IUserGroups {
+  GroupName: string;
+}

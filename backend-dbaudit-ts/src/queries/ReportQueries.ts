@@ -82,7 +82,8 @@ export async function generateReport(email: string) {
     // * Are any user groups defined?
     const userGroups: any[] | undefined = await getUserGroups(
       data,
-      configData.usergroups
+      configData.usergroups,
+      configData.groupname
     );
 
     // * Balanced Scorecards Input: Database Version formated in JSON
