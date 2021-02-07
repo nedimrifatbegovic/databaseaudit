@@ -192,7 +192,6 @@ export async function generateReport(email: string) {
     };
 
     // * Return balancedScoredars JSON (raw data)
-    // console.log(balancedScorecards);
     return balancedScorecards;
   }
 }

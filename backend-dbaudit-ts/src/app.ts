@@ -60,11 +60,19 @@ import { generateReport } from "./queries/ReportQueries";
     }
   );
 
-  // TODO: Generate report for specific audit id
+  // * Internal audit request
   app.post(
-    "/report/:auditid",
-    (req: Request, res: Response, next: NextFunction) => {
-      res.send("Hello World");
+    "/internalauditrequest",
+    async function (req: Request, res: Response) {
+      console.log("internalauditrequest: ", req.body);
+      // * Check if audit already exists
+      // * If yes generate new report
+      // * If no generate new audit for internal, and return new report
+      const response = await InternalQUeries.internalReport(req.body.email);
+      const output = {
+        report: response,
+      };
+      return res.send(output);
     }
   );
 

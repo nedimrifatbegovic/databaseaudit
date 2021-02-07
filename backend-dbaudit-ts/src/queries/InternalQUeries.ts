@@ -304,6 +304,12 @@ const updateConfigValue = async (
   }
 };
 
+// TODO: * Generate internal audit & report
+const internalReport = async (email: string) => {
+  console.log("EMAIL: ", email);
+  return "HEY WORLD WAS UP";
+};
+
 /* Export queries */
 export = {
   getCredentials: getCredentials,
@@ -311,4 +317,5 @@ export = {
   setNewConfiguration: setNewConfiguration,
   checkConfiguration: checkConfiguration,
   updateConfigValue: updateConfigValue,
+  internalReport: internalReport,
 };
