@@ -158,11 +158,17 @@ export interface IAddUser {
 export interface IBalancedScorecard {
   dbversion: IERROR | IDBVersion;
   usergroups: IERROR | any[];
+  usergroupscheck: ICheckUserGroupsStatus | undefined;
   users: IERROR | any[];
   passwords: IERROR | IPasswordCheck[];
   ticketsystem: ITicketSystemReply[];
 }
 
+// -- User Groups Reply (issues) --
+export interface ICheckUserGroupsStatus {
+  errors: IERROR[] | undefined;
+  userGroups: any[] | undefined;
+}
 // -- Error Interface --
 export interface IERROR {
   level?: string;

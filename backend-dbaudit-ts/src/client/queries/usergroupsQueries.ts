@@ -100,7 +100,8 @@ export async function checkUserGroupsStatus(
               type: ErrorWrongUserGroup,
               description:
                 "User has wrong user group. Current title: " +
-                users[i][usersTitle],
+                users[i][usersTitle] +
+                " but has been added as admin!",
               level: errorLevel.HIGH,
               userid: users[i][usersUserID],
             };
@@ -121,7 +122,8 @@ export async function checkUserGroupsStatus(
               type: ErrorWrongUserGroup,
               description:
                 "User has wrong user group. Current title: " +
-                users[i][usersTitle],
+                users[i][usersTitle] +
+                " but has been added as senior!",
               level: errorLevel.MID,
               userid: users[i][usersUserID],
             };
@@ -144,7 +146,8 @@ export async function checkUserGroupsStatus(
               type: ErrorWrongUserGroup,
               description:
                 "User has wrong user group. Current title: " +
-                users[i][usersTitle],
+                users[i][usersTitle] +
+                " but has been added as junior / trainee!",
               level: errorLevel.LOW,
               userid: users[i][usersUserID],
             };

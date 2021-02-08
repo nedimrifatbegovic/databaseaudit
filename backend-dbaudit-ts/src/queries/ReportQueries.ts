@@ -33,6 +33,7 @@ export interface IERROR {
 export interface IBalancedScorecard {
   dbversion: IERROR | IDBVersion;
   usergroups: IERROR | any[];
+  usergroupscheck: ICheckUserGroupsStatus | undefined;
   users: IERROR | any[];
   passwords: IERROR | IPasswordCheck[];
   ticketsystem: ITicketSystemReply[];
@@ -104,12 +105,10 @@ export async function generateReport(email: string) {
     let usersJSON: IERROR = {};
     // * Balanced Scorecards Input: Users formated in JSON
     let userspasswordsJSON: IERROR | IPasswordCheck[] = {};
-
+    let userGroupsReply: ICheckUserGroupsStatus | undefined;
     if (users !== undefined) {
       // * If yes, are all users classified?
-      const userGroupsReply:
-        | ICheckUserGroupsStatus
-        | undefined = await checkUserGroupsStatus(
+      userGroupsReply = await checkUserGroupsStatus(
         userGroups,
         users,
         configData.title,
@@ -187,6 +186,7 @@ export async function generateReport(email: string) {
     let balancedScorecards: IBalancedScorecard = {
       dbversion: dbVersionJSON,
       usergroups: userGroupsJSON,
+      usergroupscheck: userGroupsReply,
       passwords: userspasswordsJSON,
       users: usersJSON,
       ticketsystem: TSTickets,
