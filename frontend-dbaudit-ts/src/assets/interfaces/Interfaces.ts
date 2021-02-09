@@ -169,6 +169,7 @@ export interface ICheckUserGroupsStatus {
   errors: IERROR[] | undefined;
   userGroups: any[] | undefined;
 }
+
 // -- Error Interface --
 export interface IERROR {
   level?: string;
