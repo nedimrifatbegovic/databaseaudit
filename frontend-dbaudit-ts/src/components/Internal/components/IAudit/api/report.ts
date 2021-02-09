@@ -1,11 +1,11 @@
-import { IBalancedScorecard } from "../../../../../assets/interfaces/Interfaces";
+import { ICombinedScorecard } from "../../../../../assets/interfaces/Interfaces";
 
 interface InternalReportProps {
   email: string;
 }
 
 interface ResponseProps {
-  report: IBalancedScorecard;
+  report: ICombinedScorecard;
 }
 
 export async function generateReport(data: InternalReportProps) {

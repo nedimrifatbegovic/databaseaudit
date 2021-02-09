@@ -1,5 +1,6 @@
 import {
   ICheckUserGroupsStatus,
+  IUserGroupsNames,
   checkUserGroupsStatus,
   getUserGroups,
 } from "../client/queries/usergroupsQueries";
@@ -32,7 +33,7 @@ export interface IERROR {
 
 export interface IBalancedScorecard {
   dbversion: IERROR | IDBVersion;
-  usergroups: IERROR | any[];
+  usergroups: undefined | IUserGroupsNames[] | IERROR;
   usergroupscheck: ICheckUserGroupsStatus | undefined;
   users: IERROR | any[];
   passwords: IERROR | IPasswordCheck[];
@@ -81,14 +82,14 @@ export async function generateReport(email: string) {
 
     // * Check User Groups
     // * Are any user groups defined?
-    const userGroups: any[] | undefined = await getUserGroups(
+    const userGroups: IUserGroupsNames[] | undefined = await getUserGroups(
       data,
       configData.usergroups,
       configData.groupname
     );
 
     // * Balanced Scorecards Input: Database Version formated in JSON
-    let userGroupsJSON: IERROR | any[] = {};
+    let userGroupsJSON: IERROR | IUserGroupsNames[] = {};
     if (userGroups === undefined) {
       userGroupsJSON = {
         errordescription: "User groups not found",
@@ -192,9 +193,151 @@ export async function generateReport(email: string) {
       ticketsystem: TSTickets,
     };
 
-    // * Return balancedScoredars JSON (raw data)
-    return balancedScorecards;
+    const tableinput: IScorecardTable = prepareTabledata(balancedScorecards);
+
+    // * Prepare data for table
+    const scorecardTable: IScorecardTable = tableinput;
+
+    // * Format output
+    const formatedOutput: ICombinedScorecard = {
+      balancedScorecards: balancedScorecards,
+      scorecardTable: scorecardTable,
+    };
+
+    // * Return combined data as JSON
+    return formatedOutput;
   }
+}
+
+// * Check if any errors, if yes, pick the highest
+function prepareTabledata(balancedScorecards: IBalancedScorecard) {
+  /*
+  IERROR: 
+  level?: string;
+  errordescription?: string;
+  */
+
+  // * DATABASE VERSION
+  let databaseInput: ITableValues | undefined;
+
+  if (balancedScorecards.dbversion["level"] !== undefined) {
+    databaseInput = {
+      cobit: {
+        Availability: true,
+        Compliance: false,
+        Reliability: true,
+        Confidentality: false,
+      },
+      value: balancedScorecards.dbversion["level"],
+    };
+  } else {
+    databaseInput = {
+      cobit: {
+        Availability: true,
+        Compliance: false,
+        Reliability: true,
+        Confidentality: false,
+      },
+      value: "OK",
+    };
+  }
+
+  // * USER GROUPS
+  let balancedScorecardsInput: ITableValues | undefined;
+  if (balancedScorecards.usergroups === undefined) {
+    balancedScorecardsInput = {
+      cobit: {
+        Availability: true,
+        Compliance: false,
+        Reliability: false,
+        Confidentality: true,
+      },
+      value: "HIGH",
+    };
+  } else if (balancedScorecards.usergroups["level"] !== undefined) {
+    balancedScorecardsInput = {
+      cobit: {
+        Availability: true,
+        Compliance: false,
+        Reliability: false,
+        Confidentality: true,
+      },
+      value: balancedScorecards.usergroups["level"],
+    };
+  } else {
+    //* If no errors
+    balancedScorecardsInput = {
+      cobit: {
+        Availability: true,
+        Compliance: false,
+        Reliability: false,
+        Confidentality: true,
+      },
+      value: "OK",
+    };
+  }
+
+  // TODO: NEXT
+  //* Check DB Version
+  let testinput: ITableValues = {
+    cobit: {
+      Availability: true,
+      Compliance: false,
+      Reliability: true,
+      Confidentality: false,
+    },
+    value: "LOW",
+  };
+
+  const scorecardTable: IScorecardTable = {
+    dbversion: databaseInput,
+    userrights: balancedScorecardsInput,
+    userrightscheck: testinput,
+    password: testinput,
+    interuptions: testinput,
+    backuprestoration: testinput,
+    changes: testinput,
+  };
+
+  return scorecardTable;
+}
+
+// * Defines the combined reply
+export interface ICombinedScorecard {
+  balancedScorecards: IBalancedScorecard;
+  scorecardTable: IScorecardTable;
+}
+
+// * Defines the Fields of the Scorecard
+export interface ICOBITFIELDS {
+  Availability: boolean;
+  Compliance: boolean;
+  Reliability: boolean;
+  Confidentality: boolean;
+}
+
+// * Format Table - DB Version
+export interface ITableValues {
+  cobit: ICOBITFIELDS;
+  value: "LOW" | "MID" | "HIGH" | "OK";
+}
+
+// * Defines the Table Scorecard interface
+export interface IScorecardTable {
+  // * I - Format Table - DB Version
+  dbversion: ITableValues;
+  // * II - PO2.3 - User Rights
+  userrights: ITableValues;
+  // * III - PO2.3 - DBA Users (Admin Rights)
+  userrightscheck: ITableValues;
+  // * IV - DS5 / EU Policy - Password check
+  password: ITableValues;
+  //* V - AC 4 - Interuptions
+  interuptions: ITableValues;
+  // * VI - DS11.5 - Backup, Restoration
+  backuprestoration: ITableValues;
+  //* VII - AI 6.1, AI 6.2 - Changes Cobit
+  changes: ITableValues;
 }
 
 // * Define oAuth interface

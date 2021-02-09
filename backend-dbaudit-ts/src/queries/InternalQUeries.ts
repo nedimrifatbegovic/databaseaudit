@@ -1,4 +1,4 @@
-import { IBalancedScorecard, generateReport } from "./ReportQueries";
+import { ICombinedScorecard, generateReport } from "./ReportQueries";
 
 import { Config } from "../entity/Config";
 import { InternalAuditor } from "../entity/InternalAuditor";
@@ -313,7 +313,7 @@ const internalReport = async (email: string) => {
   // * If no , create new audit
 
   // * If yes , generate report
-  const report: IBalancedScorecard = await generateReport(email);
+  const report: ICombinedScorecard = await generateReport(email);
   return report;
 };
 

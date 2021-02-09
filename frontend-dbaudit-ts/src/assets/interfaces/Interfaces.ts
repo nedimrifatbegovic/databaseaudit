@@ -164,6 +164,45 @@ export interface IBalancedScorecard {
   ticketsystem: ITicketSystemReply[];
 }
 
+// -- Table Interface --
+// * Combined scorecard & table
+export interface ICombinedScorecard {
+  balancedScorecards: IBalancedScorecard;
+  scorecardTable: IScorecardTable;
+}
+
+// * Defines the Fields of the Scorecard
+export interface ICOBITFIELDS {
+  Availability: boolean;
+  Compliance: boolean;
+  Reliability: boolean;
+  Confidentality: boolean;
+}
+
+// * Format Table - DB Version
+export interface ITableValues {
+  cobit: ICOBITFIELDS;
+  value: "LOW" | "MID" | "HIGH" | "OK";
+}
+
+// * Defines the Table Scorecard interface
+export interface IScorecardTable {
+  // * I - Format Table - DB Version
+  dbversion: ITableValues;
+  // * II - PO2.3 - User Rights
+  userrights: ITableValues;
+  // * III - PO2.3 - DBA Users (Admin Rights)
+  userrightscheck: ITableValues;
+  // * IV - DS5 / EU Policy - Password check
+  password: ITableValues;
+  //* V - AC 4 - Interuptions
+  interuptions: ITableValues;
+  // * VI - DS11.5 - Backup, Restoration
+  backuprestoration: ITableValues;
+  //* VII - AI 6.1, AI 6.2 - Changes Cobit
+  changes: ITableValues;
+}
+
 // -- User Groups Reply (issues) --
 export interface ICheckUserGroupsStatus {
   errors: IERROR[] | undefined;

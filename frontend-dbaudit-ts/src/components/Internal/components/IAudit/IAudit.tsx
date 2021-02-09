@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { CustomButton } from "../../../../style/CustomButton";
 import { CustomHr } from "../../../../style/CustomHr";
-import { IBalancedScorecard } from "../../../../assets/interfaces/Interfaces";
+import { ICombinedScorecard } from "../../../../assets/interfaces/Interfaces";
 import { Table } from "react-bootstrap";
 import { description } from "./IAudit.resources";
 import { generateReport } from "./api/report";
@@ -26,7 +26,7 @@ interface IAuditProps {
 }
 
 interface ResponseProps {
-  report: IBalancedScorecard;
+  report: ICombinedScorecard;
 }
 
 export default function IAudit(props: IAuditProps) {
