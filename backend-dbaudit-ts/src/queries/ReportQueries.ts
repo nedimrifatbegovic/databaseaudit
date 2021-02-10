@@ -25,6 +25,7 @@ import { InternalAuditor } from "../entity/InternalAuditor";
 import atob from "atob";
 import { errorLevel } from "../client/config/mariadbConfig";
 import { getConnection } from "typeorm";
+import { config } from "process";
 
 export interface IERROR {
   level?: string;
@@ -178,6 +179,7 @@ export async function generateReport(email: string) {
       configData.errorProjectKey,
       configData.backupProjectKey,
       configData.restorationProjectKey,
+      configData.changeProjectKey,
       oauth,
       jiraLink
     );
@@ -462,25 +464,500 @@ function prepareTabledata(balancedScorecards: IBalancedScorecard) {
     }
   }
 
-  //* Check DB Version
-  let testinput: ITableValues = {
-    cobit: {
-      Availability: true,
-      Compliance: false,
-      Reliability: true,
-      Confidentality: false,
-    },
-    value: "LOW",
-  };
+  // * Check Ticket System Tickets
+  // | "INTERUPTION"
+  // | "BACKUP/RESTORATION"
+  // | "CHANGES"
+  let INTERUPTIONInput: ITableValues | undefined;
+  let BACKUPRESTORATIONInput: ITableValues | undefined;
+  let CHANGESInput: ITableValues | undefined;
+  for (let i: number = 0; i < balancedScorecards.ticketsystem.length; i++) {
+    if (balancedScorecards.ticketsystem[i].errordescription !== undefined) {
+      let errorlvl = balancedScorecards.ticketsystem[i].level;
+      if (
+        balancedScorecards.ticketsystem[i].errortype === undefined ||
+        balancedScorecards.ticketsystem[i].errortype === "ALL"
+      ) {
+        // * --- Handle Interuptions ---
+        if (INTERUPTIONInput === undefined) {
+          if (errorlvl === "MID") {
+            INTERUPTIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "MID",
+            };
+          } else if (errorlvl === "HIGH") {
+            INTERUPTIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          } else {
+            INTERUPTIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "LOW",
+            };
+          }
+        } else if (INTERUPTIONInput.value === "LOW" && errorlvl !== "LOW") {
+          if (errorlvl === "MID") {
+            INTERUPTIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "MID",
+            };
+          } else if (errorlvl === "HIGH") {
+            INTERUPTIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          }
+        } else if (INTERUPTIONInput.value === "MID") {
+          if (errorlvl === "HIGH") {
+            INTERUPTIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          }
+        } else if (INTERUPTIONInput.value === "HIGH") {
+          // * Do nothing - maximal value
+        }
+        // * --- Handle Backup / Restore ---
+        if (BACKUPRESTORATIONInput === undefined) {
+          if (errorlvl === "MID") {
+            BACKUPRESTORATIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "MID",
+            };
+          } else if (errorlvl === "HIGH") {
+            BACKUPRESTORATIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          } else {
+            BACKUPRESTORATIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "LOW",
+            };
+          }
+        } else if (
+          BACKUPRESTORATIONInput.value === "LOW" &&
+          errorlvl !== "LOW"
+        ) {
+          if (errorlvl === "MID") {
+            BACKUPRESTORATIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "MID",
+            };
+          } else if (errorlvl === "HIGH") {
+            BACKUPRESTORATIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          }
+        } else if (BACKUPRESTORATIONInput.value === "MID") {
+          if (errorlvl === "HIGH") {
+            BACKUPRESTORATIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          }
+        } else if (BACKUPRESTORATIONInput.value === "HIGH") {
+          // * Do nothing - maximal value
+        }
+        // * --- Handle Changes ---
+        if (CHANGESInput === undefined) {
+          if (errorlvl === "MID") {
+            CHANGESInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "MID",
+            };
+          } else if (errorlvl === "HIGH") {
+            CHANGESInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          } else {
+            CHANGESInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "LOW",
+            };
+          }
+        } else if (CHANGESInput.value === "LOW" && errorlvl !== "LOW") {
+          if (errorlvl === "MID") {
+            CHANGESInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "MID",
+            };
+          } else if (errorlvl === "HIGH") {
+            CHANGESInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          }
+        } else if (CHANGESInput.value === "MID") {
+          if (errorlvl === "HIGH") {
+            CHANGESInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          }
+        } else if (CHANGESInput.value === "HIGH") {
+          // * Do nothing - maximal value
+        }
+      } else if (
+        balancedScorecards.ticketsystem[i].errortype === "BACKUP/RESTORATION"
+      ) {
+        // * --- Handle Backup / Restore ---
+        if (BACKUPRESTORATIONInput === undefined) {
+          if (errorlvl === "MID") {
+            BACKUPRESTORATIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "MID",
+            };
+          } else if (errorlvl === "HIGH") {
+            BACKUPRESTORATIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          } else {
+            BACKUPRESTORATIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "LOW",
+            };
+          }
+        } else if (
+          BACKUPRESTORATIONInput.value === "LOW" &&
+          errorlvl !== "LOW"
+        ) {
+          if (errorlvl === "MID") {
+            BACKUPRESTORATIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "MID",
+            };
+          } else if (errorlvl === "HIGH") {
+            BACKUPRESTORATIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          }
+        } else if (BACKUPRESTORATIONInput.value === "MID") {
+          if (errorlvl === "HIGH") {
+            BACKUPRESTORATIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          }
+        } else if (BACKUPRESTORATIONInput.value === "HIGH") {
+          // * Do nothing - maximal value
+        }
+      } else if (balancedScorecards.ticketsystem[i].errortype === "CHANGES") {
+        // * --- Handle Changes ---
+        if (CHANGESInput === undefined) {
+          if (errorlvl === "MID") {
+            CHANGESInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "MID",
+            };
+          } else if (errorlvl === "HIGH") {
+            CHANGESInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          } else {
+            CHANGESInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "LOW",
+            };
+          }
+        } else if (CHANGESInput.value === "LOW" && errorlvl !== "LOW") {
+          if (errorlvl === "MID") {
+            CHANGESInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "MID",
+            };
+          } else if (errorlvl === "HIGH") {
+            CHANGESInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          }
+        } else if (CHANGESInput.value === "MID") {
+          if (errorlvl === "HIGH") {
+            CHANGESInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          }
+        } else if (CHANGESInput.value === "HIGH") {
+          // * Do nothing - maximal value
+        }
+      } else if (
+        balancedScorecards.ticketsystem[i].errortype === "INTERUPTION"
+      ) {
+        // * --- Handle Interuptions ---
+        if (INTERUPTIONInput === undefined) {
+          if (errorlvl === "MID") {
+            INTERUPTIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "MID",
+            };
+          } else if (errorlvl === "HIGH") {
+            INTERUPTIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          } else {
+            INTERUPTIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "LOW",
+            };
+          }
+        } else if (INTERUPTIONInput.value === "LOW" && errorlvl !== "LOW") {
+          if (errorlvl === "MID") {
+            INTERUPTIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "MID",
+            };
+          } else if (errorlvl === "HIGH") {
+            INTERUPTIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          }
+        } else if (INTERUPTIONInput.value === "MID") {
+          if (errorlvl === "HIGH") {
+            INTERUPTIONInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: true,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          }
+        } else if (INTERUPTIONInput.value === "HIGH") {
+          // * Do nothing - maximal value
+        }
+      }
+    }
+  }
+
+  // * If no issues found for ticket system
+  if (INTERUPTIONInput === undefined) {
+    INTERUPTIONInput = {
+      cobit: {
+        Availability: true,
+        Compliance: true,
+        Reliability: true,
+        Confidentality: true,
+      },
+      value: "OK",
+    };
+  }
+  if (BACKUPRESTORATIONInput === undefined) {
+    BACKUPRESTORATIONInput = {
+      cobit: {
+        Availability: true,
+        Compliance: true,
+        Reliability: true,
+        Confidentality: true,
+      },
+      value: "OK",
+    };
+  }
+  if (CHANGESInput === undefined) {
+    CHANGESInput = {
+      cobit: {
+        Availability: true,
+        Compliance: true,
+        Reliability: true,
+        Confidentality: true,
+      },
+      value: "OK",
+    };
+  }
 
   const scorecardTable: IScorecardTable = {
     dbversion: databaseInput,
     userrights: usergroupsInput,
     userrightscheck: usergroupscheckInput,
     password: passwordInput,
-    interuptions: testinput,
-    backuprestoration: testinput,
-    changes: testinput,
+    interuptions: INTERUPTIONInput,
+    backuprestoration: BACKUPRESTORATIONInput,
+    changes: CHANGESInput,
   };
 
   return scorecardTable;

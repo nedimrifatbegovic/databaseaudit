@@ -39,6 +39,7 @@ export interface ITicketSystemReply {
   errordescription?: string;
   logid: number;
   assignee?: string;
+  errortype?: "INTERUPTION" | "BACKUP/RESTORATION" | "CHANGES" | "ALL";
 }
 
 // * Check Errors, Changes, Backups, Restoration
@@ -51,6 +52,7 @@ export async function checkTSTickets(
   errorProjectKey: string,
   backupProjectKey: string,
   restorationProjectKey: string,
+  changeProjectKey: string,
   oauth: IoAuth,
   jiraLink: string
 ) {
@@ -64,6 +66,7 @@ export async function checkTSTickets(
         logid: logs[i][logsId],
         level: errorLevel.HIGH,
         errordescription: "OAUTH UNDEFINED",
+        errortype: "ALL",
       };
       response.push(errormsg);
     }
@@ -79,6 +82,7 @@ export async function checkTSTickets(
         logid: logs[i][logsId],
         level: errorLevel.MID,
         errordescription: "FIELDS UNDEFINED (LOGS)",
+        errortype: undefined,
       };
       response.push(errormsg);
     } else {
@@ -88,21 +92,33 @@ export async function checkTSTickets(
       const tsTicket = await getTicket(link, oauth);
 
       // * Check if ticket has been found | if log has been documented in the TS
+      let errortypemsg:
+        | "INTERUPTION"
+        | "BACKUP/RESTORATION"
+        | "CHANGES"
+        | "ALL"
+        | undefined;
       if (tsTicket["fields"] === undefined) {
         let errorlevelmsg: string = errorLevel.LOW;
-        if (logs[0][logsProjectkey] === errorProjectKey) {
+        if (logs[i][logsProjectkey] === errorProjectKey) {
           errorlevelmsg = errorLevel.HIGH;
+          errortypemsg = "INTERUPTION";
         } else if (
-          logs[0][logsProjectkey] === restorationProjectKey ||
-          logs[0][logsProjectkey] === backupProjectKey
+          logs[i][logsProjectkey] === restorationProjectKey ||
+          logs[i][logsProjectkey] === backupProjectKey
         ) {
           errorlevelmsg = errorLevel.MID;
+          errortypemsg = "BACKUP/RESTORATION";
+        } else if (logs[i][logsProjectkey] === changeProjectKey) {
+          errorlevelmsg = errorLevel.MID;
+          errortypemsg = "CHANGES";
         }
 
         const errormsg: ITicketSystemReply = {
           logid: logs[i][logsId],
           level: errorlevelmsg,
           errordescription: "TICKET NOT DOCUMENTED",
+          errortype: errortypemsg,
         };
         response.push(errormsg);
       } else {

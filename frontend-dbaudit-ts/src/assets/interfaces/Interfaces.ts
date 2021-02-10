@@ -236,6 +236,7 @@ export interface ITicketSystemReply {
   ticketComments?: ITSComments[];
   level?: string;
   errordescription?: string;
+  errortype?: "INTERUPTION" | "BACKUP/RESTORATION" | "CHANGES" | "ALL";
   logid: number;
   assignee?: string;
 }
