@@ -243,9 +243,9 @@ function prepareTabledata(balancedScorecards: IBalancedScorecard) {
   }
 
   // * USER GROUPS
-  let balancedScorecardsInput: ITableValues | undefined;
+  let usergroupsInput: ITableValues | undefined;
   if (balancedScorecards.usergroups === undefined) {
-    balancedScorecardsInput = {
+    usergroupsInput = {
       cobit: {
         Availability: true,
         Compliance: false,
@@ -255,7 +255,7 @@ function prepareTabledata(balancedScorecards: IBalancedScorecard) {
       value: "HIGH",
     };
   } else if (balancedScorecards.usergroups["level"] !== undefined) {
-    balancedScorecardsInput = {
+    usergroupsInput = {
       cobit: {
         Availability: true,
         Compliance: false,
@@ -266,7 +266,7 @@ function prepareTabledata(balancedScorecards: IBalancedScorecard) {
     };
   } else {
     //* If no errors
-    balancedScorecardsInput = {
+    usergroupsInput = {
       cobit: {
         Availability: true,
         Compliance: false,
@@ -277,7 +277,191 @@ function prepareTabledata(balancedScorecards: IBalancedScorecard) {
     };
   }
 
-  // TODO: NEXT
+  // * User Rights Check
+  let usergroupscheckInput: ITableValues | undefined;
+  // * If no errors
+  if (
+    balancedScorecards.usergroupscheck.errors.length === 0 ||
+    balancedScorecards.usergroupscheck.errors.length === undefined
+  ) {
+    usergroupscheckInput = {
+      cobit: {
+        Availability: true,
+        Compliance: false,
+        Reliability: false,
+        Confidentality: true,
+      },
+      value: "OK",
+    };
+  } else {
+    // * else if errors
+    for (
+      let i: number = 0;
+      i < balancedScorecards.usergroupscheck.errors.length;
+      i++
+    ) {
+      const errorlvl = balancedScorecards.usergroupscheck.errors[i].level;
+      if (usergroupscheckInput === undefined) {
+        if (errorlvl === "MID") {
+          usergroupscheckInput = {
+            cobit: {
+              Availability: true,
+              Compliance: false,
+              Reliability: false,
+              Confidentality: true,
+            },
+            value: "MID",
+          };
+        } else if (errorlvl === "HIGH") {
+          usergroupscheckInput = {
+            cobit: {
+              Availability: true,
+              Compliance: false,
+              Reliability: false,
+              Confidentality: true,
+            },
+            value: "HIGH",
+          };
+        } else {
+          usergroupscheckInput = {
+            cobit: {
+              Availability: true,
+              Compliance: false,
+              Reliability: false,
+              Confidentality: true,
+            },
+            value: "LOW",
+          };
+        }
+      } else if (usergroupscheckInput.value === "LOW" && errorlvl !== "LOW") {
+        if (errorlvl === "MID") {
+          usergroupscheckInput = {
+            cobit: {
+              Availability: true,
+              Compliance: false,
+              Reliability: false,
+              Confidentality: true,
+            },
+            value: "MID",
+          };
+        } else if (errorlvl === "HIGH") {
+          usergroupscheckInput = {
+            cobit: {
+              Availability: true,
+              Compliance: false,
+              Reliability: false,
+              Confidentality: true,
+            },
+            value: "HIGH",
+          };
+        }
+      } else if (usergroupscheckInput.value === "MID") {
+        if (errorlvl === "HIGH") {
+          usergroupscheckInput = {
+            cobit: {
+              Availability: true,
+              Compliance: false,
+              Reliability: false,
+              Confidentality: true,
+            },
+            value: "HIGH",
+          };
+        }
+      } else if (usergroupscheckInput.value === "HIGH") {
+        // * Do nothing - maximal value
+      }
+    }
+  }
+
+  // * Check highest password error
+  let passwordInput: ITableValues | undefined;
+  if (balancedScorecards.passwords["level"] !== undefined) {
+    passwordInput = {
+      cobit: {
+        Availability: true,
+        Compliance: true,
+        Reliability: false,
+        Confidentality: true,
+      },
+      value: balancedScorecards.passwords["level"],
+    };
+  } else {
+    if (Array.isArray(balancedScorecards.passwords)) {
+      for (let i: number = 0; i < balancedScorecards.passwords.length; i++) {
+        const errorlvl = balancedScorecards.passwords[i].level;
+        if (passwordInput === undefined) {
+          if (errorlvl === "MID") {
+            passwordInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: false,
+                Confidentality: true,
+              },
+              value: "MID",
+            };
+          } else if (errorlvl === "HIGH") {
+            passwordInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: false,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          } else {
+            passwordInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: false,
+                Confidentality: true,
+              },
+              value: "LOW",
+            };
+          }
+        } else if (passwordInput.value === "LOW" && errorlvl !== "LOW") {
+          if (errorlvl === "MID") {
+            passwordInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: false,
+                Confidentality: true,
+              },
+              value: "MID",
+            };
+          } else if (errorlvl === "HIGH") {
+            passwordInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: false,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          }
+        } else if (passwordInput.value === "MID") {
+          if (errorlvl === "HIGH") {
+            passwordInput = {
+              cobit: {
+                Availability: true,
+                Compliance: true,
+                Reliability: false,
+                Confidentality: true,
+              },
+              value: "HIGH",
+            };
+          }
+        } else if (passwordInput.value === "HIGH") {
+          // * Do nothing - maximal value
+        }
+      }
+    }
+  }
+
   //* Check DB Version
   let testinput: ITableValues = {
     cobit: {
@@ -291,9 +475,9 @@ function prepareTabledata(balancedScorecards: IBalancedScorecard) {
 
   const scorecardTable: IScorecardTable = {
     dbversion: databaseInput,
-    userrights: balancedScorecardsInput,
-    userrightscheck: testinput,
-    password: testinput,
+    userrights: usergroupsInput,
+    userrightscheck: usergroupscheckInput,
+    password: passwordInput,
     interuptions: testinput,
     backuprestoration: testinput,
     changes: testinput,
