@@ -43,8 +43,11 @@ export default function IAudit(props: IAuditProps) {
     IBalancedScorecard | undefined
   >();
   const [tableState, settableState] = useState<IScorecardTable | undefined>();
+  const [loadingState, setloadingState] = useState<boolean | undefined>();
+
   // * Handle generate new audit
   const handleGenerateAudit = async (email: string) => {
+    setloadingState(false);
     const data = {
       email: email,
     };
@@ -94,6 +97,7 @@ export default function IAudit(props: IAuditProps) {
     setproofState(response.report.balancedScorecards);
     settableState(response.report.scorecardTable);
     console.log(response.report);
+    setloadingState(true);
   };
 
   return (
@@ -110,91 +114,103 @@ export default function IAudit(props: IAuditProps) {
           <StyledTable striped bordered hover>
             {tableState === undefined ? (
               "Results loading failed. Please contact the page admin!"
+            ) : loadingState === false ? (
+              <React.Fragment>Loading table...</React.Fragment>
             ) : (
-              <React.Fragment>
-                <thead>
-                  <tr>
-                    <th>Field</th>
-                    <th>Availability</th>
-                    <th>Compliance</th>
-                    <th>Reliability</th>
-                    <th>Confidentality</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {/* Database Version */}
-                  <TableTr
-                    description={"Database Version (supported version)"}
-                    availability={tableState.dbversion.cobit.Availability}
-                    compliance={tableState.dbversion.cobit.Compliance}
-                    reliability={tableState.dbversion.cobit.Reliability}
-                    confidentiality={tableState.dbversion.cobit.Confidentality}
-                    value={tableState.dbversion.value}
-                  />
-                  {/* User Groups */}
-                  <TableTr
-                    description={"User Groups"}
-                    availability={tableState.userrights.cobit.Availability}
-                    compliance={tableState.userrights.cobit.Compliance}
-                    reliability={tableState.userrights.cobit.Reliability}
-                    confidentiality={tableState.userrights.cobit.Confidentality}
-                    value={tableState.userrights.value}
-                  />
-                  {/* User Groups Check */}
-                  <TableTr
-                    description={"User Groups"}
-                    availability={tableState.userrightscheck.cobit.Availability}
-                    compliance={tableState.userrightscheck.cobit.Compliance}
-                    reliability={tableState.userrightscheck.cobit.Reliability}
-                    confidentiality={
-                      tableState.userrightscheck.cobit.Confidentality
-                    }
-                    value={tableState.userrightscheck.value}
-                  />
-                  {/* Password Check */}
-                  <TableTr
-                    description={"Password Check"}
-                    availability={tableState.password.cobit.Availability}
-                    compliance={tableState.password.cobit.Compliance}
-                    reliability={tableState.password.cobit.Reliability}
-                    confidentiality={tableState.password.cobit.Confidentality}
-                    value={tableState.password.value}
-                  />
-                  {/* Interuptions Check */}
-                  <TableTr
-                    description={"Interuptions"}
-                    availability={tableState.interuptions.cobit.Availability}
-                    compliance={tableState.interuptions.cobit.Compliance}
-                    reliability={tableState.interuptions.cobit.Reliability}
-                    confidentiality={
-                      tableState.interuptions.cobit.Confidentality
-                    }
-                    value={tableState.interuptions.value}
-                  />
-                  {/* Backup / Restoration Check */}
-                  <TableTr
-                    description={"Backup / Restoration"}
-                    availability={
-                      tableState.backuprestoration.cobit.Availability
-                    }
-                    compliance={tableState.backuprestoration.cobit.Compliance}
-                    reliability={tableState.backuprestoration.cobit.Reliability}
-                    confidentiality={
-                      tableState.backuprestoration.cobit.Confidentality
-                    }
-                    value={tableState.backuprestoration.value}
-                  />
-                  {/* Changes Check */}
-                  <TableTr
-                    description={"Changes Check"}
-                    availability={tableState.changes.cobit.Availability}
-                    compliance={tableState.changes.cobit.Compliance}
-                    reliability={tableState.changes.cobit.Reliability}
-                    confidentiality={tableState.changes.cobit.Confidentality}
-                    value={tableState.changes.value}
-                  />
-                </tbody>
-              </React.Fragment>
+              loadingState === true && (
+                <React.Fragment>
+                  <thead>
+                    <tr>
+                      <th>Field</th>
+                      <th>Availability</th>
+                      <th>Compliance</th>
+                      <th>Reliability</th>
+                      <th>Confidentality</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* Database Version */}
+                    <TableTr
+                      description={"Database Version (supported version)"}
+                      availability={tableState.dbversion.cobit.Availability}
+                      compliance={tableState.dbversion.cobit.Compliance}
+                      reliability={tableState.dbversion.cobit.Reliability}
+                      confidentiality={
+                        tableState.dbversion.cobit.Confidentality
+                      }
+                      value={tableState.dbversion.value}
+                    />
+                    {/* User Groups */}
+                    <TableTr
+                      description={"User Groups"}
+                      availability={tableState.userrights.cobit.Availability}
+                      compliance={tableState.userrights.cobit.Compliance}
+                      reliability={tableState.userrights.cobit.Reliability}
+                      confidentiality={
+                        tableState.userrights.cobit.Confidentality
+                      }
+                      value={tableState.userrights.value}
+                    />
+                    {/* User Groups Check */}
+                    <TableTr
+                      description={"User Groups"}
+                      availability={
+                        tableState.userrightscheck.cobit.Availability
+                      }
+                      compliance={tableState.userrightscheck.cobit.Compliance}
+                      reliability={tableState.userrightscheck.cobit.Reliability}
+                      confidentiality={
+                        tableState.userrightscheck.cobit.Confidentality
+                      }
+                      value={tableState.userrightscheck.value}
+                    />
+                    {/* Password Check */}
+                    <TableTr
+                      description={"Password Check"}
+                      availability={tableState.password.cobit.Availability}
+                      compliance={tableState.password.cobit.Compliance}
+                      reliability={tableState.password.cobit.Reliability}
+                      confidentiality={tableState.password.cobit.Confidentality}
+                      value={tableState.password.value}
+                    />
+                    {/* Interuptions Check */}
+                    <TableTr
+                      description={"Interuptions"}
+                      availability={tableState.interuptions.cobit.Availability}
+                      compliance={tableState.interuptions.cobit.Compliance}
+                      reliability={tableState.interuptions.cobit.Reliability}
+                      confidentiality={
+                        tableState.interuptions.cobit.Confidentality
+                      }
+                      value={tableState.interuptions.value}
+                    />
+                    {/* Backup / Restoration Check */}
+                    <TableTr
+                      description={"Backup / Restoration"}
+                      availability={
+                        tableState.backuprestoration.cobit.Availability
+                      }
+                      compliance={tableState.backuprestoration.cobit.Compliance}
+                      reliability={
+                        tableState.backuprestoration.cobit.Reliability
+                      }
+                      confidentiality={
+                        tableState.backuprestoration.cobit.Confidentality
+                      }
+                      value={tableState.backuprestoration.value}
+                    />
+                    {/* Changes Check */}
+                    <TableTr
+                      description={"Changes Check"}
+                      availability={tableState.changes.cobit.Availability}
+                      compliance={tableState.changes.cobit.Compliance}
+                      reliability={tableState.changes.cobit.Reliability}
+                      confidentiality={tableState.changes.cobit.Confidentality}
+                      value={tableState.changes.value}
+                    />
+                  </tbody>
+                </React.Fragment>
+              )
             )}
           </StyledTable>
           <div>
