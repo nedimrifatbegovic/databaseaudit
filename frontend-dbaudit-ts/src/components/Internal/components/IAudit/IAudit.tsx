@@ -111,27 +111,28 @@ export default function IAudit(props: IAuditProps) {
         <React.Fragment>
           {/* Show Balanced Scorecards Results */}
           <CustomHr />
+          <p>{description.auditdescription}</p>
           <StyledTable striped bordered hover>
             {tableState === undefined ? (
-              "Results loading failed. Please contact the page admin!"
+              <React.Fragment>{description.loadingFailed}</React.Fragment>
             ) : loadingState === false ? (
-              <React.Fragment>Loading table...</React.Fragment>
+              <React.Fragment>{description.loadingMessage}</React.Fragment>
             ) : (
               loadingState === true && (
                 <React.Fragment>
                   <thead>
                     <tr>
-                      <th>Field</th>
-                      <th>Availability</th>
-                      <th>Compliance</th>
-                      <th>Reliability</th>
-                      <th>Confidentality</th>
+                      <th>{description.field}</th>
+                      <th>{description.availability}</th>
+                      <th>{description.compliance}</th>
+                      <th>{description.reliability}</th>
+                      <th>{description.confidentiality}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {/* Database Version */}
                     <TableTr
-                      description={"Database Version (supported version)"}
+                      description={description.databaseVersion}
                       availability={tableState.dbversion.cobit.Availability}
                       compliance={tableState.dbversion.cobit.Compliance}
                       reliability={tableState.dbversion.cobit.Reliability}
@@ -142,7 +143,7 @@ export default function IAudit(props: IAuditProps) {
                     />
                     {/* User Groups */}
                     <TableTr
-                      description={"User Groups"}
+                      description={description.userGroups}
                       availability={tableState.userrights.cobit.Availability}
                       compliance={tableState.userrights.cobit.Compliance}
                       reliability={tableState.userrights.cobit.Reliability}
@@ -153,7 +154,7 @@ export default function IAudit(props: IAuditProps) {
                     />
                     {/* User Groups Check */}
                     <TableTr
-                      description={"User Groups"}
+                      description={description.userGroupsRights}
                       availability={
                         tableState.userrightscheck.cobit.Availability
                       }
@@ -166,7 +167,7 @@ export default function IAudit(props: IAuditProps) {
                     />
                     {/* Password Check */}
                     <TableTr
-                      description={"Password Check"}
+                      description={description.passwordCheck}
                       availability={tableState.password.cobit.Availability}
                       compliance={tableState.password.cobit.Compliance}
                       reliability={tableState.password.cobit.Reliability}
@@ -175,7 +176,7 @@ export default function IAudit(props: IAuditProps) {
                     />
                     {/* Interuptions Check */}
                     <TableTr
-                      description={"Interuptions"}
+                      description={description.interuptionsCheck}
                       availability={tableState.interuptions.cobit.Availability}
                       compliance={tableState.interuptions.cobit.Compliance}
                       reliability={tableState.interuptions.cobit.Reliability}
@@ -186,7 +187,7 @@ export default function IAudit(props: IAuditProps) {
                     />
                     {/* Backup / Restoration Check */}
                     <TableTr
-                      description={"Backup / Restoration"}
+                      description={description.backuprestorationCheck}
                       availability={
                         tableState.backuprestoration.cobit.Availability
                       }
@@ -201,7 +202,7 @@ export default function IAudit(props: IAuditProps) {
                     />
                     {/* Changes Check */}
                     <TableTr
-                      description={"Changes Check"}
+                      description={description.changesCheck}
                       availability={tableState.changes.cobit.Availability}
                       compliance={tableState.changes.cobit.Compliance}
                       reliability={tableState.changes.cobit.Reliability}
