@@ -169,6 +169,7 @@ export interface IBalancedScorecard {
 export interface ICombinedScorecard {
   balancedScorecards: IBalancedScorecard;
   scorecardTable: IScorecardTable;
+  error500?: { message: string };
 }
 
 // * Defines the Fields of the Scorecard

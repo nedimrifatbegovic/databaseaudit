@@ -320,22 +320,42 @@ const checkInternalAudit = async (email: string) => {
     .execute();
 
   const auditorid = internalAuditorId[0].internal_auditor_internalAuditorId;
+
   if (auditorid === undefined) {
     // * If the internal auditor has not been found
+    console.log("User not found : " + auditorid);
     return undefined;
   }
 
   // * Check if any audits for id x
-  const audit = await auditRepository
-    .createQueryBuilder("audit")
-    // .where("email = :email", { email: email })
-    .execute();
+  const audit = await auditRepository.createQueryBuilder("audit").execute();
 
   if (audit.length === 0) {
     return 0;
+  } else {
+    return auditorid;
   }
+
+  // * Get internal auditors ids (added to the audit)
+  const internalAuditorPreload = await auditRepository
+    .createQueryBuilder("audit")
+    .leftJoinAndSelect(
+      "audit.internalAuditors",
+      "internal_auditor",
+      "internal_auditor.internalAuditorId = :internalAuditorId",
+      { internalAuditorId: auditorid }
+    )
+    .getMany();
+
+  // TODO: * Get audits without external auditors (find internal audit - if any)
+
+  // console.log("AUDIT 2");
+  // console.log(internalAuditorPreload[0].internalAuditors[0]);
+
   // * If yes check if any audit without external auditor
+
   // * If yes return audit id
+
   // * If no return 0
 };
 
@@ -370,7 +390,7 @@ const internalReport = async (email: string) => {
   // * Check if audit exists
   const auditCheck: undefined | number = await checkInternalAudit(email);
   let auditid: undefined | number;
-
+  console.log("AUDIT CHECK: ", auditCheck);
   if (auditCheck === undefined) {
     const error500 = {
       message: "ERROR 500: Audit failed. User not found",

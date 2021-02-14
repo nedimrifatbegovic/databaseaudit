@@ -114,7 +114,10 @@ export default function IAudit(props: IAuditProps) {
           <p>{description.auditdescription}</p>
           <StyledTable striped bordered hover>
             {tableState === undefined ? (
-              <React.Fragment>{description.loadingFailed}</React.Fragment>
+              <React.Fragment>
+                <div>{description.loadingFailed}</div>
+                <div>{reportState.report.message}</div>
+              </React.Fragment>
             ) : loadingState === false ? (
               <React.Fragment>{description.loadingMessage}</React.Fragment>
             ) : (
