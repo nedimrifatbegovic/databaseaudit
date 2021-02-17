@@ -52,7 +52,8 @@ export default function IAudit(props: IAuditProps) {
       email: email,
     };
     const response: ResponseProps | any = await generateReport(data);
-    setreportState(response);
+
+    setreportState(response.report);
 
     // export interface IBalancedScorecard {
     //   dbversion: IERROR | IDBVersion;
@@ -94,8 +95,8 @@ export default function IAudit(props: IAuditProps) {
     //   level?: string;
     //   errordescription?: string;
     // }
-    setproofState(response.report.balancedScorecards);
-    settableState(response.report.scorecardTable);
+    setproofState(response.report.report.balancedScorecards);
+    settableState(response.report.report.scorecardTable);
     console.log(response.report);
     setloadingState(true);
   };
@@ -115,8 +116,8 @@ export default function IAudit(props: IAuditProps) {
           <StyledTable striped bordered hover>
             {tableState === undefined ? (
               <React.Fragment>
-                <div>{description.loadingFailed}</div>
-                <div>{reportState.report.message}</div>
+                <p>{description.loadingFailed}</p>
+                <p>{reportState.report.message}</p>
               </React.Fragment>
             ) : loadingState === false ? (
               <React.Fragment>{description.loadingMessage}</React.Fragment>

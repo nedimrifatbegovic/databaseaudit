@@ -3,6 +3,7 @@ import { ICombinedScorecard, generateReport } from "./ReportQueries";
 import { Audit } from "../entity/Audit";
 import { Config } from "../entity/Config";
 import { InternalAuditor } from "../entity/InternalAuditor";
+import { Report } from "../entity/Report";
 import { getConnection } from "typeorm";
 
 const getCredentials = async (email: string, password: string) => {
@@ -307,7 +308,7 @@ const updateConfigValue = async (
   }
 };
 
-// TODO: * Chech if internal audit exists
+// * Chech if internal audit exists
 const checkInternalAudit = async (email: string) => {
   // ! If no return 0, if yes return id number
   const connection = getConnection();
@@ -333,32 +334,35 @@ const checkInternalAudit = async (email: string) => {
   if (audit.length === 0) {
     return 0;
   } else {
+    // * Get internal auditors ids (added to the audit)
+    const internalAuditorPreload = await auditRepository
+      .createQueryBuilder("audit")
+      .leftJoinAndSelect(
+        "audit.internalAuditors",
+        "internal_auditor",
+        "internal_auditor.internalAuditorId = :internalAuditorId",
+        { internalAuditorId: auditorid }
+      )
+      .getMany();
+
+    // * Get audits without external auditors (find internal audit - if any)
+    for (let i: number = 0; i < internalAuditorPreload.length; i++) {
+      if (internalAuditorPreload[i].externalAuditors === undefined) {
+        // * If yes return audit id
+        return internalAuditorPreload[i].auditId;
+      }
+
+      if (internalAuditorPreload[i].externalAuditors.length === 0) {
+        // * If yes return audit id
+        return internalAuditorPreload[i].auditId;
+      }
+    }
+
     return auditorid;
   }
-
-  // * Get internal auditors ids (added to the audit)
-  const internalAuditorPreload = await auditRepository
-    .createQueryBuilder("audit")
-    .leftJoinAndSelect(
-      "audit.internalAuditors",
-      "internal_auditor",
-      "internal_auditor.internalAuditorId = :internalAuditorId",
-      { internalAuditorId: auditorid }
-    )
-    .getMany();
-
-  // TODO: * Get audits without external auditors (find internal audit - if any)
-
-  // console.log("AUDIT 2");
-  // console.log(internalAuditorPreload[0].internalAuditors[0]);
-
-  // * If yes check if any audit without external auditor
-
-  // * If yes return audit id
-
-  // * If no return 0
 };
 
+// * Generate internal audit (add to database)
 const createInternalAudit = async (email: string) => {
   const connection = getConnection();
   console.log("__START__");
@@ -385,12 +389,54 @@ const createInternalAudit = async (email: string) => {
   return result.auditId;
 };
 
-// TODO: * Generate internal audit & report
+// * Add report to datbaase
+const addReport = async (auditid: number, report: ICombinedScorecard) => {
+  const connection = getConnection();
+  const reportConnection = new Report();
+  // * Convert object to json object
+  var jsontxt = JSON.stringify(report);
+  var jsonobject = JSON.parse(jsontxt);
+  reportConnection.scorecard = jsonobject;
+
+  // * Get audit
+  const auditpreload = await Audit.findOne({
+    where: {
+      auditId: auditid,
+    },
+  });
+
+  reportConnection.audit = auditpreload;
+
+  // * Set date
+  var today = new Date();
+  reportConnection.createdAt = today;
+
+  const result = await connection.manager.save(reportConnection);
+  return result.reportId;
+};
+
+// * Get report created date
+const getReportCreatedDate = async (reportid: number) => {
+  // const connection = getConnection();
+  console.log("__START__");
+  const reportpreload = await Report.findOne({
+    where: {
+      reportId: reportid,
+    },
+  });
+  if (reportpreload !== undefined) {
+    return reportpreload.createdAt;
+  } else {
+    return undefined;
+  }
+};
+
+// * Generate internal audit & report
 const internalReport = async (email: string) => {
   // * Check if audit exists
   const auditCheck: undefined | number = await checkInternalAudit(email);
   let auditid: undefined | number;
-  console.log("AUDIT CHECK: ", auditCheck);
+
   if (auditCheck === undefined) {
     const error500 = {
       message: "ERROR 500: Audit failed. User not found",
@@ -415,7 +461,19 @@ const internalReport = async (email: string) => {
   }
   // * If yes , generate report
   const report: ICombinedScorecard = await generateReport(email);
-  return report;
+
+  // * Save report in DB for specific audit
+  const reportid: number = await addReport(auditid, report);
+
+  // * Get report created date
+  let reportDate: Date | undefined = await getReportCreatedDate(reportid);
+  reportDate.setHours(reportDate.getHours() + 1);
+  const fullreport = {
+    report: report,
+    reportDate: reportDate,
+  };
+
+  return fullreport;
 };
 
 /* Export queries */
@@ -426,4 +484,5 @@ export = {
   checkConfiguration: checkConfiguration,
   updateConfigValue: updateConfigValue,
   internalReport: internalReport,
+  addReport: addReport,
 };
