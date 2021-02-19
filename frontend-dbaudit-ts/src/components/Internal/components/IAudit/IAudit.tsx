@@ -48,6 +48,7 @@ export default function IAudit(props: IAuditProps) {
   >();
   const [tableState, settableState] = useState<IScorecardTable | undefined>();
   const [loadingState, setloadingState] = useState<boolean | undefined>();
+
   const initialAudit: AuditStateProps = {
     auditstate: "non",
   };
@@ -201,6 +202,7 @@ export default function IAudit(props: IAuditProps) {
           </StyledTable>
           {loadingState === true && (
             <div>
+              {/* Download table - balanced scorecards */}
               <CustomButton onClick={() => handleGenerateAudit(props.email)}>
                 {description.buttontable}
               </CustomButton>
