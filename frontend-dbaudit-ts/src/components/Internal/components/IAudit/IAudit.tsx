@@ -4,10 +4,10 @@ import {
   IScorecardTable,
 } from "../../../../assets/interfaces/Interfaces";
 import React, { useState } from "react";
+import { Spinner, Table } from "react-bootstrap";
 
 import { CustomButton } from "../../../../style/CustomButton";
 import { CustomHr } from "../../../../style/CustomHr";
-import { Table } from "react-bootstrap";
 import TableTr from "./components/TableTr";
 import { description } from "./IAudit.resources";
 import { generateReport } from "./api/report";
@@ -34,6 +34,10 @@ interface ResponseProps {
   report: ICombinedScorecard;
 }
 
+interface AuditStateProps {
+  auditstate: "non" | "loading";
+}
+
 export default function IAudit(props: IAuditProps) {
   const [reportState, setreportState] = useState<
     ResponseProps | undefined | any
@@ -44,9 +48,17 @@ export default function IAudit(props: IAuditProps) {
   >();
   const [tableState, settableState] = useState<IScorecardTable | undefined>();
   const [loadingState, setloadingState] = useState<boolean | undefined>();
+  const initialAudit: AuditStateProps = {
+    auditstate: "non",
+  };
+  const [auditState, setauditState] = useState<AuditStateProps>(initialAudit);
 
   // * Handle generate new audit
   const handleGenerateAudit = async (email: string) => {
+    let loading: AuditStateProps = {
+      auditstate: "loading",
+    };
+    setauditState(loading);
     setloadingState(false);
     const data = {
       email: email,
@@ -54,51 +66,13 @@ export default function IAudit(props: IAuditProps) {
     const response: ResponseProps | any = await generateReport(data);
 
     setreportState(response.report);
-
-    // export interface IBalancedScorecard {
-    //   dbversion: IERROR | IDBVersion;
-    //   usergroups: IERROR | any[];
-    //   usergroupscheck: ICheckUserGroupsStatus | undefined;
-    //   users: IERROR | any[];
-    //   passwords: IERROR | IPasswordCheck[];
-    //   ticketsystem: ITicketSystemReply[];
-    // }
-
-    // export interface ICombinedScorecard {
-    //   balancedScorecards: IBalancedScorecard;
-    //   scorecardTable: IScorecardTable;
-    // }
-
-    // export interface ITableValues {
-    //   cobit: ICOBITFIELDS;
-    //   value: "LOW" | "MID" | "HIGH" | "OK";
-    // }
-
-    // export interface IScorecardTable {
-    //   // * I - Format Table - DB Version
-    //   dbversion: ITableValues;
-    //   // * II - PO2.3 - User Rights
-    //   userrights: ITableValues;
-    //   // * III - PO2.3 - DBA Users (Admin Rights)
-    //   userrightscheck: ITableValues;
-    //   // * IV - DS5 / EU Policy - Password check
-    //   password: ITableValues;
-    //   //* V - AC 4 - Interuptions
-    //   interuptions: ITableValues;
-    //   // * VI - DS11.5 - Backup, Restoration
-    //   backuprestoration: ITableValues;
-    //   //* VII - AI 6.1, AI 6.2 - Changes Cobit
-    //   changes: ITableValues;
-    // }
-
-    // export interface IERROR {
-    //   level?: string;
-    //   errordescription?: string;
-    // }
     setproofState(response.report.report.balancedScorecards);
     settableState(response.report.report.scorecardTable);
-    console.log(response.report);
     setloadingState(true);
+    loading = {
+      auditstate: "non",
+    };
+    setauditState(loading);
   };
 
   return (
@@ -108,6 +82,13 @@ export default function IAudit(props: IAuditProps) {
         {description.buttonaudit}
       </CustomButton>
       {/* Show balanced scorecard */}
+      {auditState.auditstate === "loading" ? (
+        <div>
+          <Spinner animation="grow" variant="info" />
+        </div>
+      ) : (
+        ""
+      )}
       {reportState !== undefined && reportState.report !== undefined ? (
         <React.Fragment>
           {/* Show Balanced Scorecards Results */}
@@ -123,7 +104,7 @@ export default function IAudit(props: IAuditProps) {
               <React.Fragment>{description.loadingMessage}</React.Fragment>
             ) : (
               loadingState === true && (
-                <React.Fragment>
+                <div>
                   <thead>
                     <tr>
                       <th>{description.field}</th>
@@ -214,20 +195,21 @@ export default function IAudit(props: IAuditProps) {
                       value={tableState.changes.value}
                     />
                   </tbody>
-                </React.Fragment>
+                </div>
               )
             )}
           </StyledTable>
-          <div>
-            {/* Download Balanced Scorecards Results */}
-            <CustomButton onClick={() => handleGenerateAudit(props.email)}>
-              {description.buttontable}
-            </CustomButton>
-            {/* Download Balanced Scorecards Proof */}
-            <CustomButton onClick={() => handleGenerateAudit(props.email)}>
-              {description.buttonproof}
-            </CustomButton>
-          </div>
+          {loadingState === true && (
+            <div>
+              <CustomButton onClick={() => handleGenerateAudit(props.email)}>
+                {description.buttontable}
+              </CustomButton>
+              {/* Download Balanced Scorecards Proof */}
+              <CustomButton onClick={() => handleGenerateAudit(props.email)}>
+                {description.buttonproof}
+              </CustomButton>
+            </div>
+          )}
         </React.Fragment>
       ) : (
         ""
