@@ -6,6 +6,7 @@ import {
 import React, { useState } from "react";
 import { Spinner, Table } from "react-bootstrap";
 
+import BalancedScorecard from "./components/BalancedScorecard";
 import { CustomButton } from "../../../../style/CustomButton";
 import { CustomHr } from "../../../../style/CustomHr";
 import TableTr from "./components/TableTr";
@@ -203,13 +204,105 @@ export default function IAudit(props: IAuditProps) {
           {loadingState === true && (
             <div>
               {/* Download table - balanced scorecards */}
-              <CustomButton onClick={() => handleGenerateAudit(props.email)}>
-                {description.buttontable}
-              </CustomButton>
+              {tableState !== undefined ? (
+                <BalancedScorecard
+                  field={description.field}
+                  availability={description.availability}
+                  compliance={description.compliance}
+                  reliability={description.reliability}
+                  confidentiality={description.confidentiality}
+                  databaseVersion={description.databaseVersion}
+                  dbversionAvailability={
+                    tableState.dbversion.cobit.Availability
+                  }
+                  dbversionCompliance={tableState.dbversion.cobit.Compliance}
+                  dbversionReliability={tableState.dbversion.cobit.Reliability}
+                  dbversionConfidentality={
+                    tableState.dbversion.cobit.Confidentality
+                  }
+                  dbversionvalue={tableState.dbversion.value}
+                  userGroups={description.userGroups}
+                  userrightsAvailability={
+                    tableState.userrights.cobit.Availability
+                  }
+                  userrightsCompliance={tableState.userrights.cobit.Compliance}
+                  userrightsReliability={
+                    tableState.userrights.cobit.Reliability
+                  }
+                  userrightsConfidentality={
+                    tableState.userrights.cobit.Confidentality
+                  }
+                  userrightsvalue={tableState.userrights.value}
+                  userGroupsRights={description.userGroupsRights}
+                  userrightscheckAvailability={
+                    tableState.userrightscheck.cobit.Availability
+                  }
+                  userrightscheckCompliance={
+                    tableState.userrightscheck.cobit.Compliance
+                  }
+                  userrightscheckReliability={
+                    tableState.userrightscheck.cobit.Reliability
+                  }
+                  userrightscheckConfidentality={
+                    tableState.userrightscheck.cobit.Confidentality
+                  }
+                  userrightscheckvalue={tableState.userrightscheck.value}
+                  passwordCheck={description.passwordCheck}
+                  passwordAvailability={tableState.password.cobit.Availability}
+                  passwordCompliance={tableState.password.cobit.Compliance}
+                  passwordReliability={tableState.password.cobit.Reliability}
+                  passwordConfidentality={
+                    tableState.password.cobit.Confidentality
+                  }
+                  passwordvalue={tableState.password.value}
+                  interuptionsCheck={description.interuptionsCheck}
+                  interuptionsAvailability={
+                    tableState.interuptions.cobit.Availability
+                  }
+                  interuptionsCompliance={
+                    tableState.interuptions.cobit.Compliance
+                  }
+                  interuptionsReliability={
+                    tableState.interuptions.cobit.Reliability
+                  }
+                  interuptionsConfidentality={
+                    tableState.interuptions.cobit.Confidentality
+                  }
+                  interuptionsvalue={tableState.interuptions.value}
+                  backuprestorationCheck={description.backuprestorationCheck}
+                  backuprestorationAvailability={
+                    tableState.backuprestoration.cobit.Availability
+                  }
+                  backuprestorationCompliance={
+                    tableState.backuprestoration.cobit.Compliance
+                  }
+                  backuprestorationReliability={
+                    tableState.backuprestoration.cobit.Reliability
+                  }
+                  backuprestorationConfidentality={
+                    tableState.backuprestoration.cobit.Confidentality
+                  }
+                  backuprestorationvalue={tableState.backuprestoration.value}
+                  changesCheck={description.changesCheck}
+                  changesAvailability={tableState.changes.cobit.Availability}
+                  changesCompliance={tableState.changes.cobit.Compliance}
+                  changesReliability={tableState.changes.cobit.Reliability}
+                  changesConfidentality={
+                    tableState.changes.cobit.Confidentality
+                  }
+                  changesvalue={tableState.changes.value}
+                  buttondescription={description.buttontable}
+                />
+              ) : (
+                ""
+              )}
               {/* Download Balanced Scorecards Proof */}
-              <CustomButton onClick={() => handleGenerateAudit(props.email)}>
-                {description.buttonproof}
-              </CustomButton>
+              {/* <ReactToPrint
+                trigger={() => (
+                  <CustomButton>{description.buttonproof}</CustomButton>
+                )}
+                content={() => componentRef.current}
+              /> */}
             </div>
           )}
         </React.Fragment>
