@@ -96,16 +96,17 @@ export default function IAudit(props: IAuditProps) {
           {/* Show Balanced Scorecards Results */}
           <CustomHr />
           <p>{description.auditdescription}</p>
-          <StyledTable striped bordered hover>
-            {tableState === undefined ? (
-              <React.Fragment>
-                <p>{description.loadingFailed}</p>
-                <p>{reportState.report.message}</p>
-              </React.Fragment>
-            ) : loadingState === false ? (
-              <React.Fragment>{description.loadingMessage}</React.Fragment>
-            ) : (
-              loadingState === true && (
+
+          {tableState === undefined ? (
+            <React.Fragment>
+              <p>{description.loadingFailed}</p>
+              <p>{reportState.report.message}</p>
+            </React.Fragment>
+          ) : loadingState === false ? (
+            <React.Fragment>{description.loadingMessage}</React.Fragment>
+          ) : (
+            loadingState === true && (
+              <StyledTable striped bordered hover>
                 <div>
                   <thead>
                     <tr>
@@ -198,9 +199,9 @@ export default function IAudit(props: IAuditProps) {
                     />
                   </tbody>
                 </div>
-              )
-            )}
-          </StyledTable>
+              </StyledTable>
+            )
+          )}
           {loadingState === true && (
             <div>
               {/* Download table - balanced scorecards */}

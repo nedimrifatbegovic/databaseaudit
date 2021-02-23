@@ -69,7 +69,15 @@ export default function BalancedScorecard(props: BalancedScorecardProps) {
     <React.Fragment>
       <div style={{ display: "none" }}>
         <div
-          style={{ margin: "1rem", padding: "1rem", fontSize: "2rem" }}
+          style={{
+            margin: "1rem",
+            padding: "1rem",
+            fontSize: "1.8rem",
+            alignContent: "center",
+            alignItems: "center",
+            alignSelf: "center",
+            textAlign: "center",
+          }}
           ref={componentRef}
         >
           <thead>
