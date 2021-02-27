@@ -33,6 +33,7 @@ interface IAuditProps {
 
 interface ResponseProps {
   report: ICombinedScorecard;
+  reportDate: Date | undefined;
 }
 
 interface AuditStateProps {
@@ -293,6 +294,8 @@ export default function IAudit(props: IAuditProps) {
                   }
                   changesvalue={tableState.changes.value}
                   buttondescription={description.buttontable}
+                  reportdate={reportState.reportDate}
+                  reportcompany={reportState.reportCompany}
                 />
               ) : (
                 ""

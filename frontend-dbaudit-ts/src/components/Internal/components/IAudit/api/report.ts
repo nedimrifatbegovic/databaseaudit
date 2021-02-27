@@ -7,6 +7,7 @@ interface InternalReportProps {
 interface ResponseProps {
   report: ICombinedScorecard;
   reportDate: Date | undefined;
+  reportCompany: string;
 }
 
 export async function generateReport(data: InternalReportProps) {

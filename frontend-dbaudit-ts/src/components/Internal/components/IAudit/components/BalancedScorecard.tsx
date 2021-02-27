@@ -62,6 +62,8 @@ export interface BalancedScorecardProps {
   changesvalue: string;
   // * Button
   buttondescription: string;
+  reportdate: Date;
+  reportcompany: string;
 }
 export default function BalancedScorecard(props: BalancedScorecardProps) {
   const componentRef = useRef<HTMLDivElement>(null);
@@ -80,6 +82,9 @@ export default function BalancedScorecard(props: BalancedScorecardProps) {
           }}
           ref={componentRef}
         >
+          <h2>Company: {props.reportcompany}</h2>
+          <h3>Audit date: {props.reportdate}</h3>
+          <hr />
           <thead>
             <tr>
               <th>{props.field}</th>

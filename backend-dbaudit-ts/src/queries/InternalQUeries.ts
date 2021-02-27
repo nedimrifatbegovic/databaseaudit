@@ -468,12 +468,40 @@ const internalReport = async (email: string) => {
   // * Get report created date
   let reportDate: Date | undefined = await getReportCreatedDate(reportid);
   reportDate.setHours(reportDate.getHours() + 1);
+  let date =
+    reportDate.getDate() +
+    "-" +
+    (reportDate.getMonth() + 1) +
+    "-" +
+    reportDate.getFullYear();
+
+  // * Get company name
+  const companyName: string = await getInternalCompanyname(email);
+
   const fullreport = {
     report: report,
-    reportDate: reportDate,
+    reportDate: date,
+    reportCompany: companyName,
   };
 
   return fullreport;
+};
+
+const getInternalCompanyname = async (email: string) => {
+  const connection = getConnection();
+  const internalRepository = connection.getRepository(InternalAuditor);
+  console.log("__START__");
+  const credentials = await internalRepository
+    .createQueryBuilder("internal_auditor")
+    .where("email = :email", { email: email })
+    .getOne();
+  console.log("__END__");
+
+  if (credentials.companyName) {
+    return credentials.companyName;
+  } else {
+    return "Company name has not been added.";
+  }
 };
 
 /* Export queries */
@@ -485,4 +513,5 @@ export = {
   updateConfigValue: updateConfigValue,
   internalReport: internalReport,
   addReport: addReport,
+  getInternalCompanyname: getInternalCompanyname,
 };

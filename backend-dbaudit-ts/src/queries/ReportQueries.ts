@@ -25,7 +25,6 @@ import { InternalAuditor } from "../entity/InternalAuditor";
 import atob from "atob";
 import { errorLevel } from "../client/config/mariadbConfig";
 import { getConnection } from "typeorm";
-import { config } from "process";
 
 export interface IERROR {
   level?: string;
