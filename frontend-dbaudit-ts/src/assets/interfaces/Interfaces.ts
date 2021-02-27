@@ -156,11 +156,11 @@ export interface IAddUser {
 // * Report interfaces
 // -- Balanced Scorecards --
 export interface IBalancedScorecard {
-  dbversion: IERROR | IDBVersion;
-  usergroups: IERROR | any[];
+  dbversion: IDBVersion;
+  usergroups: IUserGroups | IUserGroups[];
   usergroupscheck: ICheckUserGroupsStatus | undefined;
-  users: IERROR | any[];
-  passwords: IERROR | IPasswordCheck[];
+  // users: IERROR | any[];
+  passwords: IPasswordCheck | IPasswordCheck[];
   ticketsystem: ITicketSystemReply[];
 }
 
@@ -206,8 +206,14 @@ export interface IScorecardTable {
 
 // -- User Groups Reply (issues) --
 export interface ICheckUserGroupsStatus {
-  errors: IERROR[] | undefined;
-  userGroups: any[] | undefined;
+  errors: IUGError[];
+}
+
+export interface IUGError {
+  type: string;
+  level: string;
+  userid: undefined;
+  description: string;
 }
 
 // -- Error Interface --
@@ -222,12 +228,16 @@ export interface IPasswordCheck {
   error?: string;
   userid?: number;
   level?: string;
+  // * If the test was not possible
+  errordescription?: string;
 }
 
 // -- Database Version Interface --
 export interface IDBVersion {
   version: string;
   status: boolean;
+  level?: string;
+  errordescription?: string;
 }
 
 // -- Ticket System Reply Interface --
@@ -251,4 +261,6 @@ export interface ITSComments {
 // -- User Groups Interface --
 export interface IUserGroups {
   GroupName: string;
+  level?: string;
+  errordescription?: string;
 }

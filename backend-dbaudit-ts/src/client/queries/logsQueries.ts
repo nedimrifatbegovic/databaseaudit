@@ -149,10 +149,15 @@ export async function checkTSTickets(
           assignee = fields.assignee.name;
         }
 
+        // * Get ticket description
+        let ticketdescription = tsTicket["fields"]["description"];
+
         const errormsg: ITicketSystemReply = {
           logid: logs[i][logsId],
           ticketComments: commentsArray,
           ticketStatus: ticketStatus,
+          assignee: assignee,
+          ticketDescription: ticketdescription,
         };
         response.push(errormsg);
       }

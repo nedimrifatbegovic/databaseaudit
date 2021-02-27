@@ -1,7 +1,7 @@
 export const description = {
   buttonaudit: "Generate Report",
   buttontable: "Download Table",
-  buttonproof: "Download Full Report",
+  buttonproof: "Download Report Proof",
   loadingFailed: "Results loading failed. Please contact the page admin!",
   loadingMessage: "Loading table...",
   field: "Field",

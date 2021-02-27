@@ -9,6 +9,7 @@ import { Spinner, Table } from "react-bootstrap";
 import BalancedScorecard from "./components/BalancedScorecard";
 import { CustomButton } from "../../../../style/CustomButton";
 import { CustomHr } from "../../../../style/CustomHr";
+import Proof from "./components/Proof";
 import TableTr from "./components/TableTr";
 import { description } from "./IAudit.resources";
 import { generateReport } from "./api/report";
@@ -301,12 +302,14 @@ export default function IAudit(props: IAuditProps) {
                 ""
               )}
               {/* Download Balanced Scorecards Proof */}
-              {/* <ReactToPrint
-                trigger={() => (
-                  <CustomButton>{description.buttonproof}</CustomButton>
-                )}
-                content={() => componentRef.current}
-              /> */}
+              {proofState !== undefined && (
+                <Proof
+                  proof={proofState}
+                  buttondescription={description.buttonproof}
+                  reportdate={reportState.reportDate}
+                  reportcompany={reportState.reportCompany}
+                />
+              )}
             </div>
           )}
         </React.Fragment>
