@@ -57,9 +57,9 @@ export async function checkTSTickets(
   jiraLink: string
 ) {
   let response: ITicketSystemReply[] = [];
-  let commentsArray: ITSComments[] = [];
 
   for (let i: number = 0; i < logs.length; i++) {
+    let commentsArray: ITSComments[] = [];
     if (oauth === undefined) {
       //* Handle oAuth undefined
       const errormsg: ITicketSystemReply = {
