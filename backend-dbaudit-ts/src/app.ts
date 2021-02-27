@@ -76,20 +76,13 @@ import cors from "cors";
     }
   );
 
-  // TODO: Get all reports for specific ID
-  app.get(
-    "/allreport/:id",
-    (req: Request, res: Response, next: NextFunction) => {
-      res.send("Hello World");
-    }
-  );
-
-  // TODO: Get report for specific ID
-  app.get("/report/:id", (req: Request, res: Response, next: NextFunction) => {
-    res.send("Hello World");
+  // Get all reports for specific ID
+  app.post("/allreports", async function (req: Request, res: Response) {
+    const response = await InternalQUeries.loadAllReports(req.body.email);
+    return res.send(response);
   });
 
-  //  * Calls for the Admin
+  // Calls for the Admin
   app.post("/loadinternal", async function (req: Request, res: Response) {
     // console.log("Load internal data received: ", req.body);
     const response = await AdminQueries.getInternal(
@@ -178,7 +171,7 @@ import cors from "cors";
     return res.send(response);
   });
 
-  //   * Calls for internal auditors
+  // Calls for internal auditors
   app.post("/internalpassword", async function (req: Request, res: Response) {
     let result: boolean = false;
     if (req.body !== undefined) {

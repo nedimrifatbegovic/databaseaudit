@@ -504,6 +504,10 @@ const getInternalCompanyname = async (email: string) => {
   }
 };
 
+const loadAllReports = async (email: string) => {
+  // TODO: Load all audits and reports for internal user
+};
+
 /* Export queries */
 export = {
   getCredentials: getCredentials,
@@ -514,4 +518,5 @@ export = {
   internalReport: internalReport,
   addReport: addReport,
   getInternalCompanyname: getInternalCompanyname,
+  loadAllReports: loadAllReports,
 };
