@@ -76,6 +76,17 @@ import cors from "cors";
     }
   );
 
+  // Get all unresolved requests (where config is not working - issue auditing)
+  app.post("/unresolvedrequests", async function (req: Request, res: Response) {
+    const response = await InternalQUeries.getUnresolvedRequests(
+      req.body.email
+    );
+    const output = {
+      report: response,
+    };
+    return res.send(output);
+  });
+
   // Get all reports for specific ID
   app.post("/allreports", async function (req: Request, res: Response) {
     const response = await InternalQUeries.loadAllReports(req.body.email);
@@ -228,14 +239,6 @@ import cors from "cors";
   // TODO: Get external auditors for specific internal auditor
   app.get(
     "/externalauditors/:id",
-    (req: Request, res: Response, next: NextFunction) => {
-      res.send("Hello World");
-    }
-  );
-
-  // TODO: Get details on a specific audit (previous audits, reports, status)
-  app.get(
-    "/externalauditor/:id",
     (req: Request, res: Response, next: NextFunction) => {
       res.send("Hello World");
     }

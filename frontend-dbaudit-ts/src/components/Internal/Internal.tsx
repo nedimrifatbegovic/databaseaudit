@@ -1,5 +1,7 @@
 import IAllReports from "./components/IAllReports/IAllReports";
 import IAudit from "./components/IAudit/IAudit";
+import IOverviewRequests from "./components/IOverviewRequests/IOverviewRequests";
+import IPendingRequests from "./components/IPendingRequests/IPendingRequests";
 import React from "react";
 import { description } from "./Internal.resources";
 
@@ -16,10 +18,10 @@ export default function Internal(props: IInternalProps) {
       <IAudit email={props.email} />
       <hr />
       <h3>{description.configRequestTitle}</h3>
-      <p>TODO: 2 List of pending requests</p>
+      <IPendingRequests email={props.email} />
       <hr />
       <h3>{description.overviewTitle}</h3>
-      <p>TODO: 3 List of pending requests</p>
+      <IOverviewRequests />
       <hr />
       <h3>{description.previousAuditsTitle}</h3>
       <IAllReports email={props.email} />

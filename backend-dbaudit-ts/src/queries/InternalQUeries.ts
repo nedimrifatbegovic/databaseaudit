@@ -588,6 +588,71 @@ const getReports = async (audit: Audit) => {
   }
 };
 
+// * Interface for unresolved requests
+interface UnresolvedRequestsInterface {
+  auditid?: number;
+  externalauditoremail?: string;
+  externalauditorid?: number;
+  error?: string;
+}
+
+// * Get all unresolved requests (config or something else not working)
+const getUnresolvedRequests = async (email: string) => {
+  const connection = getConnection();
+  const internalRepository = connection.getRepository(InternalAuditor);
+  const auditRepository = connection.getRepository(Audit);
+  // * Get internal auditor id
+  const internalAuditorId = await internalRepository
+    .createQueryBuilder("internal_auditor")
+    .where("email = :email", { email: email })
+    .execute();
+
+  let unresolvedrequests: UnresolvedRequestsInterface[] = [];
+  if (internalAuditorId[0].internal_auditor_internalAuditorId !== undefined) {
+    const auditorid = internalAuditorId[0].internal_auditor_internalAuditorId;
+
+    const internalAuditorPreload = await auditRepository
+      .createQueryBuilder("audit")
+      .leftJoinAndSelect(
+        "audit.internalAuditors",
+        "internal_auditor",
+        "internal_auditor.internalAuditorId = :internalAuditorId",
+        { internalAuditorId: auditorid }
+      )
+      .getMany();
+
+    for (let i: number = 0; i < internalAuditorPreload.length; i++) {
+      if (internalAuditorPreload[i].resolved === false) {
+        if (
+          internalAuditorPreload[i].externalAuditors[0] !== undefined &&
+          internalAuditorPreload[i].externalAuditors.length !== 0
+        ) {
+          let requestdetails: UnresolvedRequestsInterface = {
+            auditid: internalAuditorPreload[i].auditId,
+            externalauditoremail:
+              internalAuditorPreload[i].externalAuditors[0].email,
+            externalauditorid:
+              internalAuditorPreload[i].externalAuditors[0].externalAuditorId,
+          };
+          unresolvedrequests.push(requestdetails);
+        } else {
+          let requestdetails: UnresolvedRequestsInterface = {
+            auditid: internalAuditorPreload[i].auditId,
+          };
+          unresolvedrequests.push(requestdetails);
+        }
+      }
+    }
+    return unresolvedrequests;
+  } else {
+    let requestdetails: UnresolvedRequestsInterface = {
+      error:
+        "Audit has not been found. Please contact the application administrator.",
+    };
+    unresolvedrequests.push(requestdetails);
+  }
+};
+
 /* Export queries */
 export = {
   getCredentials: getCredentials,
@@ -600,4 +665,5 @@ export = {
   getInternalCompanyname: getInternalCompanyname,
   loadAllReports: loadAllReports,
   getReports: getReports,
+  getUnresolvedRequests: getUnresolvedRequests,
 };
