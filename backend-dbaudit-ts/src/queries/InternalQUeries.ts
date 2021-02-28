@@ -505,7 +505,87 @@ const getInternalCompanyname = async (email: string) => {
 };
 
 const loadAllReports = async (email: string) => {
-  // TODO: Load all audits and reports for internal user
+  // Load all audits and reports for internal user
+  const connection = getConnection();
+  const internalRepository = connection.getRepository(InternalAuditor);
+  const auditRepository = connection.getRepository(Audit);
+
+  const internalAuditorId = await internalRepository
+    .createQueryBuilder("internal_auditor")
+    .where("email = :email", { email: email })
+    .execute();
+
+  const auditorid = internalAuditorId[0].internal_auditor_internalAuditorId;
+
+  if (auditorid === undefined) {
+    // * If the internal auditor has not been found
+    console.log("User not found : " + auditorid);
+    return undefined;
+  }
+
+  // * Check if any audits for id x
+  const audit = await auditRepository.createQueryBuilder("audit").execute();
+
+  if (audit.length === 0) {
+    return 0;
+  } else {
+    // * Get internal auditors ids (added to the audit)
+    const internalAuditorPreload = await auditRepository
+      .createQueryBuilder("audit")
+      .leftJoinAndSelect(
+        "audit.internalAuditors",
+        "internal_auditor",
+        "internal_auditor.internalAuditorId = :internalAuditorId",
+        { internalAuditorId: auditorid }
+      )
+      .getMany();
+
+    let reportsarray = [];
+
+    for (let i: number = 0; i < internalAuditorPreload.length; i++) {
+      let reports = await getReports(internalAuditorPreload[i]);
+      for (let j: number = 0; j < reports.length; j++) {
+        let report = reports[j].scorecard;
+        let createdDate = reports[j].createdAt;
+        createdDate.setHours(createdDate.getHours() + 1);
+        let date =
+          createdDate.getDate() +
+          "-" +
+          (createdDate.getMonth() + 1) +
+          "-" +
+          createdDate.getFullYear();
+        let reportid = reports[j].reportId;
+        let companyname =
+          internalAuditorPreload[i].internalAuditors[0].companyName;
+        let responseJSON = {
+          report: report,
+          reportdate: date,
+          reportid: reportid,
+          companyname: companyname,
+        };
+        reportsarray.push(responseJSON);
+      }
+    }
+    /** Return: Report ID, balanced scorecard, Report Created Date, Company Name */
+
+    return reportsarray;
+  }
+};
+
+// * Get report created date
+const getReports = async (audit: Audit) => {
+  // const connection = getConnection();
+  console.log("__START__");
+  const reportpreload = await Report.find({
+    where: {
+      audit: audit,
+    },
+  });
+  if (reportpreload !== undefined) {
+    return reportpreload;
+  } else {
+    return undefined;
+  }
 };
 
 /* Export queries */
@@ -519,4 +599,5 @@ export = {
   addReport: addReport,
   getInternalCompanyname: getInternalCompanyname,
   loadAllReports: loadAllReports,
+  getReports: getReports,
 };

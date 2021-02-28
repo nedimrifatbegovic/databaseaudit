@@ -62,7 +62,7 @@ export interface BalancedScorecardProps {
   changesvalue: string;
   // * Button
   buttondescription: string;
-  reportdate: Date;
+  reportdate: Date | string;
   reportcompany: string;
 }
 export default function BalancedScorecard(props: BalancedScorecardProps) {

@@ -9,7 +9,7 @@ export interface ProofProps {
   proof: IBalancedScorecard;
   // * Button
   buttondescription: string;
-  reportdate: Date;
+  reportdate: Date | string;
   reportcompany: string;
 }
 

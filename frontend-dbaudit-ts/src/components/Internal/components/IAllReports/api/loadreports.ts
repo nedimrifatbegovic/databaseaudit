@@ -4,16 +4,17 @@ interface InternalReportProps {
   email: string;
 }
 
-interface ResponseProps {
+export interface ResponseProps {
   report: ICombinedScorecard;
-  reportDate: Date | undefined;
-  reportCompany: string;
+  reportdate: string;
+  reportid: number;
+  companyname: string;
 }
 
-export async function generateReport(data: InternalReportProps) {
+export async function LoadReports(data: InternalReportProps) {
   const body = JSON.stringify(data);
   return new Promise((resolve, reject) => {
-    fetch("http://localhost:5000/internalauditrequest", {
+    fetch("http://localhost:5000/allreports", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,10 +22,10 @@ export async function generateReport(data: InternalReportProps) {
       body,
     })
       .then((res) => res.json())
-      .then((result: ResponseProps) => {
+      .then((result: ResponseProps[]) => {
         resolve(result);
       })
-      .catch((error) => {
+      .catch((error: string) => {
         reject(error);
       });
   });
