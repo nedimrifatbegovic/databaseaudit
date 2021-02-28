@@ -4,15 +4,15 @@ interface RequestsProps {
 
 export interface ResponseProps {
   auditid?: number;
-  externalauditoremail?: string;
-  externalauditorid?: number;
+  extenralauditormail?: string;
+  status?: string;
   error?: string;
 }
 
 export async function LoadRequests(data: RequestsProps) {
   const body = JSON.stringify(data);
   return new Promise((resolve, reject) => {
-    fetch("http://localhost:5000/unresolvedrequests", {
+    fetch("http://localhost:5000/getexternalaudits", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

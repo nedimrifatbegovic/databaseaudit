@@ -653,6 +653,58 @@ const getUnresolvedRequests = async (email: string) => {
   }
 };
 
+// * Interface for list of exteral audits
+interface ExternalAuditsInterface {
+  auditid?: number;
+  extenralauditormail?: string;
+  status?: string;
+  error?: string;
+}
+
+// * Get all external requests
+const getAllExternalAudits = async (email: string) => {
+  const connection = getConnection();
+  const internalRepository = connection.getRepository(InternalAuditor);
+  const auditRepository = connection.getRepository(Audit);
+  // * Get internal auditor id
+  const internalAuditorId = await internalRepository
+    .createQueryBuilder("internal_auditor")
+    .where("email = :email", { email: email })
+    .execute();
+
+  let unresolvedrequests: ExternalAuditsInterface[] = [];
+  if (internalAuditorId[0].internal_auditor_internalAuditorId !== undefined) {
+    const auditorid = internalAuditorId[0].internal_auditor_internalAuditorId;
+
+    const internalAuditorPreload = await auditRepository
+      .createQueryBuilder("audit")
+      .leftJoinAndSelect(
+        "audit.internalAuditors",
+        "internal_auditor",
+        "internal_auditor.internalAuditorId = :internalAuditorId",
+        { internalAuditorId: auditorid }
+      )
+      .getMany();
+
+    for (let i: number = 0; i < internalAuditorPreload.length; i++) {
+      let requestdetails: ExternalAuditsInterface = {
+        auditid: internalAuditorPreload[i].auditId,
+        extenralauditormail:
+          internalAuditorPreload[i].externalAuditors[0].email,
+        status: internalAuditorPreload[i].status,
+      };
+      unresolvedrequests.push(requestdetails);
+    }
+    return unresolvedrequests;
+  } else {
+    let requestdetails: ExternalAuditsInterface = {
+      error:
+        "Audits have not been found. Please contact the application administrator.",
+    };
+    unresolvedrequests.push(requestdetails);
+  }
+};
+
 /* Export queries */
 export = {
   getCredentials: getCredentials,
@@ -666,4 +718,5 @@ export = {
   loadAllReports: loadAllReports,
   getReports: getReports,
   getUnresolvedRequests: getUnresolvedRequests,
+  getAllExternalAudits: getAllExternalAudits,
 };

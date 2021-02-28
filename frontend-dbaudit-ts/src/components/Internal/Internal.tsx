@@ -21,7 +21,7 @@ export default function Internal(props: IInternalProps) {
       <IPendingRequests email={props.email} />
       <hr />
       <h3>{description.overviewTitle}</h3>
-      <IOverviewRequests />
+      <IOverviewRequests email={props.email} />
       <hr />
       <h3>{description.previousAuditsTitle}</h3>
       <IAllReports email={props.email} />

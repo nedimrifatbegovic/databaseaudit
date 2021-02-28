@@ -52,15 +52,16 @@ import cors from "cors";
     return res.send(result);
   });
 
-  // TODO: Change status of audit
-  app.put(
-    "/externalauditors/:id",
-    async function (req: Request, res: Response) {
-      // return res.send(results);
-    }
-  );
-
   // * Internal audit request
+  app.post("/getexternalaudits", async function (req: Request, res: Response) {
+    const response = await InternalQUeries.getAllExternalAudits(req.body.email);
+    const output = {
+      report: response,
+    };
+    return res.send(output);
+  });
+
+  // Get internal requests
   app.post(
     "/internalauditrequest",
     async function (req: Request, res: Response) {
@@ -75,6 +76,25 @@ import cors from "cors";
       return res.send(output);
     }
   );
+
+  // TODO: Change status of audit
+  app.put(
+    "/externalauditors/:id",
+    async function (req: Request, res: Response) {
+      // return res.send(results);
+    }
+  );
+
+  // Get all external audits
+  app.post("/unresolvedrequests", async function (req: Request, res: Response) {
+    const response = await InternalQUeries.getUnresolvedRequests(
+      req.body.email
+    );
+    const output = {
+      report: response,
+    };
+    return res.send(output);
+  });
 
   // Get all unresolved requests (where config is not working - issue auditing)
   app.post("/unresolvedrequests", async function (req: Request, res: Response) {
@@ -235,14 +255,6 @@ import cors from "cors";
     }
     return res.send(result);
   });
-
-  // TODO: Get external auditors for specific internal auditor
-  app.get(
-    "/externalauditors/:id",
-    (req: Request, res: Response, next: NextFunction) => {
-      res.send("Hello World");
-    }
-  );
 
   //   * Calls for external auditors
   // TODO: Update password
