@@ -6,6 +6,7 @@ import { createConnection, getConnection } from "typeorm";
 import express, { Application, NextFunction, Request, Response } from "express";
 
 import AdminQueries from "./queries/AdminQueries";
+import ExternalQueries from "./queries/ExternalQueries";
 import InternalQUeries from "./queries/InternalQUeries";
 import cors from "cors";
 
@@ -47,7 +48,10 @@ import cors from "cors";
         req.body.password
       );
     } else if (req.body.type === "external") {
-      // TODO
+      result = await ExternalQueries.getCredentials(
+        req.body.email,
+        req.body.password
+      );
     }
     return res.send(result);
   });

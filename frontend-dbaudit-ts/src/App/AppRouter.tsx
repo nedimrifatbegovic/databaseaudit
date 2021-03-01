@@ -6,6 +6,7 @@ import AdminLogin from "../pages/AdminLogin/AdminLogin";
 import AdminUsermanagement from "../pages/AdminUsermanagement/AdminUsermanagement";
 import { Container } from "react-bootstrap";
 import Error404 from "../pages/Error404/Error404";
+import ExternalHome from "../pages/ExternalHome/ExternalHome";
 import ExternalLogin from "../pages/ExternalLogin/ExternalLogin";
 import Footer from "../components/Footer/Footer";
 import Home from "../pages/Home/Home";
@@ -109,7 +110,11 @@ export default function AppRouter() {
           </Route>
           {/* External Audit Pages */}
           <Route exact path={paths.external.home}>
-            <div>External Audit Page</div>
+            <ANavBar />
+            <Jumbo />
+            <Container>
+              <ExternalHome />
+            </Container>
           </Route>
           <Route path={paths.external.login}>
             <ANavBar />
