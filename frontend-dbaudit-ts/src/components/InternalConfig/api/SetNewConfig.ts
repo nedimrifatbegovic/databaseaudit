@@ -1,4 +1,5 @@
 import {
+  ConfigCheckInterface,
   IAPIUpdateConfig,
   IInternalConfig,
   INewConfigAPI,
@@ -39,10 +40,10 @@ export async function checkConfig(data: IInternalConfig) {
       body,
     })
       .then((res) => res.json())
-      .then((result) => {
+      .then((result: ConfigCheckInterface) => {
         resolve(result);
       })
-      .catch((error) => {
+      .catch((error: string) => {
         reject(error);
       });
   });

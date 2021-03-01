@@ -157,32 +157,58 @@ const setNewConfiguration = async (
   }
 };
 
+interface ConfigCheckInterface {
+  loaded: boolean;
+  configuration?: any;
+  internalid?: string;
+}
+
 // Check if configuration for email exists (Internal Admin)
 const checkConfiguration = async (internalMail: string) => {
-  console.log("Internal Mail", internalMail);
-  console.log("__START__");
-  const internalAuditorPreload = await InternalAuditor.findOne({
-    where: {
-      email: internalMail,
-      // relations: ["config"],
-    },
-  });
+  if (internalMail) {
+    let loaded: boolean = false;
+    console.log("__START__");
+    const internalAuditorPreload = await InternalAuditor.findOne({
+      where: {
+        email: internalMail,
+      },
+    });
 
-  if (internalAuditorPreload === undefined) {
-    return false;
-  }
+    if (internalAuditorPreload === undefined) {
+      loaded = false;
+    }
 
-  const preloadConfig = await Config.findOne({
-    where: {
-      internalAuditor: internalAuditorPreload,
-    },
-  });
+    const preloadConfig = await Config.findOne({
+      where: {
+        internalAuditor: internalAuditorPreload,
+      },
+    });
 
-  console.log("__END__");
-  if (preloadConfig !== undefined) {
-    return true;
+    console.log("__END__");
+    if (preloadConfig !== undefined) {
+      loaded = true;
+
+      let response: ConfigCheckInterface = {
+        loaded: loaded,
+        configuration: preloadConfig,
+        internalid: internalAuditorPreload.folderId,
+      };
+
+      return response;
+    } else {
+      loaded = false;
+
+      let response: ConfigCheckInterface = {
+        loaded: loaded,
+      };
+
+      return response;
+    }
   } else {
-    return false;
+    let response: ConfigCheckInterface = {
+      loaded: false,
+    };
+    return response;
   }
 };
 

@@ -29,6 +29,52 @@ export interface IUpdateForm {
   updateprivatekey?: FileList;
 }
 
+export interface ConfigCheckInterface {
+  loaded: boolean;
+  configuration?: INewConfigResponse;
+  internalid?: string;
+}
+
+export interface INewConfigResponse {
+  privateKey: FileList;
+  consumerKey: string;
+  token: string;
+  tokenSecret: string;
+  signatureMethod: string;
+  jiraUrl: string;
+  jiraPort: string;
+  backupProjectKey: string;
+  restorationProjectKey: string;
+  errorProjectKey: string;
+  changeProjectKey: string;
+  dbType: string;
+  dbHost: string;
+  dbPort: string;
+  dbUsername: string;
+  dbPassword: string;
+  logs: string;
+  logsid: string;
+  projectkey: string;
+  ticketkey: string;
+  logstype: string;
+  user: string;
+  userid: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+  usergroupid: string;
+  title: string;
+  usergroups: string;
+  usergroupsgroupid: string;
+  readrights: string;
+  deleterights: string;
+  createrights: string;
+  updaterights: string;
+  groupname: string;
+  dbName: string;
+}
+
 export interface INewConfig {
   privatekey: FileList;
   consumerkey: string;
@@ -66,6 +112,7 @@ export interface INewConfig {
   createrights: string;
   updaterights: string;
   groupname: string;
+  dbName: string;
 }
 
 export interface IAPIUpdateConfig {

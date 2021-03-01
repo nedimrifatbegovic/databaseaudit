@@ -235,11 +235,7 @@ import cors from "cors";
 
   // Check if Configuration Exists
   app.post("/checkconfig", async function (req: Request, res: Response) {
-    let result: boolean = false;
-
-    if (req.body !== undefined) {
-      result = await InternalQUeries.checkConfiguration(req.body.email);
-    }
+    let result = await InternalQUeries.checkConfiguration(req.body.email);
     return res.send(result);
   });
 

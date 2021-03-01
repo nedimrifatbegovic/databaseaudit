@@ -3,8 +3,9 @@ import {
   SetNewConfig,
   checkConfig,
 } from "./api/SetNewConfig";
-import { Col, Form, Row } from "react-bootstrap";
+import { Col, Form, Row, Spinner, Table } from "react-bootstrap";
 import {
+  ConfigCheckInterface,
   IAPIUpdateConfig,
   IInternalConfig,
   INewConfig,
@@ -19,11 +20,25 @@ import { CustomLink } from "../../style/CustomLink";
 import { FileUpload } from "../FileUpload/FileUpload.styled";
 import { Label } from "../../style/Label";
 import { paths } from "../../App/AppRouter.resources";
+import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 
+// * Style of the balanced scorecards table
+const StyledTable = styled(Table)`
+  overflow-x: auto;
+  white-space: nowrap;
+
+  @media only screen and (max-width: 767px) {
+    display: block;
+  }
+`;
+
 export default function InternalConfig(props: IInternalConfig) {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean | undefined>();
+  const [loadedConfig, setloadedConfig] = useState<
+    ConfigCheckInterface | undefined
+  >();
   const [typeState, settypeState] = useState<boolean>(false);
   const [requestState, setRequestState] = useState<boolean>(false);
   const [formatState, setformatState] = useState<boolean>(false);
@@ -35,9 +50,12 @@ export default function InternalConfig(props: IInternalConfig) {
       email: emailprop,
     };
 
-    const configstatus = await checkConfig(data);
-    if (configstatus !== undefined && configstatus === true) {
+    const configstatus: ConfigCheckInterface | any = await checkConfig(data);
+
+    if (configstatus !== undefined && configstatus.loaded === true) {
       setLoading(true);
+      setloadedConfig(configstatus);
+      console.log(configstatus);
     } else {
       setLoading(false);
     }
@@ -146,8 +164,22 @@ export default function InternalConfig(props: IInternalConfig) {
     <React.Fragment>
       <h1>{description.title}</h1>
       <hr />
-      {loading === true ? (
+      {loading === undefined ? (
         <React.Fragment>
+          <Spinner animation="grow" variant="info" />
+        </React.Fragment>
+      ) : loading === true ? (
+        <React.Fragment>
+          {/* Show the current config file and user id */}
+          {loadedConfig !== undefined &&
+            loadedConfig.configuration !== undefined && (
+              <React.Fragment>
+                <p>
+                  Unique Audit ID: <b>{loadedConfig.internalid}</b>
+                </p>
+                <hr />
+              </React.Fragment>
+            )}
           <Form onSubmit={handleSubmit(updateConfigData)}>
             {/* Attribute Type */}
             <Form.Group as={Row} controlId={description.updateTypeId}>
@@ -222,7 +254,7 @@ export default function InternalConfig(props: IInternalConfig) {
                 </Col>
               </Form.Group>
             )}
-            {/* -- Submit the Issue -- */}
+            {/* -- Submit the updated value -- */}
             <Row className="justify-content-center">
               <CustomLink type="submit" value="Submit" />
             </Row>
@@ -247,6 +279,174 @@ export default function InternalConfig(props: IInternalConfig) {
               ""
             )}
           </Form>
+          {loadedConfig !== undefined &&
+            loadedConfig.configuration !== undefined && (
+              <React.Fragment>
+                <hr />
+                <h4>Current Configuration Data</h4>
+                <StyledTable striped bordered hover size="sm">
+                  <thead>
+                    <tr>
+                      <th>Config Field</th>
+                      <th>Current Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{description.consumerKeyLabel}</td>
+                      <td>{loadedConfig.configuration.consumerKey}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.tokenLabel}</td>
+                      <td>{loadedConfig.configuration.token}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.tokenSecretLabel}</td>
+                      <td>{loadedConfig.configuration.tokenSecret}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.signatureMethodLabel}</td>
+                      <td>{loadedConfig.configuration.signatureMethod}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.jiraurlLabel}</td>
+                      <td>{loadedConfig.configuration.jiraUrl}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.jiraportLabel}</td>
+                      <td>{loadedConfig.configuration.jiraPort}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.backupProjectLabel}</td>
+                      <td>{loadedConfig.configuration.backupProjectKey}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.restorationProjectLabel}</td>
+                      <td>
+                        {loadedConfig.configuration.restorationProjectKey}
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>{description.errorProjectLabel}</td>
+                      <td>{loadedConfig.configuration.errorProjectKey}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.changeProjectLabel}</td>
+                      <td>{loadedConfig.configuration.changeProjectKey}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.dbtypeLabel}</td>
+                      <td>{loadedConfig.configuration.dbType}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.dbhostLabel}</td>
+                      <td>{loadedConfig.configuration.dbHost}</td>
+                    </tr>
+
+                    <tr>
+                      <td>{description.dbportLabel}</td>
+                      <td>{loadedConfig.configuration.dbPort}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.dbuserLabel}</td>
+                      <td>{loadedConfig.configuration.dbUsername}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.dbuserpasswordLabel}</td>
+                      <td>{loadedConfig.configuration.dbPassword}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.dbnameLabel}</td>
+                      <td>{loadedConfig.configuration.dbName}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.logsClassNameLabel}</td>
+                      <td>{loadedConfig.configuration.logs}</td>
+                    </tr>
+
+                    <tr>
+                      <td>{description.logsLogIDLabel}</td>
+                      <td>{loadedConfig.configuration.logsid}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.logsProjectKeyLabel}</td>
+                      <td>{loadedConfig.configuration.projectkey}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.logsTicketKeyLabel}</td>
+                      <td>{loadedConfig.configuration.ticketkey}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.logsTypeLabel}</td>
+                      <td>{loadedConfig.configuration.logstype}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.userClassNameLabel}</td>
+                      <td>{loadedConfig.configuration.user}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.userUserIdLabel}</td>
+                      <td>{loadedConfig.configuration.userid}</td>
+                    </tr>
+
+                    <tr>
+                      <td>{description.userFirstnameLabel}</td>
+                      <td>{loadedConfig.configuration.firstname}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.userLastnameLabel}</td>
+                      <td>{loadedConfig.configuration.lastname}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.userEmailLabel}</td>
+                      <td>{loadedConfig.configuration.email}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.userPasswordLabel}</td>
+                      <td>{loadedConfig.configuration.password}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.userUsergroupIdLabel}</td>
+                      <td>{loadedConfig.configuration.usergroupid}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.userTitleLabel}</td>
+                      <td>{loadedConfig.configuration.title}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.usergroupClassNameLabel}</td>
+                      <td>{loadedConfig.configuration.usergroups}</td>
+                    </tr>
+
+                    <tr>
+                      <td>{description.usergroupGroupIdLabel}</td>
+                      <td>{loadedConfig.configuration.usergroupsgroupid}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.usergroupReadRightsLabel}</td>
+                      <td>{loadedConfig.configuration.readrights}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.usergroupDeleteRightsLabel}</td>
+                      <td>{loadedConfig.configuration.deleterights}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.usergroupCreateRightsLabel}</td>
+                      <td>{loadedConfig.configuration.createrights}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.usergroupUpdateRightsLabel}</td>
+                      <td>{loadedConfig.configuration.updaterights}</td>
+                    </tr>
+                    <tr>
+                      <td>{description.usergroupGroupNameLabel}</td>
+                      <td>{loadedConfig.configuration.groupname}</td>
+                    </tr>
+                  </tbody>
+                </StyledTable>
+              </React.Fragment>
+            )}
         </React.Fragment>
       ) : (
         //  Check if there is a config for email "x..."
