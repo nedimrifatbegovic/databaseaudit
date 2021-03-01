@@ -686,14 +686,18 @@ const getAllExternalAudits = async (email: string) => {
       )
       .getMany();
 
+    // console.log(internalAuditorPreload[0].internalAuditors[0].folderId);
+
     for (let i: number = 0; i < internalAuditorPreload.length; i++) {
-      let requestdetails: ExternalAuditsInterface = {
-        auditid: internalAuditorPreload[i].auditId,
-        extenralauditormail:
-          internalAuditorPreload[i].externalAuditors[0].email,
-        status: internalAuditorPreload[i].status,
-      };
-      unresolvedrequests.push(requestdetails);
+      if (internalAuditorPreload[i].externalAuditors !== undefined) {
+        let requestdetails: ExternalAuditsInterface = {
+          auditid: internalAuditorPreload[i].auditId,
+          extenralauditormail:
+            internalAuditorPreload[i].externalAuditors[0].email,
+          status: internalAuditorPreload[i].status,
+        };
+        unresolvedrequests.push(requestdetails);
+      }
     }
     return unresolvedrequests;
   } else {

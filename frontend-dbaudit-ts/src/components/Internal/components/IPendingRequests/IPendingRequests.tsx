@@ -46,7 +46,7 @@ export default function IPendingRequests(props: PendingRequestsProps) {
     }
   };
 
-  // * Update request
+  // TODO: * Update request
   const handleSelect = async (auditid?: number) => {
     console.log(auditid);
   };
