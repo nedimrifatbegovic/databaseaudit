@@ -18,9 +18,7 @@ export const paths = {
     login: "/external/login",
     loginstatus: "/external/loginstatus",
     client: "/external/client",
-    audit: "/external/client/audit",
     password: "/external/password",
-    request: "/external/request",
   },
 };
 
@@ -33,5 +31,9 @@ export const descriptions = {
     home: "Home",
     password: "Change Password",
     request: "Configuration Page",
+  },
+  external: {
+    home: "Home",
+    password: "Change Password",
   },
 };

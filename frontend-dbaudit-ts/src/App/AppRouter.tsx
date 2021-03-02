@@ -5,6 +5,7 @@ import AdminHome from "../pages/AdminHome/AdminHome";
 import AdminLogin from "../pages/AdminLogin/AdminLogin";
 import AdminUsermanagement from "../pages/AdminUsermanagement/AdminUsermanagement";
 import { Container } from "react-bootstrap";
+import ENavBar from "../components/External/components/ENavBar/ENavBar";
 import Error404 from "../pages/Error404/Error404";
 import ExternalHome from "../pages/ExternalHome/ExternalHome";
 import ExternalLogin from "../pages/ExternalLogin/ExternalLogin";
@@ -110,34 +111,35 @@ export default function AppRouter() {
           </Route>
           {/* External Audit Pages */}
           <Route exact path={paths.external.home}>
-            <ANavBar />
+            <ENavBar />
             <Jumbo />
             <Container>
               <ExternalHome />
             </Container>
           </Route>
           <Route path={paths.external.login}>
-            <ANavBar />
+            <ENavBar />
             <Jumbo />
             <Container>
               <ExternalLogin />
             </Container>
           </Route>
           <Route path={paths.external.loginstatus}>
-            <ANavBar />
+            <ENavBar />
             <Jumbo />
             <Container>
               <LoginStatus type="external" />
             </Container>
           </Route>
-          <Route path={paths.external.request}>
-            <div>External Audit Request Page</div>
-          </Route>
           <Route path={paths.external.client}>
+            <ENavBar />
+            <Jumbo />
             <div>External Audit Client Page</div>
           </Route>
-          <Route path={paths.external.audit}>
-            <div>External Audit Client Audit Page</div>
+          <Route path={paths.external.password}>
+            <ENavBar />
+            <Jumbo />
+            <div>External Audit Password Page</div>
           </Route>
           {/* Error 404: Not found Page */}
           <Route>
