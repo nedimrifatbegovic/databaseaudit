@@ -9,6 +9,7 @@ import ENavBar from "../components/External/components/ENavBar/ENavBar";
 import Error404 from "../pages/Error404/Error404";
 import ExternalHome from "../pages/ExternalHome/ExternalHome";
 import ExternalLogin from "../pages/ExternalLogin/ExternalLogin";
+import ExternalPasswordChange from "../pages/ExternalPasswordChange/ExternalPasswordChange";
 import Footer from "../components/Footer/Footer";
 import Home from "../pages/Home/Home";
 import INavBar from "../components/Internal/components/INavBar/INavBar";
@@ -134,12 +135,16 @@ export default function AppRouter() {
           <Route path={paths.external.client}>
             <ENavBar />
             <Jumbo />
-            <div>External Audit Client Page</div>
+            <Container>
+              <div>External Audit Client Page</div>
+            </Container>
           </Route>
           <Route path={paths.external.password}>
             <ENavBar />
             <Jumbo />
-            <div>External Audit Password Page</div>
+            <Container>
+              <ExternalPasswordChange />
+            </Container>
           </Route>
           {/* Error 404: Not found Page */}
           <Route>

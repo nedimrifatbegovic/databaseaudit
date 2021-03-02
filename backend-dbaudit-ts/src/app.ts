@@ -256,10 +256,21 @@ import cors from "cors";
     return res.send(result);
   });
 
-  //   * Calls for external auditors
-  // TODO: Update password
-  app.put("/externalpassword", async function (req: Request, res: Response) {
-    // return res.send(results);
+  // * Calls for external auditors
+  // Update password
+  app.post("/externalpassword", async function (req: Request, res: Response) {
+    console.log(req.body);
+    let result: boolean = false;
+    if (req.body !== undefined) {
+      result = await ExternalQueries.updateExternalPassword(
+        req.body.email,
+        req.body.newpassword
+      );
+    }
+    const response = {
+      status: result,
+    };
+    return res.send(response);
   });
 
   // TODO: Add internal auditor
