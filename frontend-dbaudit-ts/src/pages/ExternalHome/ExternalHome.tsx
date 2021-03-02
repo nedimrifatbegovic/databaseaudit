@@ -25,7 +25,12 @@ export default function ExternalHome() {
   return (
     <Container>
       {userState.email !== undefined ? (
-        <p>Found, but TODO</p>
+        <React.Fragment>
+          <div>TODO: Add Client</div>
+          <div>
+            TODO: Get Clients + Get Client Details (forward to new page)
+          </div>
+        </React.Fragment>
       ) : (
         <React.Fragment>
           <p>External user could not be found!</p>
