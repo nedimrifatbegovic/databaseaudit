@@ -2,6 +2,7 @@ import { IREDUX, IUserState } from "../../assets/interfaces/Interfaces";
 import React, { useEffect } from "react";
 
 import { Container } from "react-bootstrap";
+import { EAddClients } from "../../components/External/components/EAddClients/EAddClients";
 import LoginCheck from "../../assets/functions/LoginCheck";
 import Logout from "../../components/Logout/Logout";
 import { paths } from "../../App/AppRouter.resources";
@@ -26,8 +27,12 @@ export default function ExternalHome() {
     <Container>
       {userState.email !== undefined ? (
         <React.Fragment>
-          <div>TODO: Add Client</div>
           <div>
+            <h3>Add new client</h3>
+            <EAddClients email={userState.email} />
+          </div>
+          <div>
+            <h3>Get all clients</h3>
             TODO: Get Clients + Get Client Details (forward to new page)
           </div>
         </React.Fragment>

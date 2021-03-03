@@ -273,9 +273,27 @@ import cors from "cors";
     return res.send(response);
   });
 
-  // TODO: Add internal auditor
-  app.post("/addinternal/:id", async function (req: Request, res: Response) {
-    // return res.send(results);
+  // Add internal auditor
+  app.post("/adduniqueiduser", async function (req: Request, res: Response) {
+    console.log(req.body);
+
+    if (req.body) {
+      let result = await ExternalQueries.addClient(
+        req.body.email,
+        req.body.uniqueid
+      );
+
+      const response = {
+        result: result,
+      };
+      return res.send(response);
+    } else {
+      const response = {
+        result:
+          "Unique ID not received! Please try again or contact the application administrator!",
+      };
+      return res.send(response);
+    }
   });
 
   // TODO: Get all clients for specific external auditor
