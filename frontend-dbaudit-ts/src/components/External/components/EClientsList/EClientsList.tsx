@@ -4,7 +4,9 @@ import { Row, Table } from "react-bootstrap";
 
 import { CustomButton } from "../../../../style/CustomButton";
 import { description } from "./EClientsList.resources";
+import { paths } from "../../../../App/AppRouter.resources";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
 export interface EClientsListProps {
   email: string;
@@ -21,6 +23,7 @@ const StyledTable = styled(Table)`
 `;
 
 export function EClientsList(props: EClientsListProps) {
+  let history = useHistory();
   const [requestState, setRequestState] = useState<
     ResponseProps[] | "ERROR" | undefined
   >();
@@ -31,7 +34,7 @@ export function EClientsList(props: EClientsListProps) {
       email: email,
     };
     const response: ResponseProps[] | any = await getClients(data);
-    console.log(response);
+
     if (response.length === undefined || response.length === 0) {
       setRequestState("ERROR");
     } else {
@@ -39,9 +42,12 @@ export function EClientsList(props: EClientsListProps) {
     }
   };
 
-  // TODO: * Forward to new page for specific audit
+  // * Forward to new page for specific audit
   const handleSelect = async (auditid: string) => {
-    console.log(auditid);
+    let state = {
+      auditid: auditid,
+    };
+    history.push(paths.external.client, state);
   };
 
   return (

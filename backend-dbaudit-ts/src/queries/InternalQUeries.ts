@@ -566,6 +566,13 @@ const loadAllReports = async (email: string) => {
       )
       .getMany();
 
+    /*
+      const externaluser = await externalRepository.find({
+        relations: ["audits", "audits.internalAuditors"],
+        where: { email: email },
+      });
+      */
+
     let reportsarray = [];
     // TODO: Check if correct
     for (let i: number = 0; i < internalAuditorPreload.length; i++) {

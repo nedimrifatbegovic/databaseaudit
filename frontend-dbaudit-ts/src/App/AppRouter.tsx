@@ -7,6 +7,7 @@ import AdminUsermanagement from "../pages/AdminUsermanagement/AdminUsermanagemen
 import { Container } from "react-bootstrap";
 import ENavBar from "../components/External/components/ENavBar/ENavBar";
 import Error404 from "../pages/Error404/Error404";
+import ExternalClientDetails from "../pages/ExternalClientDetails/ExternalClientDetails";
 import ExternalHome from "../pages/ExternalHome/ExternalHome";
 import ExternalLogin from "../pages/ExternalLogin/ExternalLogin";
 import ExternalPasswordChange from "../pages/ExternalPasswordChange/ExternalPasswordChange";
@@ -136,7 +137,7 @@ export default function AppRouter() {
             <ENavBar />
             <Jumbo />
             <Container>
-              <div>External Audit Client Page</div>
+              <ExternalClientDetails />
             </Container>
           </Route>
           <Route path={paths.external.password}>

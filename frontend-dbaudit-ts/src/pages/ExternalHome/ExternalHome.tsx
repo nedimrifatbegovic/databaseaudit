@@ -26,7 +26,7 @@ export default function ExternalHome() {
   }, []);
 
   return (
-    <Container>
+    <React.Fragment>
       {userState.email !== undefined ? (
         <React.Fragment>
           <div>
@@ -46,6 +46,6 @@ export default function ExternalHome() {
       <Row>
         <Logout />
       </Row>
-    </Container>
+    </React.Fragment>
   );
 }
