@@ -567,7 +567,7 @@ const loadAllReports = async (email: string) => {
       .getMany();
 
     let reportsarray = [];
-
+    // TODO: Check if correct
     for (let i: number = 0; i < internalAuditorPreload.length; i++) {
       let reports = await getReports(internalAuditorPreload[i]);
       for (let j: number = 0; j < reports.length; j++) {

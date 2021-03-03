@@ -296,11 +296,26 @@ import cors from "cors";
     }
   });
 
-  // TODO: Get all clients for specific external auditor
-  app.get(
-    "/allinternal/:id",
-    (req: Request, res: Response, next: NextFunction) => {
-      res.send("Hello World");
+  // Get all clients for specific external auditor
+  app.post(
+    "/getallclientsexternaluser",
+    async function (req: Request, res: Response) {
+      console.log(req.body);
+
+      if (req.body) {
+        let result = await ExternalQueries.getClients(req.body.email);
+
+        return res.send(result);
+      } else {
+        const response = [
+          {
+            auditid: "0",
+            error:
+              "Unique ID not received! Please try again or contact the application administrator!",
+          },
+        ];
+        return res.send(response);
+      }
     }
   );
 

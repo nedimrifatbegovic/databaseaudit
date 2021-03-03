@@ -46,7 +46,6 @@ const addClient = async (email: string, uniqueid: string) => {
   const connection = getConnection();
   const externalRepository = connection.getRepository(ExternalAuditor);
   const internalRepository = connection.getRepository(InternalAuditor);
-  const auditRepository = connection.getRepository(Audit);
 
   console.log("__START__");
   const externaluser = await externalRepository
@@ -54,7 +53,6 @@ const addClient = async (email: string, uniqueid: string) => {
     .where("email = :email", { email: email })
     .getOne();
   console.log("__END__");
-
   if (externaluser) {
     console.log("__START__");
     const internaluser = await internalRepository
@@ -69,9 +67,7 @@ const addClient = async (email: string, uniqueid: string) => {
       newAudit.externalAuditors = [externaluser];
       newAudit.status = "Pending";
       newAudit.resolved = true;
-
       await connection.manager.save(newAudit);
-
       return "The request has been sent to the client. Your current status for the audit is: - Pending - ";
     } else {
       return "The client has not been found. No matching unique IDs are saved in the application!";
@@ -79,8 +75,81 @@ const addClient = async (email: string, uniqueid: string) => {
   } else {
     return "Your user has not been found! Please contact the application administrator!";
   }
+};
 
-  // .andWhere("folderId = :folderId", { folderId: uniqueid })
+interface getClientsInterface {
+  companyname?: string;
+  uniqueid?: string;
+  auditid: number;
+  auditstatus?: string;
+  auditdate?: string;
+  error?: string;
+}
+
+const getClients = async (email: string) => {
+  const connection = getConnection();
+  const externalRepository = connection.getRepository(ExternalAuditor);
+  console.log("__START__");
+  const externaluser = await externalRepository.find({
+    relations: ["audits", "audits.internalAuditors"],
+    where: { email: email },
+  });
+  console.log("__END__");
+  if (externaluser[0]) {
+    if (externaluser[0].audits) {
+      if (externaluser[0].audits.length > 0) {
+        const response: getClientsInterface[] = [];
+
+        for (let i: number = 0; i < externaluser[0].audits.length; i++) {
+          externaluser[0].audits[i].createdAt.setHours(
+            externaluser[0].audits[i].createdAt.getHours() + 1
+          );
+          let date =
+            externaluser[0].audits[i].createdAt.getDate() +
+            "-" +
+            (externaluser[0].audits[i].createdAt.getMonth() + 1) +
+            "-" +
+            externaluser[0].audits[i].createdAt.getFullYear();
+
+          let input: getClientsInterface = {
+            auditid: externaluser[0].audits[i].auditId,
+            auditstatus: externaluser[0].audits[i].status,
+            auditdate: date,
+            companyname:
+              externaluser[0].audits[i].internalAuditors[0].companyName,
+            uniqueid: externaluser[0].audits[i].internalAuditors[0].folderId,
+          };
+          response.push(input);
+        }
+        return response;
+      } else {
+        const response = [
+          {
+            auditid: "0",
+            error: "No clients have been found. ",
+          },
+        ];
+        return response;
+      }
+    } else {
+      const response = [
+        {
+          auditid: "0",
+          error: "No clients have been found. ",
+        },
+      ];
+      return response;
+    }
+  } else {
+    const response = [
+      {
+        auditid: "0",
+        error:
+          "Your user has not been found! Please contact the application administrator!",
+      },
+    ];
+    return response;
+  }
 };
 
 /* Export queries */
@@ -88,4 +157,5 @@ export = {
   getCredentials: getCredentials,
   updateExternalPassword: updateExternalPassword,
   addClient: addClient,
+  getClients: getClients,
 };
