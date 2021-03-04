@@ -1,4 +1,9 @@
-import { LoadRequests, ResponseProps } from "./api/overviewrequest";
+import {
+  LoadRequests,
+  ResponseProps,
+  StatusUpdateProps,
+  UpdateInternalAuditStatus,
+} from "./api/overviewrequest";
 import React, { useState } from "react";
 
 import { CustomButton } from "../../../../style/CustomButton";
@@ -25,6 +30,9 @@ export default function IOverviewRequests(props: OverviewRequetsProps) {
   const [requestState, setRequestState] = useState<
     ResponseProps[] | "ERROR" | undefined
   >();
+  const [statusupdateState, setstatusupdateState] = useState<
+    "OK" | "ERROR" | undefined
+  >();
   // * Handle load all requests
   const handleLoadReports = async (email: string) => {
     setRequestState(undefined);
@@ -32,17 +40,29 @@ export default function IOverviewRequests(props: OverviewRequetsProps) {
       email: email,
     };
     const response: ResponseProps[] | any = await LoadRequests(data);
-    console.log(response);
-    if (response.length === undefined || response.length === 0) {
+    console.log("Overview response: ", response.report);
+    if (response.report.length === undefined || response.report.length === 0) {
       setRequestState("ERROR");
     } else {
-      setRequestState(response);
+      setRequestState(response.report);
     }
   };
 
-  // TODO: * Update request
+  // * Update request
   const handleSelect = async (updatevalue: string, auditid?: number) => {
-    console.log(auditid, updatevalue);
+    setstatusupdateState(undefined);
+    const data: StatusUpdateProps = {
+      auditid: auditid,
+      status: updatevalue,
+    };
+
+    try {
+      await UpdateInternalAuditStatus(data);
+      setstatusupdateState("OK");
+    } catch (error) {
+      console.log(error);
+      setstatusupdateState("ERROR");
+    }
   };
 
   return (
@@ -80,17 +100,17 @@ export default function IOverviewRequests(props: OverviewRequetsProps) {
                           <td>
                             <CustomButton
                               onClick={() =>
-                                handleSelect("ACCEPTED", item.auditid)
+                                handleSelect("Accepted", item.auditid)
                               }
                             >
                               {description.buttonaccept}
                             </CustomButton>
                             <CustomButton
                               onClick={() =>
-                                handleSelect("DECLINED", item.auditid)
+                                handleSelect("Declined", item.auditid)
                               }
                             >
-                              {description.buttonaccept}
+                              {description.buttondecline}
                             </CustomButton>
                           </td>
                         </tr>
@@ -98,6 +118,21 @@ export default function IOverviewRequests(props: OverviewRequetsProps) {
                     })}
                   </tbody>
                 </StyledTable>
+                {statusupdateState ? (
+                  <React.Fragment>
+                    {statusupdateState === "ERROR" && (
+                      <p>{statusupdateState}</p>
+                    )}
+                    {statusupdateState === "OK" && (
+                      <p>
+                        Your request has been sent! Please load the overview
+                        again in order to see the changes!
+                      </p>
+                    )}
+                  </React.Fragment>
+                ) : (
+                  ""
+                )}
               </React.Fragment>
             )}
           </React.Fragment>

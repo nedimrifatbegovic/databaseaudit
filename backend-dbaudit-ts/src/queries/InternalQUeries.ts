@@ -694,37 +694,42 @@ const getAllExternalAudits = async (email: string) => {
   // * Get internal auditor id
   const internalAuditorId = await internalRepository
     .createQueryBuilder("internal_auditor")
+    .leftJoinAndSelect("internal_auditor.audits", "audit.internalAuditors")
     .where("email = :email", { email: email })
-    .execute();
+    .getOne();
 
   let unresolvedrequests: ExternalAuditsInterface[] = [];
-  if (internalAuditorId[0].internal_auditor_internalAuditorId !== undefined) {
-    const auditorid = internalAuditorId[0].internal_auditor_internalAuditorId;
+  if (internalAuditorId !== undefined) {
+    if (internalAuditorId.audits.length > 0) {
+      for (let i: number = 0; i < internalAuditorId.audits.length; i++) {
+        const auditRepo = await auditRepository
+          .createQueryBuilder("audit")
+          .leftJoinAndSelect(
+            "audit.externalAuditors",
+            "external_auditor.audits"
+          )
+          .where("auditId = :auditId", {
+            auditId: internalAuditorId.audits[i].auditId,
+          })
+          .getOne();
 
-    const internalAuditorPreload = await auditRepository
-      .createQueryBuilder("audit")
-      .leftJoinAndSelect(
-        "audit.internalAuditors",
-        "internal_auditor",
-        "internal_auditor.internalAuditorId = :internalAuditorId",
-        { internalAuditorId: auditorid }
-      )
-      .getMany();
-
-    // console.log(internalAuditorPreload[0].internalAuditors[0].folderId);
-
-    for (let i: number = 0; i < internalAuditorPreload.length; i++) {
-      if (internalAuditorPreload[i].externalAuditors !== undefined) {
-        let requestdetails: ExternalAuditsInterface = {
-          auditid: internalAuditorPreload[i].auditId,
-          extenralauditormail:
-            internalAuditorPreload[i].externalAuditors[0].email,
-          status: internalAuditorPreload[i].status,
-        };
-        unresolvedrequests.push(requestdetails);
+        if (auditRepo.externalAuditors[0]) {
+          // Handle unresolved requests
+          let requestdetails: ExternalAuditsInterface = {
+            auditid: auditRepo.auditId,
+            extenralauditormail: auditRepo.externalAuditors[0].email,
+            status: auditRepo.status,
+          };
+          unresolvedrequests.push(requestdetails);
+        }
       }
+      return unresolvedrequests;
+    } else {
+      let requestdetails: ExternalAuditsInterface = {
+        error: "No audits found.",
+      };
+      unresolvedrequests.push(requestdetails);
     }
-    return unresolvedrequests;
   } else {
     let requestdetails: ExternalAuditsInterface = {
       error:

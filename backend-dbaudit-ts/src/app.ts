@@ -4,12 +4,15 @@ import * as bodyParser from "body-parser";
 
 import { createConnection, getConnection } from "typeorm";
 import express, { Application, NextFunction, Request, Response } from "express";
+import {
+  updateAuditResolved,
+  updateAuditStatus,
+} from "./queries/ReportQueries";
 
 import AdminQueries from "./queries/AdminQueries";
 import ExternalQueries from "./queries/ExternalQueries";
 import InternalQUeries from "./queries/InternalQUeries";
 import cors from "cors";
-import { updateAuditResolved } from "./queries/ReportQueries";
 
 // import { asyncFunction } from "./client/testRemotedatabase";
 
@@ -80,25 +83,13 @@ import { updateAuditResolved } from "./queries/ReportQueries";
     }
   );
 
-  // TODO: Change status of audit
-  app.put(
-    "/externalauditors/:id",
-    async function (req: Request, res: Response) {
-      // return res.send(results);
-    }
-  );
-
-  // Get all external audits
-  // app.post("/unresolvedrequests", async function (req: Request, res: Response) {
-  //   console.log("Loading unresolved requests...", req.body);
-  //   const response = await InternalQUeries.getUnresolvedRequests(
-  //     req.body.email
-  //   );
-  //   const output = {
-  //     report: response,
-  //   };
-  //   return res.send(output);
-  // });
+  // Change status of audit
+  app.post("/changeauditstatus", async function (req: Request, res: Response) {
+    console.log("Updating audit status...", req.body);
+    const response = await updateAuditStatus(req.body.auditid, req.body.status);
+    console.log(response);
+    return res.send(response);
+  });
 
   // Get all unresolved requests (where config is not working - issue auditing)
   app.post("/unresolvedrequests", async function (req: Request, res: Response) {

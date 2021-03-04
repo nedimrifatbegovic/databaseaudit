@@ -1078,3 +1078,19 @@ export async function updateAuditResolved(auditid: string, action: boolean) {
 
   return response;
 }
+
+export async function updateAuditStatus(auditid: string, status: string) {
+  const connection = getConnection();
+  const auditRepository = connection.getRepository(Audit);
+
+  const response = await auditRepository
+    .createQueryBuilder("audit")
+    .update(auditRepository)
+    .set({
+      status: status,
+    })
+    .where("auditId = :auditId", { auditId: auditid })
+    .execute();
+
+  return response;
+}
