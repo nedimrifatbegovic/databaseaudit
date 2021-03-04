@@ -336,6 +336,15 @@ import cors from "cors";
     }
   );
 
+  // Get all reports for specific audit ID
+  app.post("/allexternalreports", async function (req: Request, res: Response) {
+    console.log("Loading external reports...", req.body);
+    const response = await InternalQUeries.loadAllExternalReports(
+      req.body.auditid
+    );
+    return res.send(response);
+  });
+
   // -----------------------------------------------------------------------------------------------------------------------------------
   // start express server
   app.listen(port, () =>

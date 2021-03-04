@@ -742,6 +742,46 @@ const getAllExternalAudits = async (email: string) => {
   }
 };
 
+const loadAllExternalReports = async (auditid: number) => {
+  const connection = getConnection();
+  const auditRepository = connection.getRepository(Audit);
+
+  // * Get internal auditors ids (added to the audit)
+  const internalAuditorPreload = await auditRepository
+    .createQueryBuilder("audit")
+    .where({ auditId: auditid })
+    .getOne();
+
+  if (internalAuditorPreload) {
+    let reportsarray = [];
+    let reports = await getReports(internalAuditorPreload);
+    for (let j: number = 0; j < reports.length; j++) {
+      let report = reports[j].scorecard;
+      let createdDate = reports[j].createdAt;
+      createdDate.setHours(createdDate.getHours() + 1);
+      let date =
+        createdDate.getDate() +
+        "-" +
+        (createdDate.getMonth() + 1) +
+        "-" +
+        createdDate.getFullYear();
+      let reportid = reports[j].reportId;
+      let responseJSON = {
+        report: report,
+        reportdate: date,
+        reportid: reportid,
+      };
+      reportsarray.push(responseJSON);
+    }
+    /** Return: Report ID, balanced scorecard, Report Created Date, Company Name */
+
+    return reportsarray;
+  } else {
+    let reportsarray = [];
+    return reportsarray;
+  }
+};
+
 /* Export queries */
 export = {
   getCredentials: getCredentials,
@@ -757,4 +797,5 @@ export = {
   getUnresolvedRequests: getUnresolvedRequests,
   getAllExternalAudits: getAllExternalAudits,
   getReportCreatedDate: getReportCreatedDate,
+  loadAllExternalReports: loadAllExternalReports,
 };

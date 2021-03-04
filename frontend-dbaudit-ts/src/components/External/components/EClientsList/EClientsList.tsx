@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { ResponseProps, getClients } from "./api/getclients";
 import { Row, Table } from "react-bootstrap";
 
-import { ClientLocationProps } from "../../../../pages/ExternalClientDetails/ExternalClientDetails";
 import { CustomButton } from "../../../../style/CustomButton";
 import { description } from "./EClientsList.resources";
 import { paths } from "../../../../App/AppRouter.resources";

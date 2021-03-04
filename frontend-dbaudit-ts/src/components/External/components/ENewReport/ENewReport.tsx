@@ -5,7 +5,6 @@ import {
 } from "./api/generateextreport";
 import {
   IBalancedScorecard,
-  ICombinedScorecard,
   IScorecardTable,
 } from "../../../../assets/interfaces/Interfaces";
 import React, { useState } from "react";

@@ -2,6 +2,7 @@ import { IREDUX, IUserState } from "../../assets/interfaces/Interfaces";
 import React, { useEffect } from "react";
 
 import { CustomButton } from "../../style/CustomButton";
+import EAllReports from "../../components/External/components/EAllReports/EAllReports";
 import ENewReport from "../../components/External/components/ENewReport/ENewReport";
 import LoginCheck from "../../assets/functions/LoginCheck";
 import Logout from "../../components/Logout/Logout";
@@ -63,7 +64,13 @@ export default function ExternalClientDetails() {
                 />
               </Row>
               <hr />
-              <div>TODO: List all reports</div>
+              <Row>
+                <EAllReports
+                  auditid={location.state.auditid}
+                  companyname={location.state.companyname}
+                />
+              </Row>
+              <hr />
               <div>TODO: Add input field for requesting config fix</div>
             </React.Fragment>
           ) : (
