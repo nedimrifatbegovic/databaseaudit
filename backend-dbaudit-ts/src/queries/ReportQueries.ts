@@ -20,6 +20,7 @@ import {
   getLogs,
 } from "../client/queries/logsQueries";
 
+import { Audit } from "../entity/Audit";
 import { Config } from "../entity/Config";
 import { InternalAuditor } from "../entity/InternalAuditor";
 import atob from "atob";
@@ -1061,3 +1062,19 @@ export const getCredentialsInternalAuditor = async (email: string) => {
     return undefined;
   }
 };
+
+export async function updateAuditResolved(auditid: string, action: boolean) {
+  const connection = getConnection();
+  const auditRepository = connection.getRepository(Audit);
+
+  const response = await auditRepository
+    .createQueryBuilder("audit")
+    .update(auditRepository)
+    .set({
+      resolved: action,
+    })
+    .where("auditId = :auditId", { auditId: auditid })
+    .execute();
+
+  return response;
+}

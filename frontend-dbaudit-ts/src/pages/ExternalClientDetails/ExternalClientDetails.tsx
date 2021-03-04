@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 
 import { CustomButton } from "../../style/CustomButton";
 import EAllReports from "../../components/External/components/EAllReports/EAllReports";
+import EConfigRequest from "../../components/External/components/EConfigRequest/EConfigRequest";
 import ENewReport from "../../components/External/components/ENewReport/ENewReport";
 import LoginCheck from "../../assets/functions/LoginCheck";
 import Logout from "../../components/Logout/Logout";
@@ -50,28 +51,30 @@ export default function ExternalClientDetails() {
                 Audit Page{" "}
                 {location.state.companyname && location.state.companyname}
               </h1>
-              <Row>
+              <div>
                 <CustomButton onClick={() => handleSelect()}>
                   {description.button}
                 </CustomButton>
-              </Row>
+              </div>
               <hr />
-              <Row>
+              <div>
                 <ENewReport
                   auditid={location.state.auditid}
                   email={location.state.email}
                   companyname={location.state.companyname}
                 />
-              </Row>
+              </div>
               <hr />
-              <Row>
+              <div>
                 <EAllReports
                   auditid={location.state.auditid}
                   companyname={location.state.companyname}
                 />
-              </Row>
+              </div>
               <hr />
-              <div>TODO: Add input field for requesting config fix</div>
+              <div>
+                <EConfigRequest auditid={location.state.auditid} />
+              </div>
             </React.Fragment>
           ) : (
             <React.Fragment>

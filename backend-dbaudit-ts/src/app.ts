@@ -9,8 +9,7 @@ import AdminQueries from "./queries/AdminQueries";
 import ExternalQueries from "./queries/ExternalQueries";
 import InternalQUeries from "./queries/InternalQUeries";
 import cors from "cors";
-
-// import { generateReport } from "./queries/ReportQueries";
+import { updateAuditResolved } from "./queries/ReportQueries";
 
 // import { asyncFunction } from "./client/testRemotedatabase";
 
@@ -345,6 +344,18 @@ import cors from "cors";
     return res.send(response);
   });
 
+  // Get all reports for specific audit ID
+  app.post(
+    "/updateresolvedaudit",
+    async function (req: Request, res: Response) {
+      console.log("Loading resolved audit...", req.body);
+      const response = await updateAuditResolved(
+        req.body.auditid,
+        req.body.action
+      );
+      return res.send(response);
+    }
+  );
   // -----------------------------------------------------------------------------------------------------------------------------------
   // start express server
   app.listen(port, () =>
