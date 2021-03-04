@@ -1,6 +1,9 @@
+import { ICombinedScorecard, generateReport } from "./ReportQueries";
+
 import { Audit } from "../entity/Audit";
 import { ExternalAuditor } from "../entity/ExternalAuditor";
 import { InternalAuditor } from "../entity/InternalAuditor";
+import InternalQUeries from "./InternalQUeries";
 import { getConnection } from "typeorm";
 
 const getCredentials = async (email: string, password: string) => {
@@ -79,6 +82,7 @@ const addClient = async (email: string, uniqueid: string) => {
 
 interface getClientsInterface {
   companyname?: string;
+  companyemail?: string;
   uniqueid?: string;
   auditid: number;
   auditstatus?: string;
@@ -115,6 +119,7 @@ const getClients = async (email: string) => {
             auditid: externaluser[0].audits[i].auditId,
             auditstatus: externaluser[0].audits[i].status,
             auditdate: date,
+            companyemail: externaluser[0].audits[i].internalAuditors[0].email,
             companyname:
               externaluser[0].audits[i].internalAuditors[0].companyName,
             uniqueid: externaluser[0].audits[i].internalAuditors[0].folderId,
@@ -152,10 +157,39 @@ const getClients = async (email: string) => {
   }
 };
 
+// * Generate report
+const externalReport = async (auditid: number, email: string) => {
+  // * If yes , generate report
+  const report: ICombinedScorecard = await generateReport(email);
+
+  // * Save report in DB for specific audit
+  const reportid: number = await InternalQUeries.addReport(auditid, report);
+
+  // * Get report created date
+  let reportDate: Date | undefined = await InternalQUeries.getReportCreatedDate(
+    reportid
+  );
+  reportDate.setHours(reportDate.getHours() + 1);
+  let date =
+    reportDate.getDate() +
+    "-" +
+    (reportDate.getMonth() + 1) +
+    "-" +
+    reportDate.getFullYear();
+
+  const fullreport = {
+    report: report,
+    reportDate: date,
+  };
+
+  return fullreport;
+};
+
 /* Export queries */
 export = {
   getCredentials: getCredentials,
   updateExternalPassword: updateExternalPassword,
   addClient: addClient,
   getClients: getClients,
+  externalReport: externalReport,
 };

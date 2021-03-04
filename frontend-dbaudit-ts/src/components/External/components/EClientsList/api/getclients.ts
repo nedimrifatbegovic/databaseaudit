@@ -6,6 +6,7 @@ export interface ResponseProps {
   companyname?: string;
   uniqueid?: string;
   auditid: string;
+  companyemail?: string;
   auditstatus?: string;
   auditdate?: string;
   error?: string;

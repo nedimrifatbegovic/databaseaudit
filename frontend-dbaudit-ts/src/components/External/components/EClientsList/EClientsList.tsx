@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ResponseProps, getClients } from "./api/getclients";
 import { Row, Table } from "react-bootstrap";
 
+import { ClientLocationProps } from "../../../../pages/ExternalClientDetails/ExternalClientDetails";
 import { CustomButton } from "../../../../style/CustomButton";
 import { description } from "./EClientsList.resources";
 import { paths } from "../../../../App/AppRouter.resources";
@@ -43,10 +44,17 @@ export function EClientsList(props: EClientsListProps) {
   };
 
   // * Forward to new page for specific audit
-  const handleSelect = async (auditid: string) => {
+  const handleSelect = async (
+    auditid: string,
+    companyname?: string,
+    companyemail?: string
+  ) => {
     let state = {
       auditid: auditid,
+      companyname: companyname,
+      email: companyemail,
     };
+
     history.push(paths.external.client, state);
   };
 
@@ -89,7 +97,13 @@ export function EClientsList(props: EClientsListProps) {
                           <td>
                             {item.auditstatus === "Accepted" ? (
                               <CustomButton
-                                onClick={() => handleSelect(item.auditid)}
+                                onClick={() =>
+                                  handleSelect(
+                                    item.auditid,
+                                    item.companyname,
+                                    item.companyemail
+                                  )
+                                }
                               >
                                 {description.details}
                               </CustomButton>

@@ -319,6 +319,23 @@ import cors from "cors";
     }
   );
 
+  // Get internal requests
+  app.post(
+    "/externalauditrequest",
+    async function (req: Request, res: Response) {
+      console.log("External audit request: ", req.body);
+      // * Generate new report for audit with id X
+      const response = await ExternalQueries.externalReport(
+        req.body.auditid,
+        req.body.email
+      );
+      const output = {
+        report: response,
+      };
+      return res.send(output);
+    }
+  );
+
   // -----------------------------------------------------------------------------------------------------------------------------------
   // start express server
   app.listen(port, () =>

@@ -1,7 +1,6 @@
 import { IREDUX, IUserState } from "../../assets/interfaces/Interfaces";
 import React, { useEffect } from "react";
 
-import { Container } from "react-bootstrap";
 import { EAddClients } from "../../components/External/components/EAddClients/EAddClients";
 import { EClientsList } from "../../components/External/components/EClientsList/EClientsList";
 import LoginCheck from "../../assets/functions/LoginCheck";

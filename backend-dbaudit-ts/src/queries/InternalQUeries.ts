@@ -756,4 +756,5 @@ export = {
   getReports: getReports,
   getUnresolvedRequests: getUnresolvedRequests,
   getAllExternalAudits: getAllExternalAudits,
+  getReportCreatedDate: getReportCreatedDate,
 };
