@@ -1,7 +1,13 @@
-import { LoadRequests, ResponseProps } from "./api/loadrequests";
+import {
+  LoadRequests,
+  ResolvedApi,
+  ResponseProps,
+  addClient,
+} from "./api/loadrequests";
 import React, { useState } from "react";
 
 import { CustomButton } from "../../../../style/CustomButton";
+import { Spinner } from "react-bootstrap";
 import { Table } from "react-bootstrap";
 import { description } from "./IPendingRequests.resources";
 import styled from "styled-components";
@@ -31,6 +37,9 @@ export default function IPendingRequests(props: PendingRequestsProps) {
   const [requestState, setRequestState] = useState<
     RequestsInterface[] | "ERROR" | undefined
   >();
+  const [loadingState, setloadingState] = useState<boolean>(false);
+  const [messageState, setmessageState] = useState<string | undefined>();
+
   // * Handle load all requests
   const handleLoadReports = async (email: string) => {
     setRequestState(undefined);
@@ -46,9 +55,17 @@ export default function IPendingRequests(props: PendingRequestsProps) {
     }
   };
 
-  // TODO: * Update request
+  // * Update request
   const handleSelect = async (auditid?: number) => {
-    console.log(auditid);
+    setmessageState(undefined);
+    setloadingState(true);
+    let data: ResolvedApi = {
+      auditid: auditid,
+      action: true,
+    };
+    await addClient(data);
+    setloadingState(false);
+    setmessageState("The request has been sent!");
   };
 
   //** Show all cases where the config has not been resolved - Audit ID, External Auditor ID and Email, Button to set status to resolved */
@@ -88,6 +105,10 @@ export default function IPendingRequests(props: PendingRequestsProps) {
                             >
                               {description.buttonupdate}
                             </CustomButton>
+                            {loadingState && (
+                              <Spinner animation="grow" variant="info" />
+                            )}
+                            <div>{messageState && <p>{messageState}</p>}</div>
                           </td>
                         </tr>
                       );
