@@ -38,11 +38,11 @@ export default function IPendingRequests(props: PendingRequestsProps) {
       email: email,
     };
     const response: ResponseProps[] | any = await LoadRequests(data);
-    console.log(response);
-    if (response.length === undefined || response.length === 0) {
+
+    if (response.report.length === undefined || response.report.length === 0) {
       setRequestState("ERROR");
     } else {
-      setRequestState(response);
+      setRequestState(response.report);
     }
   };
 

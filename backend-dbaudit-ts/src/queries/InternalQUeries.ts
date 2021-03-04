@@ -634,55 +634,47 @@ const getUnresolvedRequests = async (email: string) => {
   const connection = getConnection();
   const internalRepository = connection.getRepository(InternalAuditor);
   const auditRepository = connection.getRepository(Audit);
-  // * Get internal auditor id
-  const internalAuditorId = await internalRepository
-    .createQueryBuilder("internal_auditor")
-    .where("email = :email", { email: email })
-    .execute();
-
   let unresolvedrequests: UnresolvedRequestsInterface[] = [];
-  if (internalAuditorId[0].internal_auditor_internalAuditorId !== undefined) {
-    const auditorid = internalAuditorId[0].internal_auditor_internalAuditorId;
 
-    const internalAuditorPreload = await auditRepository
-      .createQueryBuilder("audit")
-      .leftJoinAndSelect(
-        "audit.internalAuditors",
-        "internal_auditor",
-        "internal_auditor.internalAuditorId = :internalAuditorId",
-        { internalAuditorId: auditorid }
-      )
-      .getMany();
+  // * Get internal auditor id
+  const internalAuditor = await internalRepository
+    .createQueryBuilder("internal_auditor")
+    .leftJoinAndSelect("internal_auditor.audits", "audit.internalAuditors")
+    .where("email = :email", { email: email })
+    .getOne();
 
-    for (let i: number = 0; i < internalAuditorPreload.length; i++) {
-      if (internalAuditorPreload[i].resolved === false) {
-        if (
-          internalAuditorPreload[i].externalAuditors[0] !== undefined &&
-          internalAuditorPreload[i].externalAuditors.length !== 0
-        ) {
-          let requestdetails: UnresolvedRequestsInterface = {
-            auditid: internalAuditorPreload[i].auditId,
-            externalauditoremail:
-              internalAuditorPreload[i].externalAuditors[0].email,
-            externalauditorid:
-              internalAuditorPreload[i].externalAuditors[0].externalAuditorId,
-          };
-          unresolvedrequests.push(requestdetails);
+  if (internalAuditor) {
+    if (internalAuditor.audits.length > 0) {
+      for (let i: number = 0; i < internalAuditor.audits.length; i++) {
+        const auditRepo = await auditRepository
+          .createQueryBuilder("audit")
+          .leftJoinAndSelect(
+            "audit.externalAuditors",
+            "external_auditor.audits"
+          )
+          .where("auditId = :auditId", {
+            auditId: internalAuditor.audits[i].auditId,
+          })
+          .getOne();
+
+        if (auditRepo.resolved) {
+          // * Ignore, its already resolved!!!
         } else {
+          // Handle unresolved requests
           let requestdetails: UnresolvedRequestsInterface = {
-            auditid: internalAuditorPreload[i].auditId,
+            auditid: auditRepo.auditId,
+            externalauditoremail: auditRepo.externalAuditors[0].email,
+            externalauditorid: auditRepo.externalAuditors[0].externalAuditorId,
           };
           unresolvedrequests.push(requestdetails);
         }
       }
+      return unresolvedrequests;
+    } else {
+      return "No audits found.";
     }
-    return unresolvedrequests;
   } else {
-    let requestdetails: UnresolvedRequestsInterface = {
-      error:
-        "Audit has not been found. Please contact the application administrator.",
-    };
-    unresolvedrequests.push(requestdetails);
+    return "Auditor not found";
   }
 };
 

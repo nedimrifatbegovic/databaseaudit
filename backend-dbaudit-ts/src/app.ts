@@ -89,15 +89,16 @@ import { updateAuditResolved } from "./queries/ReportQueries";
   );
 
   // Get all external audits
-  app.post("/unresolvedrequests", async function (req: Request, res: Response) {
-    const response = await InternalQUeries.getUnresolvedRequests(
-      req.body.email
-    );
-    const output = {
-      report: response,
-    };
-    return res.send(output);
-  });
+  // app.post("/unresolvedrequests", async function (req: Request, res: Response) {
+  //   console.log("Loading unresolved requests...", req.body);
+  //   const response = await InternalQUeries.getUnresolvedRequests(
+  //     req.body.email
+  //   );
+  //   const output = {
+  //     report: response,
+  //   };
+  //   return res.send(output);
+  // });
 
   // Get all unresolved requests (where config is not working - issue auditing)
   app.post("/unresolvedrequests", async function (req: Request, res: Response) {
