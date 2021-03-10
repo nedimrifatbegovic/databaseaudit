@@ -1,5 +1,25 @@
 {
   "title": "A Configuration Approach for Database Audit Systems",
-  "subtitle": "Wellcome to the Database Audit System.",
-  "description": "This prototype is showing three different Use-Cases. The first one is representing the administrator of the application. He creates other users (internal / external auditors). The second user is for internal auditrs... third for external..."
+  "subtitle": "Welcome to the Database Audit System",
+  "description": "This prototype ensures  that multiple COBIT control objectives are fulfilled, and the potential threats detected. Since COBIT is a global standard, many other certificates are leaning on its control objectives. With the fulfilling of COBIT, other certificates are also fulfilled in some points, like for example the ISO 27000 standard or the ISAE 3402 certificate. To achieve this, a prototype has been be developed. The architecture of the prototype will consist of a backend where the control objectives, which are defined by COBIT, and other ISACA best practices, will be controlled and where the proof will be collected. The controls that this application covers are",
+  "list1": "Checking if the database is running on a supported database software version",
+  "list2": "Checking if user groups are defined (COBIT PO2.3), and if the principal of least privilege is implemented",
+  "list3": "Searching for users with DBA (database administrator) privileges",
+  "list4": "Checking the password policy (EU Standard, COBIT DS5)",
+  "list5": "Checking if unexpected interruptions in data processing are being handled (COBIT AC4)",
+  "list6": "Checking the integrity of data stored in the database (COBIT PO2.4)",
+  "list7": "Checking if procedures for backup and restoration of the database have been implemented, followed, and documented (COBIT DS11.5)",
+  "list8": "Checking if changes are following a defined process and if they are being documented (COBIT AI6.1, AI6.2)",
+  "author": "Author: Nedim Rifatbegovic",
+  "university": "University of Vienna",
+  "mentor": "Mentor: Univ.-Prof. Dipl.-Ing. Dr. Dr.Gerald Quirchmayr",
+  "documentation": "For the full documentation look at -Link TBD- ",
+  "architecture": "The architecutre consists of",
+  "backend": "Backend - is done using TypeScript and TypeORM as ORM mapper. Needed APIs are created - which enable the communication with the frontend, companies ticket system (Atlassian Jira) and the companies database",
+  "frontend": "Frontend - is done using React & TypeScript. As the basis for the UI react-bootstrap and styled-components are being used, which provide an clean and simple UI. The application is designed for computers, tablets and smartphones",
+  "packages": "Some needed packages had to be installed globally. In order to install them please execute npm i nodemon -g npm i ts-node -g",
+  "scenariotitle": "The application consists of three scenarios",
+  "admin": "Admin - The applications administrator who can add internal / external auditors, remove auditors and edit their details.",
+  "internalauditor": "Internal Auditor - The companies internal auditor, who can generate database audit reports, accept / decline external audit requests, add the needed audit configuraiton",
+  "externalauditor": "External Auditor - The external auditor can send audit requests to companies (internal auditors), generate database audits and download the reports (including audit proof)"
 }
