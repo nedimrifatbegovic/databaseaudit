@@ -32,7 +32,7 @@ export default function Jumbo() {
       <Jumbotron fluid className="jumbo">
         <Container>
           <h1>Database Audit</h1>
-          <p>Wellcome!</p>
+          <p>Welcome!</p>
         </Container>
       </Jumbotron>
     </Styles>
